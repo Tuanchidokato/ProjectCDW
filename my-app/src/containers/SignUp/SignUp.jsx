@@ -20,6 +20,7 @@ class SignUp extends Component{
            username:"",
            password:"",
            email:"",
+           successful: false,
            unPass:true,
            re_unPass:true,
        };
@@ -163,6 +164,22 @@ class SignUp extends Component{
                                 </button>
                                 
                            </div>
+
+
+                           {this.state.message && (
+                                <div className="form-group">
+                                    <div
+                                    className={
+                                        this.state.successful
+                                        ? "alert alert-success"
+                                        : "alert alert-danger"
+                                    }
+                                    role="alert"
+                                    >
+                                    {this.state.message}
+                                    </div>
+                                </div>
+                                )}
                        </form>
                    </div>
                   <div className="logo_login">

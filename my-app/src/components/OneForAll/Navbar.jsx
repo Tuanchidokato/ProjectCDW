@@ -11,10 +11,26 @@ class Navbar extends Component{
     constructor(props){
         super(props)
         this.Logout = this.Logout.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this)
         this.state ={
             currentUser:true,
         }
 
+    }
+    componentDidMount(e){
+        const currentUser = authService.getCurrentUser();
+       
+        if(currentUser ==null){
+            this.setState({
+                currentUser:false
+            })
+        }else{
+            this.setState({
+                currentUser:true
+            })
+        }
+    //    console.log(currentUser);
+        console.log(this.state.currentUser)
     }
 
     Logout(){
@@ -39,14 +55,20 @@ class Navbar extends Component{
                             <a href=""><img src={Book} alt="" /></a>
                             <a href=""><img src={Diamond} alt="" /></a>
                             <a href="/"><img src={Bell} alt="" /></a>
-                            <a className="dropbtn">
+                            {
+                                this.state.currentUser?
+                                <a className="dropbtn">
                                 <img src={User} alt="" />
                                 <div class="dropdown-content">
                                     <a href="#">Xem trang cá nhân</a>
                                     <a href="#">Quản lý tài khoản</a>
                                     <a onClick={this.Logout} href="/Login">Đăng xuất</a>
                                 </div>
-                            </a>
+                            </a> 
+                            :
+                            <a href="/Login" className="Login_">Đăng nhập</a>
+
+                            }
                             
                         </div>
                     </header>
@@ -152,6 +174,19 @@ const Nav= styled.nav`
             margin-right:20px;
             width: 10%;
             cursor: pointer;
+        }
+        .Login_{
+            color: #FFFFFF;
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 20px;
+            padding: 5px 5px 8px 5px;
+            background-color: #808080;
+            border-radius:5px;
+            :hover{
+                background-color: #f1f1f1;
+                color: #000000;
+            }
         }
         .dropbtn{ 
             :hover{
