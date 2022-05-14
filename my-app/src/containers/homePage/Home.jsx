@@ -5,10 +5,12 @@ import PopularBook from "../../components/Elements/PopularBook"
 import SaleBooks from "../../components/Elements/Sale-book";
 import Category  from "../../components/Elements/Category";
 import UserService from "../../services/user.service";
-
+import Profile from "../../containers/Profile/Profile"
 
 import axios from "axios";
 import { Component } from "react";
+import ContentHome from "./ContentHome";
+import { Switch,Route,Link } from "react-router-dom";
 
 class Home extends Component{
     
@@ -43,15 +45,14 @@ class Home extends Component{
             return (
                 <Section>
                     <Navbar />
-                    <PopularBook/>
-                    <div className="sale_book row ">
-                        <div className="col-sm-2">
-                            <Category />
-                        </div>
-                        <div className="col-sm-10">
-                            <SaleBooks />
-                        </div>
-                    </div>
+                    <Link to={["/home","/"]}></Link>
+                    <Link to="/home/profile"></Link>
+                    
+                     <Route exact path={["/home","/"]}>
+                        <PopularBook />
+                        <ContentHome/>
+                      </Route>
+                     <Route exact path="/home/profile"> <Profile /> </Route>
                     
                 </Section>
             )

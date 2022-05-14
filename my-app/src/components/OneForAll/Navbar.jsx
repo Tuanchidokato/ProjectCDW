@@ -6,6 +6,7 @@ import Bell from "../../assets/fluent_premium-person-20-regular.svg"
 import User from "../../assets/user.svg"
 import { Component } from "react";
 import authService from "../../services/auth.service";
+import {Link} from "react-router-dom";
 class Navbar extends Component{
 
     constructor(props){
@@ -60,9 +61,9 @@ class Navbar extends Component{
                                 <a className="dropbtn">
                                 <img src={User} alt="" />
                                 <div class="dropdown-content">
-                                    <a href="#">Xem trang cá nhân</a>
-                                    <a href="#">Quản lý tài khoản</a>
-                                    <a onClick={this.Logout} href="/Login">Đăng xuất</a>
+                                    <Link to="/home/profile">Xem trang cá nhân</Link>
+                                    <Link >Quản lý tài khoản</Link>
+                                    <Link onClick={this.Logout} to="/Login">Đăng xuất</Link>
                                 </div>
                             </a> 
                             :
