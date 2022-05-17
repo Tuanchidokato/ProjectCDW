@@ -2,12 +2,14 @@ package com.example.TestLogin.Controller;
 
 
 import com.example.TestLogin.Model.UserModel.ERole;
+import com.example.TestLogin.Model.UserModel.InformationUser;
 import com.example.TestLogin.Model.UserModel.Role;
 import com.example.TestLogin.Model.UserModel.User;
 import com.example.TestLogin.Payload.Request.LoginRequest;
 import com.example.TestLogin.Payload.Request.SignupRequest;
 import com.example.TestLogin.Payload.Response.JwtResponse;
 import com.example.TestLogin.Payload.Response.MessageResponse;
+import com.example.TestLogin.Repository.InformationRepository;
 import com.example.TestLogin.Repository.RoleRepository;
 import com.example.TestLogin.Repository.UserRepository;
 import com.example.TestLogin.Security.Jwt.JwtUtils;
@@ -47,6 +49,8 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    InformationRepository informationRepository;
 
 
     @PostMapping("signin")
@@ -119,6 +123,9 @@ public class AuthController {
         }
         user.setRoles(roles);
         userRepository.save(user);
+        InformationUser informationUser = new InformationUser(user,"","","",null);
+        informationRepository.save(informationUser);
+
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 
     }

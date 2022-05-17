@@ -20,11 +20,12 @@ public class Product  implements Serializable {
     private String name;
     private String image;
     private float price;
+    private String description;
     private Date date;
     private int quantity;
     private boolean available;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "categories_id")
     private Categories categories;
 
@@ -32,10 +33,11 @@ public class Product  implements Serializable {
     public Product() {
     }
 
-    public Product( String name, String image, float price, Date date, int quantity, boolean available, Categories categories) {
+    public Product(String name, String image, float price, String description, Date date, int quantity, boolean available, Categories categories) {
         this.name = name;
         this.image = image;
         this.price = price;
+        this.description = description;
         this.date = date;
         this.quantity = quantity;
         this.available = available;
@@ -74,6 +76,14 @@ public class Product  implements Serializable {
         this.price = price;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -106,17 +116,4 @@ public class Product  implements Serializable {
         this.categories = categories;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", image='" + image + '\'' +
-                ", price=" + price +
-                ", date=" + date +
-                ", quantity=" + quantity +
-                ", available=" + available +
-                ", categories=" + categories +
-                '}';
-    }
 }

@@ -3,7 +3,12 @@ import styled from "styled-components";
 import book1 from "../../assets/bookStudent/image 2.png"
 import {Link} from "react-router-dom"
 import Information from "../../components/ProfileInformation/Information";
+import InformationUser from "../../services/InformationUser.service"
+import authService from "../../services/auth.service";
+import { Route } from "react-router-dom";
 class Profile extends Component{
+
+ 
 
     render(){
         return(
@@ -21,14 +26,16 @@ class Profile extends Component{
                             </div>
 
                             <div className="control">
-                                <Link to="asd">Xem trang cá nhân</Link>
+                                <Link to="/home/profile">Xem trang cá nhân</Link>
                                 <Link to="ád">Đổi mật khẩu</Link>
                             </div>
                           </div>
                        </div>
                        <div className="information_ col-md-8">
                            <div className="form_profile">
-                               <Information />
+                               <Route path={["/home/profile"]}>
+                                   <Information />
+                               </Route>
                            </div>
                        </div>
                    </div>

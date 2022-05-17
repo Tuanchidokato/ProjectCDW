@@ -8,24 +8,35 @@ import java.io.Serializable;
 public class InformationUser implements Serializable {
 
     @Id
-    @OneToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String firstName;
     private String lastName;
     private String address;
-    private float phoneNumber;
+    private Long phoneNumber;
 
     public InformationUser() {
     }
 
-    public InformationUser(User user, String firstName, String lastName, String address, float phoneNumber) {
+    public InformationUser(  User user, String firstName, String lastName, String address, Long phoneNumber) {
         this.user = user;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -60,18 +71,19 @@ public class InformationUser implements Serializable {
         this.address = address;
     }
 
-    public float getPhoneNumber() {
+    public Long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(float phoneNumber) {
+    public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
     @Override
     public String toString() {
         return "InformationUser{" +
-                "user=" + user +
+                "id=" + id +
+                ", user=" + user +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +

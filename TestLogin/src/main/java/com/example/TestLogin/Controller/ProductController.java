@@ -26,7 +26,7 @@ public class ProductController {
         Categories categories = new Categories("Detective");
 
 
-        Product product = new Product("True Detective","hai",20000,new Date(2022,04,02),5,true,categories);
+        Product product = new Product("True Detective","hai",20000,"",new Date(2022,04,02),5,true,categories);
         productRepository.save(product);
         return true;
     }
