@@ -104,6 +104,7 @@ render(){
                            <div className="input_form">
                                 <input 
                                 name="username"
+                                required
                                 value={this.state.username}
                                 onChange={this.onChangeUsername}
                                 validations={[required]}
@@ -114,6 +115,7 @@ render(){
 
                                 <input 
                                 type={this.state.unPass?"password":"text"}  
+                                required
                                 name="password"
                                 value={this.state.password}
                                 onChange={this.onChangePassword}

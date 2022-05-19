@@ -64,6 +64,7 @@ class Navbar extends Component{
                                     <Link to="/home/profile">Xem trang cá nhân</Link>
                                     <Link >Quản lý tài khoản</Link>
                                     <Link onClick={this.Logout} to="/Login">Đăng xuất</Link>
+                                    <Link>Ví của tôi</Link>
                                 </div>
                             </a> 
                             :
