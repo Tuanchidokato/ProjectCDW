@@ -3,12 +3,37 @@ import styled from "styled-components";
 import book1 from "../../assets/bookStudent/image 2.png"
 import {Link} from "react-router-dom"
 import Information from "../../components/ProfileInformation/Information";
-import InformationUser from "../../services/InformationUser.service"
+import informationUser from "../../services/InformationUser.service"
 import authService from "../../services/auth.service";
+import ChangePass from "../../components/ProfileInformation/ChangePass";
 import { Route } from "react-router-dom";
 class Profile extends Component{
 
+    constructor(props){
+        super(props)
+        this.fileSelectedHandler= this.fileSelectedHandler.bind(this)
+        this.state={
+            selectedFiles: undefined,
+            currentFile: undefined,
+            progress: 0,
+            message: "",
+            fileInfos: [],
+
+        }
+
+    }
+    fileSelectedHandler(e){
+        
+        let selectedFile=e.target.files[0];
+       
+        informationUser.insertImage(selectedFile).then(
+            (response)=>{
+                console.log(response.data)
+            }
+        )
+    }
  
+
 
     render(){
         return(
@@ -21,20 +46,34 @@ class Profile extends Component{
                                 <div className="avatar_edit">
                                     <img src={book1} alt="" />
                                 </div>
-                                <i className="fa  fa-pencil"></i>
+                                <div>
+
+                                <label htmlFor="change-img">
+                                    <i type="file" className="fa fa-pencil"></i>
+                                    <input 
+                                        id="change-img" 
+                                        hidden type="file" 
+                                        accept="image/png, image/jpeg" 
+                                        onChange={this.fileSelectedHandler}
+                                    />
+                                </label>
+                                </div>
                                 <h1>Cao Tuan</h1>
                             </div>
 
                             <div className="control">
                                 <Link to="/home/profile">Xem trang cá nhân</Link>
-                                <Link to="ád">Đổi mật khẩu</Link>
+                                <Link to="/home/profile/changePass">Đổi mật khẩu</Link>
                             </div>
                           </div>
                        </div>
                        <div className="information_ col-md-8">
                            <div className="form_profile">
-                               <Route path={["/home/profile"]}>
+                               <Route exact path={["/home/profile"]}>
                                    <Information />
+                               </Route>
+                               <Route exact path="/home/profile/changePass">
+                                   <ChangePass />
                                </Route>
                            </div>
                        </div>
@@ -82,8 +121,11 @@ const Div=styled.div`
                     padding: 7px;
                     font-size: 10px;
                     cursor: pointer;
-                    margin-top: -28px;
+                    margin-top: -45px;
                     margin-left: 31px;
+                }
+                input{
+                    z-index: 999;
                 }
                 h1{
                     font-size: 30px;

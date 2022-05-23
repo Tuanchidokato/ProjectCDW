@@ -52,7 +52,7 @@ class Home extends Component{
                         <PopularBook />
                         <ContentHome/>
                       </Route>
-                     <Route exact path="/home/profile"> <Profile /> </Route>
+                     <Route  path="/home/profile"> <Profile /> </Route>
                     
                 </Section>
             )
