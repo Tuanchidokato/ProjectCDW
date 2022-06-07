@@ -1,9 +1,11 @@
 package com.example.TestLogin.Model.ProductManage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 @Data
@@ -13,15 +15,24 @@ import java.util.Date;
                 columnNames = "name"
         )
 })
-public class Product  implements Serializable {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String image;
+
+    private String author;
+
+    private String nxb;
     private float price;
+
+    private float discount;
     private String description;
-    private Date date;
+
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private Calendar date;
     private int quantity;
     private boolean available;
 
@@ -33,10 +44,13 @@ public class Product  implements Serializable {
     public Product() {
     }
 
-    public Product(String name, String image, float price, String description, Date date, int quantity, boolean available, Categories categories) {
+    public Product(String name, String image, String author, String nxb, float price, float discount, String description, Calendar date, int quantity, boolean available, Categories categories) {
         this.name = name;
         this.image = image;
+        this.author = author;
+        this.nxb = nxb;
         this.price = price;
+        this.discount = discount;
         this.description = description;
         this.date = date;
         this.quantity = quantity;
@@ -68,6 +82,30 @@ public class Product  implements Serializable {
         this.image = image;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getNxb() {
+        return nxb;
+    }
+
+    public void setNxb(String nxb) {
+        this.nxb = nxb;
+    }
+
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
+
     public float getPrice() {
         return price;
     }
@@ -84,11 +122,11 @@ public class Product  implements Serializable {
         this.description = description;
     }
 
-    public Date getDate() {
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 
