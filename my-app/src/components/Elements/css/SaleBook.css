@@ -1,0 +1,191 @@
+.GYk2AG {
+       margin-top: 1.5rem;
+}
+
+.shopee-search-item-result .shopee-page-controller {
+       margin: 1.25rem 0 3.75rem;
+}
+
+.shopee-page-controller {
+       display: flex;
+       justify-content: center;
+}
+
+.shopee-page-controller .shopee-icon-button--left {
+       text-align: right;
+       margin-right: 0.9375rem;
+}
+
+.shopee-page-controller .shopee-icon-button {
+       color: rgba(0, 0, 0, .4);
+       min-width: 2.5rem;
+       height: 1.875rem;
+       border: 0;
+}
+
+.shopee-icon-button {
+       border: 1px solid rgba(0, 0, 0, .54);
+       background-color: transparent;
+       padding: 0;
+}
+
+.shopee-icon-button {
+       outline: none;
+       cursor: pointer;
+       border: 0;
+       font-size: .875rem;
+       font-weight: 300;
+       line-height: 1;
+       letter-spacing: 0;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: background-color .1s cubic-bezier(.4, 0, .6, 1);
+}
+
+.shopee-page-controller .shopee-icon-button .shopee-svg-icon {
+       vertical-align: middle;
+}
+
+svg:not(:root) {
+       overflow: hidden;
+}
+
+.shopee-svg-icon {
+       display: inline-block;
+       width: 1em;
+       height: 1em;
+       fill: currentColor;
+       position: relative;
+}
+
+.shopee-page-controller .shopee-button-solid {
+       color: #fff;
+}
+
+.shopee-page-controller .shopee-button-no-outline,
+.shopee-page-controller .shopee-button-solid {
+       padding: 0;
+       min-width: 2.5rem;
+       text-align: center;
+       height: 1.875rem;
+       font-size: 1.25rem;
+       margin-left: 0.9375rem;
+       margin-right: 0.9375rem;
+}
+
+.shopee-button-solid--primary {
+       position: relative;
+       overflow: visible;
+       outline: 0;
+       background: #ee4d2d;
+}
+
+.shopee-button-solid {
+       outline: none;
+       cursor: pointer;
+       border: 0;
+       font-size: .875rem;
+       font-weight: 300;
+       line-height: 1;
+       letter-spacing: 0;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: background-color .1s cubic-bezier(.4, 0, .6, 1);
+       position: relative;
+       background: rgba(0, 0, 0, .54);
+       color: #fff;
+       transition: opacity .2s ease;
+       border-radius: 2px;
+       -webkit-user-select: none;
+       -moz-user-select: none;
+       user-select: none;
+       box-shadow: 0 1px 1px 0 rgb(0 0 0 / 9%);
+}
+
+.shopee-page-controller .shopee-button-no-outline,
+.shopee-page-controller .shopee-button-solid {
+       padding: 0;
+       min-width: 2.5rem;
+       text-align: center;
+       height: 1.875rem;
+       font-size: 1.25rem;
+       margin-left: 0.9375rem;
+       margin-right: 0.9375rem;
+}
+
+.shopee-page-controller .shopee-button-no-outline {
+       color: rgba(255, 255, 255, 0.4);
+}
+
+.shopee-button-no-outline {
+       position: relative;
+       overflow: visible;
+       outline: 0;
+       padding: 0.3125rem 0.4375rem;
+       color: rgba(255, 0, 0, 0.8);
+       background-color: transparent;
+       border: 0;
+}
+
+.shopee-button-no-outline,
+.shopee-icon-button,
+.shopee-image-button {
+       outline: none;
+       cursor: pointer;
+       border: 0;
+       font-size: .875rem;
+       font-weight: 300;
+       line-height: 1;
+       letter-spacing: 0;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+       transition: background-color .1s cubic-bezier(.4, 0, .6, 1);
+}
+
+button,
+html input[type=button] {
+       -webkit-appearance: button;
+       cursor: pointer;
+}
+
+button {
+       text-transform: none;
+}
+
+button {
+       overflow: visible;
+}
+
+button {
+       color: inherit;
+       font: inherit;
+       margin: 0;
+}
+
+button {
+       appearance: auto;
+       writing-mode: horizontal-tb !important;
+       text-rendering: auto;
+       color: buttontext;
+       letter-spacing: normal;
+       word-spacing: normal;
+       line-height: normal;
+       text-transform: none;
+       text-indent: 0px;
+       text-shadow: none;
+       display: inline-block;
+       text-align: center;
+       align-items: flex-start;
+       cursor: default;
+       box-sizing: border-box;
+       background-color: -internal-light-dark(rgb(239, 239, 239), rgb(59, 59, 59));
+       margin: 0em;
+       padding: 1px 6px;
+       border-width: 2px;
+       border-style: outset;
+       border-color: buttonborder;
+       border-image: initial;
+}
