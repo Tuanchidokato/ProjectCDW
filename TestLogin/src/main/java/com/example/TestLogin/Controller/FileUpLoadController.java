@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(path = "api/auth/FileUpLoad")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class FileUpLoadController {
 
     @Autowired
@@ -48,22 +49,17 @@ public class FileUpLoadController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ResponseObject> insertImage(@PathVariable Long id,@RequestParam("file") MultipartFile file){
-        try {
-            String generatedFileName = storageService.storeFile(file);
+    public ResponseEntity<ResponseObject> insertImage(@PathVariable Long id,@RequestBody String file){
+
             User user= userRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("Không tìm thấy user")
             );
-            user.setImageUrl(generatedFileName);
+            user.setImageUrl(file);
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok","Upload image successfully",user)
             );
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-                    new ResponseObject("not ok", e.getMessage(), "")
-            );
-        }
+
     }
 
     @GetMapping(value = "/file/{fileName:.+}",produces = MediaType.IMAGE_PNG_VALUE)

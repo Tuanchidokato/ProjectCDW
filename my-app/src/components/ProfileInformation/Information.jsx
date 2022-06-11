@@ -119,7 +119,6 @@ class Information extends Component{
     render(){
         return(
             <Div>
-
                 <div className="form_Information">
                     <form onSubmit={this.handleSave}>
                         <h1>Xem trang cá nhân</h1>
@@ -160,7 +159,7 @@ class Information extends Component{
                                 required    
                                 type="text"
                                 name="phoneNumber"
-                                value={this.state.phoneNumber}
+                                defaultValue={this.state.phoneNumber}
                                 onChange={this.onChangePhoneNumber}
                             />
                         </div>

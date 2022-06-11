@@ -9,6 +9,8 @@ import axios from "axios";
 import authService from "../../services/auth.service";
 import { withRouter } from 'react-router-dom';
 
+import {ToastContainer,toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 const required = value => {
     if (!value) {
       return (
@@ -64,6 +66,8 @@ class Login extends React.Component{
        () =>{
          this.props.history.push("/Home")
          window.location.reload()
+       },err=>{
+        toast.error("Tên đăng nhập hoặc password không chính xác")
        }
      )
     const currentUser=authService.getCurrentUser();
@@ -140,8 +144,9 @@ render(){
                                     <button className="google_btn">Google</button>
                                 </div>
                            </div>
-
+                           <ToastContainer
                             
+                            />
                             <div className="signUp">
                               <p>Nếu chưa có tài khoản <a href="/SignUp">Đăng ký</a></p>
                             </div>

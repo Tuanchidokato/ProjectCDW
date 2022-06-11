@@ -36,7 +36,10 @@ public class Product implements Serializable {
     private int quantity;
     private boolean available;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     @JoinColumn(name = "categories_id")
     private Categories categories;
 
