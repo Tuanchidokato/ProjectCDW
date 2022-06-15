@@ -176,19 +176,21 @@ class Information extends Component{
 export default Information;
 const Div = styled.div`
     .form_Information{
-        margin-left: 40px;
+        
         background-color: #ceb6b6 ;
         max-width: 900px;
         margin-top: 15px;
         border-radius: 10px;
         max-height: 560px;
         form{
-            margin-left: 50px;
+            /* margin-left: 50px; */
             h1{
+                margin-left: 20px;
                 padding-top: 20px;
                 font-size: 30px;
             }
             .info{
+                margin-left: 20px;
                 p{
                     color: #000000;
                     font-size: 17px;
@@ -200,7 +202,10 @@ const Div = styled.div`
                     border-radius: 5px;
                     border: 1px solid #000000;
                     padding-left: 20px;
-                    font-weight: 500;
+                    font-weight: 600;
+                    color: #000000;
+                    font-size: 15px;
+
                 }
             }
             button{

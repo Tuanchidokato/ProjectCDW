@@ -6,34 +6,60 @@ import Information from "../../components/ProfileInformation/Information";
 import informationUser from "../../services/InformationUser.service"
 import authService from "../../services/auth.service";
 import ChangePass from "../../components/ProfileInformation/ChangePass";
+import { storage } from "../../config/firebase/firebase";
 import { Route } from "react-router-dom";
+import InformationUserService from "../../services/InformationUser.service";
 class Profile extends Component{
 
     constructor(props){
         super(props)
         this.fileSelectedHandler= this.fileSelectedHandler.bind(this)
+        this.componentDidMount = this.componentDidMount.bind(this)
         this.state={
             selectedFiles: undefined,
             currentFile: undefined,
             progress: 0,
             message: "",
             fileInfos: [],
+            imageUrl:""
 
         }
 
     }
-    fileSelectedHandler(e){
+    fileSelectedHandler=async(e)=>{
         
-        let selectedFile=e.target.files[0];
-       
-        informationUser.insertImage(selectedFile).then(
-            (response)=>{
-                console.log(response.data)
+        const file=e.target.files[0];
+        const today = new Date()
+        const storageRef = storage.ref(`listImage/`)
+        const fileRef = storageRef.child(file.name+":"+today.getMilliseconds()+":"+today.getMinutes())
+        await fileRef.put(file)
+        const fileUrl =await fileRef.getDownloadURL()
+        console.log(fileUrl)
+        InformationUserService.insertImage(fileUrl).then(
+            response=>{
+                console.log(response)
+                window.location.reload();
+            },
+            err=>{
+                console.log(err)
             }
-        )
+      )
     }
  
-
+componentDidMount(){
+    const user = authService.getCurrentUser()
+    informationUser.getInformationUser(user.id).then(
+        res=>{
+            console.log(res.data.data.user)
+            this.setState({
+                imageUrl:res.data.data.user.imageUrl
+            })
+        },
+        err=>{
+            console.log(err)
+        }
+    )
+}
 
     render(){
         return(
@@ -44,7 +70,7 @@ class Profile extends Component{
                           <div className="control_option">
                             <div className="avatar">
                                 <div className="avatar_edit">
-                                    <img src={book1} alt="" />
+                                    <img src={this.state.imageUrl} alt="" />
                                 </div>
                                 <div>
 
@@ -121,7 +147,7 @@ const Div=styled.div`
                     padding: 7px;
                     font-size: 10px;
                     cursor: pointer;
-                    margin-top: -45px;
+                    margin-top: -35px;
                     margin-left: 31px;
                 }
                 input{

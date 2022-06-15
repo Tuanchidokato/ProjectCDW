@@ -3,12 +3,13 @@ import { Component, useState , useEffect} from "react";
 import styled from "styled-components";
 import authService from "../../services/auth.service";
 import InformationUserService from "../../services/InformationUser.service";
-import book1 from "../../assets/bookStudent/image 11.png"
 import { storage } from "../../config/firebase/firebase";
 const  ChangePass =()=>{
 
     const [user,setUser]=useState(null)
    
+    const [infoUser,setInfoUser]= useState(null)
+
     const changeImage=async(e)=>{
       const file = e.target.files[0];
       const storageRef = storage.ref(`listImage/`)
@@ -34,15 +35,24 @@ const  ChangePass =()=>{
 
     }
     useEffect(()=>{
-      // const user = authService.getCurrentUser()
-       console.log("jhasgd")
+       const user = authService.getCurrentUser()
+       InformationUserService.getInformationUser(user.id).then(
+        res=>{
+            console.log(res.data.data.user)
+            setInfoUser(res.data.data.user)
+        }, err=>{
+            console.log(err)
+        }
+       )
+      // console.log(infoUser.imageUrl)
     },[])
      
         return(
             <Div>
                 <div>
                    <form action="">
-                   
+                   {/* <img src={infoUser.id} alt="" /> */}
+                   {infoUser.id}
                     <input type="file" name="" 
                     onChange={changeImage}
                     id="" />

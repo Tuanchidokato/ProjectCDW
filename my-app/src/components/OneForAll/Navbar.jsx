@@ -68,7 +68,7 @@ class Navbar extends Component{
                                 </div>
                             </a> 
                             :
-                            <a href="/Login" className="Login_">Đăng nhập</a>
+                            <Link to="/Login" className="Login_">Đăng nhập</Link>
 
                             }
                             

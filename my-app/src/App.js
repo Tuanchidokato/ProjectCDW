@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 
 import SignUp from './containers/SignUp/SignUp';
+import AdminDashBoard from './containers/adminDashBoard/AdminDashBoard';
 function App() {
 
   return (
@@ -20,9 +21,13 @@ function App() {
       <Link to="/home"></Link>
       <div>
         <Switch>
-          <Route path='/Login' component={Login} />
+          <Route path='/Login'  >
+            <Login />
+          </Route>
+          <Route path='/AdminDashBoard' component={AdminDashBoard} />
           <Route path='/SignUp' component={SignUp} />
           <Route path='/ProductDetail/:id' component={ProductDetail} />
+
           <Route path={["/home", "/"]} >
             <Home />
           </Route>

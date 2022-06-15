@@ -34,7 +34,7 @@ class InformationUser{
         }
         insertImage(imageUrl){
             
-            return axios.post(API_URL+"FileUpLoad/"+authService.getCurrentUser().id,imageUrl)
+            return axios.post(API_URL+"FileUpLoad/"+authService.getCurrentUser().id,{imageUrl})
         }
 
          getImage(imageUrl){

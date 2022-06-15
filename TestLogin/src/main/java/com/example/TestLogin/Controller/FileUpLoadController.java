@@ -49,12 +49,12 @@ public class FileUpLoadController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ResponseObject> insertImage(@PathVariable Long id,@RequestBody String file){
+    public ResponseEntity<ResponseObject> insertImage(@PathVariable Long id,@RequestBody User setUser){
 
             User user= userRepository.findById(id).orElseThrow(
                     () -> new RuntimeException("Không tìm thấy user")
             );
-            user.setImageUrl(file);
+            user.setImageUrl(setUser.getImageUrl());
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok","Upload image successfully",user)

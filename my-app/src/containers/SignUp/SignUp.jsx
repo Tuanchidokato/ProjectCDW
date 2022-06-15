@@ -5,7 +5,7 @@ import logo from "../../assets/Logo.svg"
 import authService from "../../services/auth.service";
 import {ToastContainer,toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import {withRouter} from "react-router-dom" 
+import {withRouter,Link} from "react-router-dom" 
 
 class SignUp extends Component{
 
@@ -87,7 +87,7 @@ class SignUp extends Component{
                     });
                     authService.login(this.state.username,this.state.password).then(
                         ()=>{
-                            this.props.history.push("/home")
+                            this.props.history.push("/")
                             window.location.reload();
                         }
                     )
@@ -133,7 +133,6 @@ class SignUp extends Component{
                        </div>
 
                        <form
-                            onSubmit={this.handleSignUp}
                             action="" 
                             className="form_login_"
                        >
@@ -182,11 +181,12 @@ class SignUp extends Component{
                            </div>
                           
                            <div className="button_control">
-                                <button
+                                <Link
+                                onClick={this.handleSignUp}
                                  className="btn_login"
                                  >
                                      <span>Đăng ký</span>
-                                </button>
+                                </Link>
                                 <ToastContainer />
                                 
                            </div>
