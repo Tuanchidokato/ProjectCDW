@@ -1,12 +1,13 @@
 package com.example.TestLogin.Model.ProductManage;
 
+import com.example.TestLogin.Model.ShoppingCart.Items;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Date;
 
 @Data
 @Entity
@@ -44,6 +45,9 @@ public class Product implements Serializable {
     private Categories categories;
 
 
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
+    private Items items;
+
     public Product() {
     }
 
@@ -59,6 +63,24 @@ public class Product implements Serializable {
         this.quantity = quantity;
         this.available = available;
         this.categories = categories;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", image='" + image + '\'' +
+                ", author='" + author + '\'' +
+                ", nxb='" + nxb + '\'' +
+                ", price=" + price +
+                ", discount=" + discount +
+                ", description='" + description + '\'' +
+                ", date=" + date +
+                ", quantity=" + quantity +
+                ", available=" + available +
+                ", categories=" + categories +
+                '}';
     }
 
     public Long getId() {
