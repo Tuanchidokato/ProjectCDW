@@ -19,7 +19,7 @@ class SaleBooks extends React.Component {
         this.state = {
             page: 1, //Trang hien tai
             count: 0, // Tong so trang
-            size: 1, // Tong so san pham tren 1 trang
+            size: 10, // Tong so san pham tren 1 trang
             products: []
         }
 
@@ -83,38 +83,8 @@ class SaleBooks extends React.Component {
                             )
                         }
 
-                        {/* <div className="col-sm-2">
-                            <img src={book2} alt="" />
-                        </div>
-                        <div className="col-sm-2">
-                            <img src={book3} alt="" />
-                        </div>
-                        <div className="col-sm-2">
-                            <img src={book4} alt="" />
-                        </div>
-                        <div className="col-sm-2">
-                            <img src={book5} alt="" />
-                        </div> */}
                     </div>
-                    <div className=" row col-sm-10">
-                        <div className="col-sm-2">
-                            <img src={book6} alt="" />
-                        </div>
-                        <div className="col-sm-2">
-                            <img src={book7} alt="" />
-                        </div>
-                        <div className="col-sm-2">
-                            <img src={book8} alt="" />
-                        </div>
-                        <div className="col-sm-2">
-                            <img src={book9} alt="" />
-                        </div>
-                        <div className="col-sm-2">
-                            <img src={book10} alt="" />
-                        </div>
 
-
-                    </div>
 
 
 

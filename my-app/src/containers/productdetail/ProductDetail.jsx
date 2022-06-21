@@ -3,7 +3,9 @@ import Navbar from "../../components/OneForAll/Navbar"
 import { withRouter } from "react-router-dom";
 import './css/detail.css';
 import ProductService from "../../services/ProductService";
+import axios from "axios";
 
+const API_URL = "http://localhost:8080/api/auth/cart";
 
 class ProductDetail extends React.Component {
 
@@ -13,6 +15,8 @@ class ProductDetail extends React.Component {
                      product: {},
                      category: {}
               }
+
+              this.addToCart = this.addToCart.bind(this);
        }
 
        componentDidMount() {
@@ -23,9 +27,25 @@ class ProductDetail extends React.Component {
                             product: response.data,
                             category: response.data.categories
                      })
-                     console.log("Product: " + JSON.stringify(this.state.product));
+                     console.log("Product: " + JSON.stringify(response.data));
                      console.log("Image:" + this.state.category.name);
               })
+       }
+
+
+       addToCart() {
+              let { id } = this.props.match.params;
+              console.log("Product's id:" + id);
+              axios.defaults.withCredentials = true;
+              axios.get(API_URL + "/addProduct" + "/" + id, {
+                     headers: {
+                            'Access-Control-Allow-Credentials': true
+                     }
+              }).then((response) => {
+                     console.log(JSON.stringify(response.data));
+              }).catch((err) => {
+                     console.log("Something went wrong");
+              });
        }
 
        getDiscountPrice(oldPrice, discount) {
@@ -39,13 +59,6 @@ class ProductDetail extends React.Component {
                      img: this.state.product.image && require(`../../assets/bookStudent/${this.state.product.image}`)
               }
        }
-
-       getCategory() {
-              return {
-                     cate: JSON.stringify(this.state.product.categories.name)
-              }
-       }
-
 
        render() {
               return (
@@ -70,7 +83,7 @@ class ProductDetail extends React.Component {
                                                                                                          </div>
 
                                                                                                          <div className="product_view_add_box">
-                                                                                                                <button type="button" title="Thêm vào giỏ hàng" className="btn-cart-to-cart" ><span className="fhs_icon_cart"></span><span>Thêm vào giỏ hàng</span></button>
+                                                                                                                <button type="button" title="Thêm vào giỏ hàng" className="btn-cart-to-cart" onClick={this.addToCart}><span className="fhs_icon_cart"></span><span>Thêm vào giỏ hàng</span></button>
                                                                                                                 <button type="button" title="Mua ngay" is_buynow="true" className="btn-buy-now"><span>Mua ngay</span></button>
                                                                                                          </div>
                                                                                                   </div>
