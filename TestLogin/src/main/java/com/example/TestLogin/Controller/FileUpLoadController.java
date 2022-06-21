@@ -48,6 +48,7 @@ public class FileUpLoadController {
         }
     }
 
+    // thêm hình vào fire base csdl
     @PostMapping("/{id}")
     public ResponseEntity<ResponseObject> insertImage(@PathVariable Long id,@RequestBody User setUser){
 

@@ -20,7 +20,7 @@ function Navbar(){
 }
 export default Navbar;
 const Div = styled.div`
-    background-color: #000000;
+    background-color: #ff0404;
     height: 60px;
     .navbar-right{
         float: right;
