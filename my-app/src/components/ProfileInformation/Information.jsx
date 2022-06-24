@@ -38,12 +38,6 @@ class Information extends Component{
 
         const newLastName = string.replace(newFirstName,"")
         
-
-    //  this.setState({
-    //     newFirstName:newFirstName,
-    //     newLastName:newLastName,
-
-    //  })
         console.log(this.state.newFirstName)
         InformationUser.editInformation(
             newFirstName,
@@ -52,10 +46,10 @@ class Information extends Component{
             this.state.phoneNumber
         ).then(
             response =>{
-                window.location.reload()
+              //  window.location.reload()
                 toast.success('🦄 Lưu thông tin thành công!');
 
-                //console.log(response)
+                console.log(response)
             },
             error=>{
                 toast.error("Lưu thất bại")
@@ -80,7 +74,7 @@ class Information extends Component{
         //  const string =e.target.value
         //  var firstName =string.split(" ").pop()
         this.setState({
-            fullName:e.target.value.replace(/\s\s+/g, ' ')
+            fullName:e.target.value.replace(/\s\s+/g, '')
         })
         
     }
@@ -105,6 +99,7 @@ class Information extends Component{
         InformationUser.getInformationUser(currentUser.id).then(
             response =>{
                 const userInfo= response.data;
+                console.log(userInfo)
                 this.setState({
                     fullName:userInfo.data.lastName+userInfo.data.firstName,
                     address:userInfo.data.address,

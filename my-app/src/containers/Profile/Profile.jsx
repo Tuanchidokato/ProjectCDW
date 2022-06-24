@@ -21,7 +21,8 @@ class Profile extends Component{
             progress: 0,
             message: "",
             fileInfos: [],
-            imageUrl:""
+            imageUrl:"",
+            username:"",
 
         }
 
@@ -52,7 +53,8 @@ componentDidMount(){
         res=>{
             console.log(res.data.data.user)
             this.setState({
-                imageUrl:res.data.data.user.imageUrl
+                imageUrl:res.data.data.user.imageUrl,
+                username:res.data.data.user.username
             })
         },
         err=>{
@@ -84,7 +86,7 @@ componentDidMount(){
                                     />
                                 </label>
                                 </div>
-                                <h1>Cao Tuan</h1>
+                                <h1>{this.state.username}</h1>
                             </div>
 
                             <div className="control">

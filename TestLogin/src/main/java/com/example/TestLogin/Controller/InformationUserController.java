@@ -40,7 +40,7 @@ public class InformationUserController {
     }
 
 
-    @PutMapping("/edit/{id}")
+    @PostMapping("/edit/{id}")
     ResponseEntity<?> editInfo(@PathVariable Long id, @RequestBody InformationUser editInformationUser) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("not found")
@@ -54,6 +54,7 @@ public class InformationUserController {
             informationUser.setFirstName(editInformationUser.getFirstName());
             informationUser.setLastName(editInformationUser.getLastName());
             informationRepository.save(informationUser);
+            System.out.println("Edit information successfully");
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ResponseObject("ok", "Edit information successfully", informationUser)
             );

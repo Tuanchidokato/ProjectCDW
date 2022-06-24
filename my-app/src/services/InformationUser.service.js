@@ -22,7 +22,7 @@ class InformationUser{
             phoneNumber
         ){
             const id= authService.getCurrentUser().id;
-            return axios.put(
+            return axios.post(
                 API_URL+"edit/"+id,
                 {
                     firstName,

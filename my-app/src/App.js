@@ -15,8 +15,13 @@ import {
 
 import SignUp from './containers/SignUp/SignUp';
 import AdminDashBoard from './containers/adminDashBoard/AdminDashBoard';
+import authService from './services/auth.service';
 function App() {
-
+  const checkRoles=()=>{
+    const currentUser = authService.getCurrentUser();
+    let role = currentUser.roles
+    return role.includes("ROLE_ADMIN"); 
+}
   return (
     <Router >
       <Link to="/home"></Link>
@@ -25,7 +30,7 @@ function App() {
           <Route path='/Login'  >
             <Login />
           </Route>
-          <Route path='/AdminDashBoard' component={AdminDashBoard} />
+          <Route path='/AdminDashBoard' render={()=>(checkRoles()? (<AdminDashBoard />) : (<Home/>))}  />
           <Route path='/SignUp' component={SignUp} />
           <Route path='/ProductDetail/:id' component={ProductDetail} />
  

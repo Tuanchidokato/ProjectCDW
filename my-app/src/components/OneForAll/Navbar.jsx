@@ -3,10 +3,11 @@ import Logo from "../../assets/Logo.svg"
 import Book from "../../assets/bx_bx-book-heart.svg"
 import Diamond from "../../assets/ic_round-notifications-none.svg"
 import Bell from "../../assets/fluent_premium-person-20-regular.svg"
-import User from "../../assets/user.svg"
+import User from "../../assets/bookStudent/image 3.png"
 import { Component } from "react";
 import authService from "../../services/auth.service";
 import {Link} from "react-router-dom";
+import InformationUser from "../../services/InformationUser.service"
 class Navbar extends Component{
 
     constructor(props){
@@ -15,12 +16,28 @@ class Navbar extends Component{
         this.componentDidMount = this.componentDidMount.bind(this)
         this.state ={
             currentUser:true,
+            imageUrl:"",
+            checkRoles:true
         }
 
     }
     componentDidMount(e){
         const currentUser = authService.getCurrentUser();
-       
+        
+        const checkRole = this.checkRoles()
+        this.setState({checkRoles:checkRole})
+        
+        // lấy thông tin địa chỉ hình ảnh
+        InformationUser.getInformationUser(currentUser.id).then(
+            res=>{
+                this.setState({
+                    imageUrl:res.data.data.user.imageUrl
+                })
+            },
+            err=>{
+                console.log(err)
+            }
+         )
         if(currentUser ==null){
             this.setState({
                 currentUser:false
@@ -30,12 +47,18 @@ class Navbar extends Component{
                 currentUser:true
             })
         }
-    //    console.log(currentUser);
-        console.log(this.state.currentUser)
+        console.log(currentUser);
+        //console.log(this.state.currentUser)
     }
 
     Logout(){
        authService.logout();
+    }
+    // Checl role
+    checkRoles(){
+        const currentUser = authService.getCurrentUser();
+        let role = currentUser.roles
+        return role.includes("ROLE_ADMIN"); 
     }
     render(){
         return(
@@ -59,9 +82,16 @@ class Navbar extends Component{
                             {
                                 this.state.currentUser?
                                 <a className="dropbtn">
-                                <img src={User} alt="" />
+                                <div className="image-user">
+                                    <img src={this.state.imageUrl} alt="" />
+                                </div>
                                 <div class="dropdown-content">
                                     <Link to="/home/profile">Xem trang cá nhân</Link>
+                                    {
+                                        this.state.checkRoles?
+                                        <Link to="/adminDashBoard">Quản lý hệ thống</Link>
+                                        :null
+                                    }
                                     <Link >Quản lý tài khoản</Link>
                                     <Link onClick={this.Logout} to="/Login">Đăng xuất</Link>
                                     <Link>Ví của tôi</Link>
@@ -172,11 +202,26 @@ const Nav= styled.nav`
         }
     }
     .login_section{
-        img{
-            margin-right:20px;
-            width: 10%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+
+         .image-user{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            min-width: 40px;
+            overflow: hidden;
             cursor: pointer;
-        }
+            img{
+                    display: inline;
+                    margin: 0 auto;
+                    width: 40px;
+                    height: 40px;
+                    height: 100%;
+                    min-width: 40px;
+                }
+         }
         .Login_{
             color: #FFFFFF;
             text-decoration: none;
