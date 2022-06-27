@@ -1,6 +1,7 @@
 import User from "../../assets/bookStudent/image 2.png"
 import Logo from "../../assets/Logo.svg"
 import styled from "styled-components"
+import ColDashBoard from "./ColDashBoard"
 function Navbar(){
 
 
@@ -109,7 +110,7 @@ function Navbar(){
                     </div>
                 </section>
            </div>
-        </Div>
+            </Div>
     )
 }
 export default Navbar;
