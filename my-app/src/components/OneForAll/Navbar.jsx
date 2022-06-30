@@ -1,13 +1,18 @@
 import styled from "styled-components";
 import Logo from "../../assets/Logo.svg"
 import Book from "../../assets/bx_bx-book-heart.svg"
-import Diamond from "../../assets/ic_round-notifications-none.svg"
 import Bell from "../../assets/fluent_premium-person-20-regular.svg"
-import User from "../../assets/bookStudent/image 3.png"
 import { Component } from "react";
 import authService from "../../services/auth.service";
 import {Link} from "react-router-dom";
 import InformationUser from "../../services/InformationUser.service"
+import { withTranslation } from "react-i18next";
+import { Dropdown } from "react-bootstrap";
+
+const lngs = {
+    en: { nativeName: 'English' },
+    vi: { nativeName: 'Vietnamese' }
+  };
 class Navbar extends Component{
 
     constructor(props){
@@ -21,6 +26,8 @@ class Navbar extends Component{
         }
 
     }
+  
+
     componentDidMount(e){
         const currentUser = authService.getCurrentUser();
         
@@ -61,6 +68,7 @@ class Navbar extends Component{
         return role.includes("ROLE_ADMIN"); 
     }
     render(){
+        const { t,i18n } = this.props;
         return(
             <Nav>
                 <div class="my_navbar ">
@@ -77,7 +85,25 @@ class Navbar extends Component{
 
                         <div class="col-md-3 text-end login_section">
                             <a href="/Cart"><img src={Book} alt="" /></a>
-                            <a href=""><img src={Diamond} alt="" /></a>
+                            <Dropdown id="changeLanguage" className="changeLanguage">
+                                <Dropdown.Toggle variant="none" id="dropdown-basic">
+                                    <i  className="language fa-solid fa-language"></i>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu className="languages">
+                                  
+
+                                    {
+                                        Object.keys(lngs).map((lng) =>(
+                                            <Dropdown.Item className="language_item" type="submit" key={lng} 
+                                                onClick={() =>i18n.changeLanguage(lng)}
+                                                disabled={i18n.resolvedLanguage === lng}
+                                            >
+                                                {lngs[lng].nativeName} 
+                                            </Dropdown.Item>
+                                        ))
+                                    }
+                                </Dropdown.Menu>
+                            </Dropdown>
                             <a href="/"><img src={Bell} alt="" /></a>
                             {
                                 this.state.currentUser?
@@ -86,15 +112,15 @@ class Navbar extends Component{
                                     <img src={this.state.imageUrl} alt="" />
                                 </div>
                                 <div class="dropdown-content">
-                                    <Link to="/home/profile">Xem trang cá nhân</Link>
+                                    <Link to="/home/profile">{t('menu_selection.profile')}</Link>
                                     {
                                         this.state.checkRoles?
-                                        <Link to="/adminDashBoard">Quản lý hệ thống</Link>
+                                        <Link to="/adminDashBoard">{t('menu_selection.system_management')}</Link>
                                         :null
                                     }
-                                    <Link >Quản lý tài khoản</Link>
-                                    <Link onClick={this.Logout} to="/Login">Đăng xuất</Link>
-                                    <Link>Ví của tôi</Link>
+                                    <Link >{t('menu_selection.account')}</Link>
+                                    <Link onClick={this.Logout} to="/Login">{t('menu_selection.signOut')}</Link>
+                                    <Link>{t('menu_selection.my_wallet')}</Link>
                                 </div>
                             </a> 
                             :
@@ -136,7 +162,7 @@ class Navbar extends Component{
     }
 
 }
-export default Navbar;
+export default withTranslation()(Navbar);
 const Nav= styled.nav`
       background-color: #2C2828;
  
@@ -148,6 +174,7 @@ const Nav= styled.nav`
         color:#D2D2D2;
         text-decoration: none;
         margin-left: 40px;
+       
         img{
             width: 100px;
             height: 54.92px;
@@ -177,6 +204,7 @@ const Nav= styled.nav`
     }
     .search_section{
         color: #242121;
+        
         i{
             font-size: 25px;
             margin-top: 3px;
@@ -205,6 +233,27 @@ const Nav= styled.nav`
         display: flex;
         justify-content: space-evenly;
         align-items: center;
+        .language{
+            color: #D2D2D2;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        
+
+        .languages{
+            padding-bottom: 0%;
+            padding-top: 0%;
+            .language_item{
+                text-decoration: none;
+                color: #000000;
+                border: 1px solid #000000;
+                width: 160px;
+                height: 40px;
+                border-top: none;
+                right: 100px;
+                padding-right: 90px;
+            }
+        }
 
          .image-user{
             width: 40px;

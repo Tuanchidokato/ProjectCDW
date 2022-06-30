@@ -1,0 +1,10 @@
+{
+    "menu_selection":{
+        "profile":"Trang cá nhân",
+        "system_management":"Quản lý hệ thống",
+        "account":"Quản lý tài khoản",
+        "signOut":"Đăng xuất",
+        "my_wallet":"Ví của tôi"
+
+    }
+}

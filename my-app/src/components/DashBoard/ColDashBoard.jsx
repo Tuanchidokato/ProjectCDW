@@ -1,38 +1,27 @@
 import { Component } from "react";
 import styled from "styled-components";
 import { useTranslation,Trans } from 'react-i18next'
-
+import { Dropdown } from "react-bootstrap";
 const lngs = {
     en: { nativeName: 'English' },
-    de: { nativeName: 'Deutsch' }
+    vi: { nativeName: 'Vietnamese' }
   };
 function ColDashBoard(){
     const { t,i18n }= useTranslation();
    
         return(
             <Div>
-                <div>
-                    {
-                        Object.keys(lngs).map((lng) =>(
-                            <button type="submit" key={lng} 
-                                 onClick={() =>i18n.changeLanguage(lng)}
-                                 disabled={i18n.resolvedLanguage === lng}
-                            >
-                                {lngs[lng].nativeName} 
-                            </button>
-                        ))
-                    }
-                </div>
-               <div>
-                    <Trans i18nKey="description">
-                        Edit <code>hahahahaha</code>asdasdasd
-                    </Trans>
-                    <header>
-                        <p>
-                            <h3>{t('Thanks')}</h3>  <h3>{t('description')}</h3> 
-                        </p>
-                    </header>
-               </div>
+                <Dropdown>
+                    <Dropdown.Toggle variant="none" id="dropdown-basic">
+                         <i  className="language fa-solid fa-language"></i>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </Div>
         )
 }

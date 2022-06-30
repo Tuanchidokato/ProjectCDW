@@ -4,8 +4,8 @@ import Navbar from "../../components/DashBoard/Navbar"
 function AdminDashBoard(){
     return (
         <Div>
-          {/* <Navbar /> */}
-          <ColDashBoard />
+          <Navbar />
+          {/* <ColDashBoard /> */}
         </Div>
     )
 }

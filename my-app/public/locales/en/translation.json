@@ -1,4 +1,10 @@
 {
-    "Thanks":"learn react",
-    "description": "Edit <1>hehehehe</1> chao ne"
+    "menu_selection":{
+        "profile":"Manage Profile",
+        "system_management":"Manage System ",
+        "account":"Manage Account",
+        "signOut":"Log Out",
+        "my_wallet":"My Wallet"
+
+    }
 }
