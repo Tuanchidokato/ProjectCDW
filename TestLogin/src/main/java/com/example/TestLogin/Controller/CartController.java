@@ -2,6 +2,7 @@ package com.example.TestLogin.Controller;
 
 import com.example.TestLogin.Model.ProductManage.Product;
 import com.example.TestLogin.Model.ShoppingCart.Items;
+import com.example.TestLogin.Model.ShoppingCart.ItemsID;
 import com.example.TestLogin.Model.ShoppingCart.ShoppingCart;
 import com.example.TestLogin.Model.UserModel.User;
 import com.example.TestLogin.Repository.ItemsRepository;
@@ -11,7 +12,6 @@ import com.example.TestLogin.Repository.UserRepository;
 import com.example.TestLogin.Security.Service.UserDetailsImpl;
 import com.example.TestLogin.Service.Cart;
 import com.example.TestLogin.Service.Item;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,38 +40,51 @@ public class CartController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    HttpSession session;
+
     @GetMapping("/addProduct/{id}")
-    ResponseEntity<?> addProdcut( @PathVariable Long id , HttpSession session)  {
+    ResponseEntity<?> addProdcut(@PathVariable Long id , @RequestParam int quantity)  {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
         cart = (Cart) session.getAttribute("giohang");
         if (cart == null) {
             cart = new Cart();
         }
-        cart.add(id , product);
+        cart.add(id , product , quantity);
         session.setAttribute("giohang" , cart);
-        return new ResponseEntity<>((Cart) session.getAttribute("giohang"), HttpStatus.OK);
+        return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
     @GetMapping("/itemList")
-    ResponseEntity<?> getAllItem(HttpSession session) {
+    ResponseEntity<?> getAllItem() {
         Cart c = (Cart) session.getAttribute("giohang");
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
 
     @PostMapping("/handleCart")
-    void handlingCart(HttpSession session , @RequestBody UserDetailsImpl userDetail) {
+    void handlingCart(@RequestBody UserDetailsImpl userDetail , @RequestParam String address , @RequestParam String typePayment) {
         System.out.println(userDetail.getId());
         Cart c = (Cart) session.getAttribute("giohang");
         User user = userRepository.findById(userDetail.getId()).orElseThrow(() -> new RuntimeException("not found"));
+
+        //Set Date cho giỏ hàng
         Date date = new Date(System.currentTimeMillis());
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        ShoppingCart shoppingCart = new ShoppingCart(user , cal ,"");
-        List<Item> itemList = c.getItems();
-        Set<Items> itemsSet = new HashSet<>();
-        for (Item item: itemList) {
-            Items items = new Items(item.getProduct() , item.getSoLuong(), shoppingCart);
-            Product product = productRepository.findById(item.getProduct().getId()).orElseThrow(() -> new RuntimeException("not found"));
+
+        //Thêm giỏ hàng vào CSDL
+        ShoppingCart shoppingCart;
+        if (typePayment.equalsIgnoreCase("cash on delivery")) {
+            shoppingCart = new ShoppingCart(user , cal ,address , false , typePayment);
+        } else {
+            shoppingCart = new ShoppingCart(user , cal ,address , true , typePayment);
+        }
+        shoppingCartRepository.save(shoppingCart);
+
+        for (Item item: c.getItems()) {
+            ItemsID itemsID = new ItemsID(shoppingCart ,item.getProduct());
+            Items items = new Items(itemsID ,item.getSoLuong());
+            Product product = item.getProduct();
             int check_Quantiy = product.getQuantity() - item.getSoLuong();
             if (check_Quantiy > 0) {
                 product.setQuantity(check_Quantiy);
@@ -79,22 +92,53 @@ public class CartController {
                 product.setQuantity(check_Quantiy);
                 product.setAvailable(false);
             }
-            itemsSet.add(items);
-//            itemsRepository.save(items);
+            itemsRepository.save(items);
             productRepository.save(product);
         }
-        shoppingCart.setListItems(itemsSet);
-        shoppingCartRepository.save(shoppingCart);
+
+        session.invalidate();
     }
 
-    @GetMapping("/decrease/{id}")
-    ResponseEntity<?> decreaseQuantity(@PathVariable Long id , HttpSession session) {
+
+    
+    @GetMapping("/decrease")
+    void decreaseQuantity(@RequestParam(name = "id") Long pro_id) {
+        Long id = Long.valueOf(pro_id);
         cart = (Cart) session.getAttribute("giohang");
         cart.decreament(id);
-        return new ResponseEntity<>(cart.getItems() , HttpStatus.OK);
     }
 
+    @GetMapping("/increase")
+    void increaseQuantity(@RequestParam(name = "id") Long pro_id) {
+        Long id = Long.valueOf(pro_id);
+        cart = (Cart) session.getAttribute("giohang");
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
+        cart.add(id  , product , 1);
+    }
 
+    @DeleteMapping("/remove")
+    void removeItem(@RequestParam(name = "id") Long pro_id) {
+        Long id = Long.valueOf(pro_id);
+        cart = (Cart) session.getAttribute("giohang");
+        cart.remove(id);
+    }
 
+    @DeleteMapping("/clear")
+    void clearCart() {
+        cart = (Cart) session.getAttribute("giohang");
+        cart.clear();
+    }
+
+    @GetMapping("/CartContents/{id}")
+    ResponseEntity<?> getCartContents(@PathVariable Long id) {
+        List<Items> itemsList = itemsRepository.findAll();
+        List<Items> result = new ArrayList<>();
+        for (Items item: itemsList) {
+            if (item.getId().getCart().getId() == id) {
+                result.add(item);
+            }
+        }
+        return new ResponseEntity<>(result , HttpStatus.OK);
+    }
 
 }

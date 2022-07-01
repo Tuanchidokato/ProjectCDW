@@ -1,20 +1,17 @@
 package com.example.TestLogin.Model.ShoppingCart;
 
-import com.example.TestLogin.Model.ProductManage.Product;
 import com.example.TestLogin.Model.UserModel.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Calendar;
 import java.util.Set;
 
 @Entity
 @Table(name = "cart")
-
 public class ShoppingCart implements Serializable {
 
     @Id
@@ -22,8 +19,8 @@ public class ShoppingCart implements Serializable {
     @Column(name = "cart_id")
     private long id;
 
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "user_id", updatable = false)
+    @ManyToOne()
+    @JoinColumn(name = "user_id" )
     private User user;
 
     @Temporal(TemporalType.DATE)
@@ -32,14 +29,17 @@ public class ShoppingCart implements Serializable {
 
     private String address;
 
-    @OneToMany(mappedBy = "cart", cascade = {CascadeType.MERGE})
-    @JsonManagedReference
-    private Set<Items> listItems;
+    private Boolean payStatus;
 
-    public ShoppingCart(User user, Calendar date, String address) {
+    //Phương thức thanh toán
+    private String typePayment;
+
+    public ShoppingCart(User user, Calendar date, String address, Boolean payStatus , String typePayment) {
         this.user = user;
         this.date = date;
         this.address = address;
+        this.payStatus = payStatus;
+        this.typePayment = typePayment;
     }
 
     public ShoppingCart() {
@@ -70,11 +70,22 @@ public class ShoppingCart implements Serializable {
         this.address = address;
     }
 
-    public Set<Items> getListItems() {
-        return listItems;
+
+    public Boolean getPayStatus() {
+        return payStatus;
     }
 
-    public void setListItems(Set<Items> listItems) {
-        this.listItems = listItems;
+    public void setPayStatus(Boolean payStatus) {
+        this.payStatus = payStatus;
+    }
+
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

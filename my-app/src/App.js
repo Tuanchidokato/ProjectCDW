@@ -5,6 +5,7 @@ import Home from './containers/homePage/Home'
 import Login from './containers/Login/Login';
 import ProductDetail from './containers/productdetail/ProductDetail';
 import Cart from './containers/Cart/Cart';
+import CartInfo from './containers/Cart/CartInfo';
 
 import {
   BrowserRouter as Router,
@@ -24,9 +25,11 @@ function App() {
           <Route path='/Login' component={Login} />
           <Route path='/SignUp' component={SignUp} />
           <Route path='/ProductDetail/:id' component={ProductDetail} />
-          <Route path='/Cart' component={Cart} />
+
           <Route path={["/home", "/"]} >
             <Home />
+            <Route path='/Cart' component={Cart} />
+            <Route path='/CartInfo' component={CartInfo} />
           </Route>
         </Switch>
       </div>

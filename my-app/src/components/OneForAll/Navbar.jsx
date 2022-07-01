@@ -53,7 +53,7 @@ class Navbar extends Component{
                         </ul>
 
                         <div class="col-md-3 text-end login_section">
-                            <a href="/Cart"><img src={Book} alt="" /></a>
+                            <a href="/Cart"><img src="https://cdn0.fahasa.com/skin/frontend/base/default/images/ico_shopping_cart_white.svg" alt="" /></a>
                             <a href=""><img src={Diamond} alt="" /></a>
                             <a href="/"><img src={Bell} alt="" /></a>
                             {

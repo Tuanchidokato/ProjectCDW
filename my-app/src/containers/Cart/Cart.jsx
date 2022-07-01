@@ -1,13 +1,7 @@
 import React from "react";
 import './css/cart.css';
-import Navbar from "../../components/OneForAll/Navbar"
 import { withRouter } from "react-router-dom";
 import CartService from "../../services/CartService";
-import axios from "axios";
-import authService from "../../services/auth.service";
-
-const API_URL = "http://localhost:8080/api/auth/cart";
-
 
 class Cart extends React.Component {
 
@@ -17,19 +11,36 @@ class Cart extends React.Component {
                      items: [],
                      numberOfItems: 0,
                      total: 0,
-                     user_id: 0
               }
 
+              this.checkOut = this.checkOut.bind(this);
+              this.clearItems = this.clearItems.bind(this);
+              this.removeFromCart = this.removeFromCart.bind(this);
+              this.increaseFromCart = this.increaseFromCart.bind(this);
+              this.decreaseFromCart = this.decreaseFromCart.bind(this);
        }
 
-       handleCart() {
-              const user = authService.getCurrentUser();
-              var headers = {
-                     'Content-Type': 'application/json',
-                     'Access-Control-Allow-Credentials': true
-              };
-              axios.defaults.withCredentials = true;
-              axios.post(API_URL + "/handleCart", user, headers);
+       checkOut() {
+              this.props.history.push("/CartInfo");
+              window.location.reload();
+       }
+
+       //Xóa sản phẩm khỏi giỏ hàng
+       removeFromCart = (event, id) => {
+              console.log(id);
+              CartService.removeItem(id);
+       }
+
+       //Tăng số lượng sản phẩm
+       increaseFromCart = (event, id) => {
+              console.log(id);
+              CartService.increaseItem(id);
+       }
+
+       //Giảm số lương sản phẩm
+       decreaseFromCart = (event, id) => {
+              console.log(id);
+              CartService.decreaseItem(id);
        }
 
        componentDidMount() {
@@ -45,15 +56,19 @@ class Cart extends React.Component {
               })
        }
 
+       //Lấy giá sau khi áp dụng giảm giá
        getDiscountPrice(oldPrice, discount) {
               const result = oldPrice * (100 - discount) / 100;
               return result;
        }
 
+       clearItems() {
+              CartService.clearCart();
+       }
+
        render() {
               return (
                      <body>
-                            <Navbar />
                             <div className="di">
                                    <div className="_9_5_1E">
                                           <div style={{ display: "block" }}>
@@ -66,11 +81,11 @@ class Cart extends React.Component {
                                                                                     <div className="stardust-checkbox_box"></div>
                                                                              </label>
                                                                       </div>
-                                                                      <div className="_2cHnzN">Sản phẩm</div>
-                                                                      <div className="_2UJcxH">Đơn giá</div>
-                                                                      <div className="_1SKeIp">Số lượng</div>
-                                                                      <div className="_2LUhSC">Số tiền</div>
-                                                                      <div className="HHdkhO">Thao tác</div>
+                                                                      <div className="_2cHnzN" style={{ fontWeight: "bold"}}>Product</div>
+                                                                      <div className="_2UJcxH" style={{ fontWeight: "bold"}}>Unit Price</div>
+                                                                      <div className="_1SKeIp" style={{ fontWeight: "bold"}}>Quantity</div>
+                                                                      <div className="_2LUhSC" style={{ fontWeight: "bold"}}>Total Price</div>
+                                                                      <div className="HHdkhO" style={{ fontWeight: "bold"}}>Actions</div>
                                                                </div>
 
                                                                {
@@ -93,7 +108,7 @@ class Cart extends React.Component {
                                                                                                                               <img className="_25vezo" src={require('../../assets/bookStudent/' + item.product.image)} alt="" />
                                                                                                                        </a>
                                                                                                                        <div className="_1WfuBi">
-                                                                                                                              <a className="_3t5Sij" title={item.product.name} href="">{item.product.name}</a>
+                                                                                                                              <a href={"/ProductDetail/" + item.product.id}  className="_3t5Sij" title={item.product.name} >{item.product.name}</a>
                                                                                                                        </div>
                                                                                                                 </div>
                                                                                                          </div>
@@ -121,22 +136,31 @@ class Cart extends React.Component {
 
                                                                                                          <div className="_2vZsK0">
                                                                                                                 <div className="_3he7rw">
-                                                                                                                       <button className="_3Ell0h">
+                                                                                                                       <button className="_3Ell0h" onClick={event => this.decreaseFromCart(event, item.product.id)} >
                                                                                                                               <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" className="shopee-svg-icon"><polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5"></polygon></svg>
                                                                                                                        </button>
                                                                                                                        <input className="_3Ell0h _37H5-t" type={"text"} value={item.soLuong} />
-                                                                                                                       <button className="_3Ell0h">
+                                                                                                                       <button className="_3Ell0h" onClick={event => this.increaseFromCart(event, item.product.id)} disabled={item.soLuong === item.product.quantity}>
                                                                                                                               <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" className="shopee-svg-icon icon-plus-sign"><polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5"></polygon></svg>
                                                                                                                        </button>
                                                                                                                 </div>
                                                                                                          </div>
 
+
                                                                                                          <div className="_2S6DJl">
-                                                                                                                <span>₫{item.product.price}</span>
+                                                                                                                {
+                                                                                                                       item.product.discount === 0 ?
+                                                                                                                              <span>₫{item.product.price * item.soLuong}</span>
+                                                                                                                              :
+                                                                                                                              <span>₫{this.getDiscountPrice(item.product.price, item.product.discount) * item.soLuong}</span>
+                                                                                                                }
+
                                                                                                          </div>
 
                                                                                                          <div className="_1-z5aG _1AeN8q">
-                                                                                                                <button className="Lur7Ey">Xóa</button>
+
+                                                                                                                <button className="Lur7Ey" onClick={event => this.removeFromCart(event, item.product.id)}>Delete</button>
+
                                                                                                          </div>
                                                                                                   </div>
                                                                                            </div>
@@ -151,16 +175,18 @@ class Cart extends React.Component {
                                                         <div className="_2qn3bA">
                                                                <div className="CsNHbu -Gs_Ma">
                                                                       <div className="_2n5_2u"></div>
+                                                                      <button className={"clear-btn-style j9RJQY"} onClick={this.clearItems} style={{ fontWeight: "bold"}}>Clear</button>
+                                                                      <div className="_2n5_2u"></div>
                                                                       <div className="_3p5aR1">
                                                                              <div className="_2nE2iF">
                                                                                     <div className="_2LXtFJ">
-                                                                                           <div className="_333O5j">Tổng thanh toán ({this.state.numberOfItems} Sản phẩm):</div>
-                                                                                           <div className="ZxTZV3">₫{this.state.total}</div>
+                                                                                           <div className="_333O5j" style={{ fontWeight: "bold"}}>Total ({this.state.numberOfItems} item):</div>
+                                                                                           <div className="ZxTZV3" style={{ fontWeight: "bold"}}>₫{this.state.total}</div>
                                                                                     </div>
                                                                              </div>
                                                                       </div>
-                                                                      <button className="shopee-button-solid shopee-button-solid--primary" onClick={this.handleCart}>
-                                                                             <span className="_3zK-FN">Mua hàng</span>
+                                                                      <button className="shopee-button-solid shopee-button-solid--primary" onClick={this.checkOut}>
+                                                                             <span className="_3zK-FN">Check Out</span>
                                                                       </button>
                                                                </div>
                                                         </div>

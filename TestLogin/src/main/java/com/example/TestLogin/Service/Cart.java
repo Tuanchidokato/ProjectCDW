@@ -16,22 +16,29 @@ public class Cart implements ICart {
 
 
     @Override
-    public void add(Long productId, Product product) {
+    public void add(Long productId, Product product , int soluong) {
         if (items.containsKey(productId)){
-            Item scitem = items.get(productId);
-            scitem.tangSoLuong();
+            if (soluong == items.get(productId).getSoLuong()) {
+                Item scitem = items.get(productId);
+                scitem.tangSoLuong();
+            } else {
+                Item scitem = items.get(productId);
+                scitem.setSoLuong(soluong + scitem.getSoLuong());
+            }
         } else {
             Item newProduct =  new Item(product);
+            newProduct.setSoLuong(soluong);
             items.put(productId,newProduct);
         }
     }
 
     @Override
-    public  void remove(Long productId) {
+    public void remove(Long productId) {
         if (items.containsKey(productId)){
             Item scitem = items.get(productId);
-            items.remove(scitem);
+            items.remove(productId);
             soluongSanPham = soluongSanPham - scitem.getSoLuong();
+            System.out.println("Đã xóa "+ scitem.getProduct().getName());
         }
     }
 
@@ -93,6 +100,7 @@ public class Cart implements ICart {
         items.clear();
         soluongSanPham = 0;
     }
+
 
 
 
