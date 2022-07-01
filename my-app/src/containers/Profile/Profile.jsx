@@ -3,12 +3,65 @@ import styled from "styled-components";
 import book1 from "../../assets/bookStudent/image 2.png"
 import {Link} from "react-router-dom"
 import Information from "../../components/ProfileInformation/Information";
-import InformationUser from "../../services/InformationUser.service"
+import informationUser from "../../services/InformationUser.service"
 import authService from "../../services/auth.service";
+import ChangePass from "../../components/ProfileInformation/ChangePass";
+import { storage } from "../../config/firebase/firebase";
 import { Route } from "react-router-dom";
+import InformationUserService from "../../services/InformationUser.service";
 class Profile extends Component{
 
+    constructor(props){
+        super(props)
+        this.fileSelectedHandler= this.fileSelectedHandler.bind(this)
+        this.componentDidMount = this.componentDidMount.bind(this)
+        this.state={
+            selectedFiles: undefined,
+            currentFile: undefined,
+            progress: 0,
+            message: "",
+            fileInfos: [],
+            imageUrl:"",
+            username:"",
+
+        }
+
+    }
+    fileSelectedHandler=async(e)=>{
+        
+        const file=e.target.files[0];
+        const today = new Date()
+        const storageRef = storage.ref(`listImage/`)
+        const fileRef = storageRef.child(file.name+":"+today.getMilliseconds()+":"+today.getMinutes())
+        await fileRef.put(file)
+        const fileUrl =await fileRef.getDownloadURL()
+        console.log(fileUrl)
+        InformationUserService.insertImage(fileUrl).then(
+            response=>{
+                console.log(response)
+                window.location.reload();
+            },
+            err=>{
+                console.log(err)
+            }
+      )
+    }
  
+componentDidMount(){
+    const user = authService.getCurrentUser()
+    informationUser.getInformationUser(user.id).then(
+        res=>{
+            console.log(res.data.data.user)
+            this.setState({
+                imageUrl:res.data.data.user.imageUrl,
+                username:res.data.data.user.username
+            })
+        },
+        err=>{
+            console.log(err)
+        }
+    )
+}
 
     render(){
         return(
@@ -19,22 +72,36 @@ class Profile extends Component{
                           <div className="control_option">
                             <div className="avatar">
                                 <div className="avatar_edit">
-                                    <img src={book1} alt="" />
+                                    <img src={this.state.imageUrl} alt="" />
                                 </div>
-                                <i className="fa  fa-pencil"></i>
-                                <h1>Cao Tuan</h1>
+                                <div>
+
+                                <label htmlFor="change-img">
+                                    <i type="file" className="fa fa-pencil"></i>
+                                    <input 
+                                        id="change-img" 
+                                        hidden type="file" 
+                                        accept="image/png, image/jpeg" 
+                                        onChange={this.fileSelectedHandler}
+                                    />
+                                </label>
+                                </div>
+                                <h1>{this.state.username}</h1>
                             </div>
 
                             <div className="control">
                                 <Link to="/home/profile">Xem trang cá nhân</Link>
-                                <Link to="ád">Đổi mật khẩu</Link>
+                                <Link to="/home/profile/changePass">Đổi mật khẩu</Link>
                             </div>
                           </div>
                        </div>
                        <div className="information_ col-md-8">
                            <div className="form_profile">
-                               <Route path={["/home/profile"]}>
+                               <Route exact path={["/home/profile"]}>
                                    <Information />
+                               </Route>
+                               <Route exact path="/home/profile/changePass">
+                                   <ChangePass />
                                </Route>
                            </div>
                        </div>
@@ -82,8 +149,11 @@ const Div=styled.div`
                     padding: 7px;
                     font-size: 10px;
                     cursor: pointer;
-                    margin-top: -28px;
+                    margin-top: -35px;
                     margin-left: 31px;
+                }
+                input{
+                    z-index: 999;
                 }
                 h1{
                     font-size: 30px;

@@ -1,0 +1,10 @@
+{
+    "menu_selection":{
+        "profile":"Manage Profile",
+        "system_management":"Manage System ",
+        "account":"Manage Account",
+        "signOut":"Log Out",
+        "my_wallet":"My Wallet"
+
+    }
+}

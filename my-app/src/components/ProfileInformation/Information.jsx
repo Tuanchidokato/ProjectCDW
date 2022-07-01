@@ -2,16 +2,21 @@ import { Component } from "react";
 import styled from "styled-components"
 import InformationUser from "../../services/InformationUser.service"
 import authService from "../../services/auth.service";
+
+import {ToastContainer,toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
+
 class Information extends Component{
     
     constructor(props){
         super(props)
+        this.componentDidMount = this.componentDidMount.bind(this)
         this.handleSave= this.handleSave.bind(this)
         this.onChangeAddress=this.onChangeAddress.bind(this)
         this.onChangeEmail= this.onChangeEmail.bind(this)
         this.onChangeName= this.onChangeName.bind(this)
         this.onChangePhoneNumber= this.onChangePhoneNumber.bind(this)
-        this.componentDidMount = this.componentDidMount.bind(this)
+        
        
         this.state={
             fullName:"",
@@ -24,50 +29,79 @@ class Information extends Component{
         }
 
     }
+    
     handleSave(e){
         e.preventDefault();
-        // const currentUser = authService.getCurrentUser();
-        // InformationUser.editInformation(
-        //     currentUser.id,
-        //     this.state.fullName
-        // )
-        console.log(this.state.fullName)
+        const string = this.state.fullName.replace(/\s\s+/g, ' ');
+
+        var newFirstName =string.split(" ").pop()
+
+        const newLastName = string.replace(newFirstName,"")
+        
+        console.log(this.state.newFirstName)
+        InformationUser.editInformation(
+            newFirstName,
+            newLastName,
+            this.state.address,
+            this.state.phoneNumber
+        ).then(
+            response =>{
+              //  window.location.reload()
+                toast.success('🦄 Lưu thông tin thành công!');
+
+                console.log(response)
+            },
+            error=>{
+                toast.error("Lưu thất bại")
+            }
+        )   
+        
         
     }
     
     // Lấy thông tin từ form
     onChangeEmail(e){
         this.setState({
-            email:e.target.value
+            email:e.target.value.replace(/\s\s+/g, ' ')
         })
     }
     onChangeAddress(e){
         this.setState({
-            address:e.target.value
+            address:e.target.value.replace(/\s\s+/g, ' ')
         })
     }
     onChangeName(e){
-        // const string =e.target.value
-        // var firstName =string.split(" ").pop()
+        //  const string =e.target.value
+        //  var firstName =string.split(" ").pop()
         this.setState({
-            // newFirstName:"sdfsd"
-            fullName:e.target.value
+            fullName:e.target.value.replace(/\s\s+/g, '')
         })
         
     }
     onChangePhoneNumber(e){
+    //    let value = e.target.value;
+    //    if(!Number(value)){
+    //         return;
+    //         console.log(value)
+    //    }else{
         this.setState({
-            phoneNumber:e.target.value
+            phoneNumber:e.target.value.replace(/\D/g, "")
         })
+       
+
+      
+
     }
+    
     //Hiển thị thông tin vào form
     componentDidMount(){
         const currentUser= authService.getCurrentUser();
         InformationUser.getInformationUser(currentUser.id).then(
             response =>{
                 const userInfo= response.data;
+                console.log(userInfo)
                 this.setState({
-                    fullName:userInfo.data.lastName+" "+ userInfo.data.firstName,
+                    fullName:userInfo.data.lastName+userInfo.data.firstName,
                     address:userInfo.data.address,
                     email:userInfo.data.user.email,
                     phoneNumber: userInfo.data.phoneNumber
@@ -80,15 +114,15 @@ class Information extends Component{
     render(){
         return(
             <Div>
-
                 <div className="form_Information">
                     <form onSubmit={this.handleSave}>
                         <h1>Xem trang cá nhân</h1>
                         <div className="name_ info ">
                             <p>Họ tên</p>
                             <input
+                                required
                                 type="text"
-                                defaultValue={this.state.fullName}    
+                                value={this.state.fullName}    
                                 onChange={this.onChangeName}                         
                              />
                         </div>
@@ -96,6 +130,7 @@ class Information extends Component{
                         <div className="address_ info">
                             <p>Địa chỉ</p>
                             <input 
+                                required
                                 type="text"
                                 defaultValue={this.state.address}
                                 onChange={this.onChangeAddress}
@@ -105,6 +140,7 @@ class Information extends Component{
                         <div className="email_ info">
                             <p>Email</p>
                             <input 
+                                required
                                 type="email"
                                 defaultValue={this.state.email}
                                 onChange={this.onChangeEmail}
@@ -115,13 +151,17 @@ class Information extends Component{
                         <div className="PhoneNumber_ info">
                             <p>Số điện thoại</p>
                             <input 
-                                type="text" 
+                                required    
+                                type="text"
                                 name="phoneNumber"
                                 defaultValue={this.state.phoneNumber}
                                 onChange={this.onChangePhoneNumber}
                             />
                         </div>
                         <button>Lưu</button>
+                        <ToastContainer
+                            
+                            />
                     </form>
                 </div>
             </Div>
@@ -131,19 +171,21 @@ class Information extends Component{
 export default Information;
 const Div = styled.div`
     .form_Information{
-        margin-left: 40px;
+        
         background-color: #ceb6b6 ;
         max-width: 900px;
         margin-top: 15px;
         border-radius: 10px;
         max-height: 560px;
         form{
-            margin-left: 50px;
+            /* margin-left: 50px; */
             h1{
+                margin-left: 20px;
                 padding-top: 20px;
                 font-size: 30px;
             }
             .info{
+                margin-left: 20px;
                 p{
                     color: #000000;
                     font-size: 17px;
@@ -155,7 +197,10 @@ const Div = styled.div`
                     border-radius: 5px;
                     border: 1px solid #000000;
                     padding-left: 20px;
-                    font-weight: 500;
+                    font-weight: 600;
+                    color: #000000;
+                    font-size: 15px;
+
                 }
             }
             button{

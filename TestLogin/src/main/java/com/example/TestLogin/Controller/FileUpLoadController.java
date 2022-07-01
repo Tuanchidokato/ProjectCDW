@@ -1,6 +1,8 @@
 package com.example.TestLogin.Controller;
 
 import com.example.TestLogin.Model.ResponseObject.ResponseObject;
+import com.example.TestLogin.Model.UserModel.User;
+import com.example.TestLogin.Repository.UserRepository;
 import com.example.TestLogin.Service.IStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,17 +15,23 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import javax.print.attribute.standard.Media;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping(path = "api/v1/FileUpLoad")
+@RequestMapping(path = "api/auth/FileUpLoad")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class FileUpLoadController {
 
     @Autowired
     private IStorageService storageService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    private static String imageDirectory = System.getProperty("user.dir") + "/images/";
     @PostMapping("")
     public ResponseEntity<ResponseObject> upLoadFile(@RequestParam("file")MultipartFile file){
         try {
@@ -40,12 +48,27 @@ public class FileUpLoadController {
         }
     }
 
+    // thêm hình vào fire base csdl
+    @PostMapping("/{id}")
+    public ResponseEntity<ResponseObject> insertImage(@PathVariable Long id,@RequestBody User setUser){
 
-    @GetMapping("/file/{fileName:.+}")
+            User user= userRepository.findById(id).orElseThrow(
+                    () -> new RuntimeException("Không tìm thấy user")
+            );
+            user.setImageUrl(setUser.getImageUrl());
+            userRepository.save(user);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok","Upload image successfully",user)
+            );
+
+    }
+
+    @GetMapping(value = "/file/{fileName:.+}",produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> readDetailFile(@PathVariable String fileName){
 
         try {
             byte[] bytes =storageService.readFileContent(fileName);
+
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_JPEG)
                     .body(bytes);
@@ -70,4 +93,5 @@ public class FileUpLoadController {
 
         }
     }
+
 }

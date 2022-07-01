@@ -29,7 +29,7 @@ public class User{
     @NotBlank
     @Size(max = 120)
     private String password;
-
+    @Column( length = 6000, columnDefinition = "VARCHAR(6000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL")
     private String imageUrl;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(  name = "user_roles",

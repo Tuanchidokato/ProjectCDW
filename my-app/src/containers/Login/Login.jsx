@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import logo from "../../assets/Logo.svg"
 import background from "../../assets/background-login.png"
-import UserService from "../../services/UserService";
-import AuthService from "../../services/auth.service";
-import CheckButton from "react-validation/build/button";
-import axios from "axios";
+import { Link, withRouter } from 'react-router-dom';
 import authService from "../../services/auth.service";
-import { withRouter } from 'react-router-dom';
 
+import {ToastContainer,toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 const required = value => {
     if (!value) {
       return (
@@ -62,13 +60,15 @@ class Login extends React.Component{
 
      authService.login(this.state.username, this.state.password).then(
        () =>{
-         this.props.history.push("/Home")
+         this.props.history.push("/")
          window.location.reload()
+       },err=>{
+        toast.error("Tên đăng nhập hoặc password không chính xác")
        }
      )
     const currentUser=authService.getCurrentUser();
     if(currentUser != null){
-      this.setState({navigate:"/home"})
+      this.setState({navigate:"/"})
     }
     
   }
@@ -93,7 +93,6 @@ render(){
                        </div>
 
                        <form
-                            onSubmit={this.handleLogin}
                             ref={c => {
                               this.form = c;
                             }}
@@ -104,6 +103,7 @@ render(){
                            <div className="input_form">
                                 <input 
                                 name="username"
+                                required
                                 value={this.state.username}
                                 onChange={this.onChangeUsername}
                                 validations={[required]}
@@ -114,6 +114,7 @@ render(){
 
                                 <input 
                                 type={this.state.unPass?"password":"text"}  
+                                required
                                 name="password"
                                 value={this.state.password}
                                 onChange={this.onChangePassword}
@@ -128,20 +129,22 @@ render(){
                                <a href="">Fogot password</a>
                            </div>
                            <div className="button_control">
-                                <button
+                                <Link type="submit"
+                                  onClick={this.handleLogin}
                                  className="btn_login"
                                  >
                                      <span>Đăng nhập</span>
-                                </button>
+                                </Link>
                                 <div className="other_login">
                                     <button className="facebook_btn">Facebook</button>
                                     <button className="google_btn">Google</button>
                                 </div>
                            </div>
-
+                           <ToastContainer
                             
+                            />
                             <div className="signUp">
-                              <p>Nếu chưa có tài khoản <a href="/SignUp">Đăng ký</a></p>
+                              <p>Nếu chưa có tài khoản <Link to="/SignUp">Đăng ký</Link></p>
                             </div>
                        </form>
                    </div>

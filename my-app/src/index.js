@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.css'
@@ -6,10 +6,14 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import App from './App';
 import axios from 'axios';
 
+
+import './i18next'
 axios.defaults.baseURL='http://localhost:8080/api/auth/';
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Suspense fallback="loading">
+      <App />
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );

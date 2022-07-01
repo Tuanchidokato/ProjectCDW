@@ -1,29 +1,44 @@
 import axios from "axios";
 import authHeader from './auth-header';
+import authService from "./auth.service";
 
 
-const API_URL = "http://localhost:8080/api/v2/information/";
+const API_URL = "http://localhost:8080/api/auth/";
+const UPLOAD_IMAGE = "UPLOAD_IMAGE";
 class InformationUser{
 
 
     getInformationUser(id){
         return axios.get(
             API_URL+"getInfo/"+id
-            , { headers: authHeader() }
+ //           , { headers: authHeader() }
         )
     }
 
     editInformation(
-            id,
             firstName,
             lastName,
             address,
             phoneNumber
         ){
-            return axios.put(
+            const id= authService.getCurrentUser().id;
+            return axios.post(
                 API_URL+"edit/"+id,
-                { headers: authHeader() }
+                {
+                    firstName,
+                    lastName,
+                    address,
+                    phoneNumber
+                }
             )
         }
+        insertImage(imageUrl){
+            
+            return axios.post(API_URL+"FileUpLoad/"+authService.getCurrentUser().id,{imageUrl})
+        }
+
+         getImage(imageUrl){
+            return axios.get(API_URL+"FileUpLoad/file/"+ imageUrl)
+         }
 }
 export default new InformationUser;

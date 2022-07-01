@@ -1,12 +1,18 @@
 import styled from "styled-components";
 import Logo from "../../assets/Logo.svg"
 import Book from "../../assets/bx_bx-book-heart.svg"
-import Diamond from "../../assets/ic_round-notifications-none.svg"
 import Bell from "../../assets/fluent_premium-person-20-regular.svg"
-import User from "../../assets/user.svg"
 import { Component } from "react";
 import authService from "../../services/auth.service";
 import {Link} from "react-router-dom";
+import InformationUser from "../../services/InformationUser.service"
+import { withTranslation } from "react-i18next";
+import { Dropdown } from "react-bootstrap";
+
+const lngs = {
+    en: { nativeName: 'English' },
+    vi: { nativeName: 'Vietnamese' }
+  };
 class Navbar extends Component{
 
     constructor(props){
@@ -15,12 +21,30 @@ class Navbar extends Component{
         this.componentDidMount = this.componentDidMount.bind(this)
         this.state ={
             currentUser:true,
+            imageUrl:"",
+            checkRoles:true
         }
 
     }
+  
+
     componentDidMount(e){
         const currentUser = authService.getCurrentUser();
-       
+        
+        const checkRole = this.checkRoles()
+        this.setState({checkRoles:checkRole})
+        
+        // lấy thông tin địa chỉ hình ảnh
+        InformationUser.getInformationUser(currentUser.id).then(
+            res=>{
+                this.setState({
+                    imageUrl:res.data.data.user.imageUrl
+                })
+            },
+            err=>{
+                console.log(err)
+            }
+         )
         if(currentUser ==null){
             this.setState({
                 currentUser:false
@@ -30,14 +54,21 @@ class Navbar extends Component{
                 currentUser:true
             })
         }
-    //    console.log(currentUser);
-        console.log(this.state.currentUser)
+        console.log(currentUser);
+        //console.log(this.state.currentUser)
     }
 
     Logout(){
        authService.logout();
     }
+    // Checl role
+    checkRoles(){
+        const currentUser = authService.getCurrentUser();
+        let role = currentUser.roles
+        return role.includes("ROLE_ADMIN"); 
+    }
     render(){
+        const { t,i18n } = this.props;
         return(
             <Nav>
                 <div class="my_navbar ">
@@ -53,21 +84,48 @@ class Navbar extends Component{
                         </ul>
 
                         <div class="col-md-3 text-end login_section">
+
                             <a href="/Cart"><img src="https://cdn0.fahasa.com/skin/frontend/base/default/images/ico_shopping_cart_white.svg" alt="" /></a>
-                            <a href=""><img src={Diamond} alt="" /></a>
+                            <Dropdown id="changeLanguage" className="changeLanguage">
+                                <Dropdown.Toggle variant="none" id="dropdown-basic">
+                                    <i  className="language fa-solid fa-language"></i>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu className="languages">
+                                  
+
+                                    {
+                                        Object.keys(lngs).map((lng) =>(
+                                            <Dropdown.Item className="language_item" type="submit" key={lng} 
+                                                onClick={() =>i18n.changeLanguage(lng)}
+                                                disabled={i18n.resolvedLanguage === lng}
+                                            >
+                                                {lngs[lng].nativeName} 
+                                            </Dropdown.Item>
+                                        ))
+                                    }
+                                </Dropdown.Menu>
+                            </Dropdown>
                             <a href="/"><img src={Bell} alt="" /></a>
                             {
                                 this.state.currentUser?
                                 <a className="dropbtn">
-                                <img src={User} alt="" />
+                                <div className="image-user">
+                                    <img src={this.state.imageUrl} alt="" />
+                                </div>
                                 <div class="dropdown-content">
-                                    <Link to="/home/profile">Xem trang cá nhân</Link>
-                                    <Link >Quản lý tài khoản</Link>
-                                    <Link onClick={this.Logout} to="/Login">Đăng xuất</Link>
+                                    <Link to="/home/profile">{t('menu_selection.profile')}</Link>
+                                    {
+                                        this.state.checkRoles?
+                                        <Link to="/adminDashBoard">{t('menu_selection.system_management')}</Link>
+                                        :null
+                                    }
+                                    <Link >{t('menu_selection.account')}</Link>
+                                    <Link onClick={this.Logout} to="/Login">{t('menu_selection.signOut')}</Link>
+                                    <Link>{t('menu_selection.my_wallet')}</Link>
                                 </div>
                             </a> 
                             :
-                            <a href="/Login" className="Login_">Đăng nhập</a>
+                            <Link to="/Login" className="Login_">Đăng nhập</Link>
 
                             }
                             
@@ -105,7 +163,7 @@ class Navbar extends Component{
     }
 
 }
-export default Navbar;
+export default withTranslation()(Navbar);
 const Nav= styled.nav`
       background-color: #2C2828;
  
@@ -117,6 +175,7 @@ const Nav= styled.nav`
         color:#D2D2D2;
         text-decoration: none;
         margin-left: 40px;
+       
         img{
             width: 100px;
             height: 54.92px;
@@ -146,6 +205,7 @@ const Nav= styled.nav`
     }
     .search_section{
         color: #242121;
+        
         i{
             font-size: 25px;
             margin-top: 3px;
@@ -171,11 +231,47 @@ const Nav= styled.nav`
         }
     }
     .login_section{
-        img{
-            margin-right:20px;
-            width: 10%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        .language{
+            color: #D2D2D2;
+            font-size: 30px;
             cursor: pointer;
         }
+        
+
+        .languages{
+            padding-bottom: 0%;
+            padding-top: 0%;
+            .language_item{
+                text-decoration: none;
+                color: #000000;
+                border: 1px solid #000000;
+                width: 160px;
+                height: 40px;
+                border-top: none;
+                right: 100px;
+                padding-right: 90px;
+            }
+        }
+
+         .image-user{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            min-width: 40px;
+            overflow: hidden;
+            cursor: pointer;
+            img{
+                    display: inline;
+                    margin: 0 auto;
+                    width: 40px;
+                    height: 40px;
+                    height: 100%;
+                    min-width: 40px;
+                }
+         }
         .Login_{
             color: #FFFFFF;
             text-decoration: none;

@@ -3,9 +3,10 @@ import styled from "styled-components";
 import background from "../../assets/background-login.png"
 import logo from "../../assets/Logo.svg"
 import authService from "../../services/auth.service";
-//import {isEmail} from "validator"
-//import CheckButton from "react-validation/build/button"
-import {withRouter} from "react-router-dom" 
+import {ToastContainer,toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import {withRouter,Link} from "react-router-dom" 
+
 class SignUp extends Component{
 
    constructor(props){
@@ -13,12 +14,14 @@ class SignUp extends Component{
         this.handleSignUp = this.handleSignUp.bind(this);
         this.onchangeUsername = this.onchangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeRePassword= this.onChangeRePassword.bind(this)
         this.onChangeEmail    = this.onChangeEmail.bind(this)
         this.unPass = this.unPass.bind(this);
         this.re_unPass= this.re_unPass.bind(this)
         this.state ={
            username:"",
            password:"",
+           rePassword:"",
            email:"",
            successful: false,
            unPass:true,
@@ -57,48 +60,64 @@ class SignUp extends Component{
             email:e.target.value
         })
     }
+    onChangeRePassword(e){
+        this.setState({
+          rePassword:e.target.value  
+        })
+    }
 
     // đăng ký tài khoản
+      
     handleSignUp(e){
         e.preventDefault();
-        // console.log(   this.state.username,
-        //          this.state.email,
-        //          this.state.password)
-        this.setState({
-            message: "",
-            successful: false
-          });
-        authService.register(
-            this.state.username,
-            this.state.email,
-            this.state.password
-        ).then(
-            response =>{
-                this.setState({
-                    message: response.data.message,
-                    successful:true
-                });
-                authService.login(this.state.username,this.state.password)
-                this.props.history.push("/home")
-                console.log(this.state.message)
-            },
-            error =>{
-                const resMessage =(
-                    error.response &&
-                    error.response.data &&
-                    error.response.data.message) ||
-                  error.message ||
-                  error.toString();
+        if(this.state.password===this.state.rePassword){
+            this.setState({
+                message: "",
+                successful: false
+              });
+            authService.register(
+                this.state.username,
+                this.state.email,
+                this.state.password
+            ).then(
+                response =>{
+                    this.setState({
+                        message: response.data.message,
+                        successful:true
+                    });
+                    authService.login(this.state.username,this.state.password).then(
+                        ()=>{
+                            this.props.history.push("/")
+                            window.location.reload();
+                        }
+                    )
+                    console.log(this.state.message)
+                    
+                },
+                error =>{
+                    const resMessage =(
+                        error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                      error.message ||
+                      error.toString();
+        
     
-
-                this.setState({
-                  successful: false,
-                  message: resMessage
+                    this.setState({
+                      successful: false,
+                      message: resMessage
+                    }
+                    );
+                    toast.error(this.state.message)
+    
+                   
                 }
-                );
-                console.log(this.state.message)
-            }
-        )
+            )
+            console.log("ha")
+        } else{
+            toast.error("Mật khẩu không trùng nhau")
+        }
+        
         
     }
     render(){
@@ -114,7 +133,6 @@ class SignUp extends Component{
                        </div>
 
                        <form
-                            onSubmit={this.handleSignUp}
                             action="" 
                             className="form_login_"
                        >
@@ -125,6 +143,7 @@ class SignUp extends Component{
                                     type="username"  
                                     placeholder="Username..."
                                     onChange={this.onchangeUsername}
+                                    required
                                 />
 
                                 <input 
@@ -132,6 +151,7 @@ class SignUp extends Component{
                                 name="email"
                                 placeholder="Your email..." 
                                 onChange={this.onChangeEmail}
+                                required
                                 />
                                 <input 
                                     type={this.state.unPass?"password":"text"}  
@@ -139,16 +159,20 @@ class SignUp extends Component{
                                     placeholder="Your password..." 
                                     id="Pass"
                                     onChange={this.onChangePassword}
+                                    required
                                 />
                                 <i  
+                                    required
                                     onClick={this.unPass} 
                                     id="enter" 
                                     className={this.state.unPass?"enter fa-solid fa-eye":"enter fa-solid fa-eye-low-vision"}  ></i>
 
                                 <input 
-                                type={this.state.re_unPass?"password":"text"} 
-                                name="password"
-                                placeholder="Re-enter password..."
+                                    required
+                                    type={this.state.re_unPass?"password":"text"} 
+                                    name="password"
+                                    placeholder="Re-enter password..."
+                                    onChange={this.onChangeRePassword}
                                 />
                                 <i 
                                     onClick={this.re_unPass}
@@ -157,16 +181,18 @@ class SignUp extends Component{
                            </div>
                           
                            <div className="button_control">
-                                <button
+                                <Link
+                                onClick={this.handleSignUp}
                                  className="btn_login"
                                  >
                                      <span>Đăng ký</span>
-                                </button>
+                                </Link>
+                                <ToastContainer />
                                 
                            </div>
 
 
-                           {this.state.message && (
+                           {/* {this.state.message && (
                                 <div className="form-group">
                                     <div
                                     className={
@@ -179,7 +205,7 @@ class SignUp extends Component{
                                     {this.state.message}
                                     </div>
                                 </div>
-                                )}
+                                )} */}
                        </form>
                    </div>
                   <div className="logo_login">

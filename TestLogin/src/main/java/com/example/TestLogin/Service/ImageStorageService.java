@@ -40,7 +40,6 @@ public class ImageStorageService implements IStorageService{
     @Override
     public String storeFile(MultipartFile file) {
         try {
-            System.out.println("haha");
             if (file.isEmpty()) {
                 throw new RuntimeException("File to store empty file ");
             }
@@ -106,6 +105,7 @@ public class ImageStorageService implements IStorageService{
             throw new RuntimeException("Could not read file "+fileName, e);
         }
     }
+
 
     @Override
     public void deleteAllFiles() {
