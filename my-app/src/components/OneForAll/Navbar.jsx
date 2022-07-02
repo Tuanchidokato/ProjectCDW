@@ -84,7 +84,8 @@ class Navbar extends Component{
                         </ul>
 
                         <div class="col-md-3 text-end login_section">
-                            <a href="/Cart"><img src={Book} alt="" /></a>
+
+                            <a href="/Cart"><img src="https://cdn0.fahasa.com/skin/frontend/base/default/images/ico_shopping_cart_white.svg" alt="" /></a>
                             <Dropdown id="changeLanguage" className="changeLanguage">
                                 <Dropdown.Toggle variant="none" id="dropdown-basic">
                                     <i  className="language fa-solid fa-language"></i>

@@ -1,12 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ProductService from "../../services/ProductService";
-import book6 from "../../assets/bookStudent/image 7.png"
-import book7 from "../../assets/bookStudent/image 8.png"
-import book8 from "../../assets/bookStudent/image 9.png"
-import book9 from "../../assets/bookStudent/image 10.png"
-import book10 from "../../assets/bookStudent/image 11.png"
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import './css/SaleBook.css'
 
@@ -38,10 +33,10 @@ class SaleBooks extends React.Component {
     }
 
     componentDidMount() {
-        const { page, size } = this.state;
+        const {page, size} = this.state;
         const params = this.getRequestParams(page, size);
         ProductService.getProductList(params).then((response) => {
-            const { productList, totalPages } = response.data;
+            const {productList, totalPages} = response.data;
             this.setState({
                 products: productList,
                 count: totalPages,
@@ -77,15 +72,16 @@ class SaleBooks extends React.Component {
                         {
                             this.state.products.map(
                                 product =>
-                                    <div className="col-sm-2">
-                                        <Link to={"/ProductDetail/" + product.id}><img src={require('../../assets/bookStudent/' + product.image)} alt={product.name} /></Link>
-                                    </div>
+
+                                        <div className="col-sm-2">
+                                            <Link to={"/ProductDetail/" + product.id}><img
+                                                src={require('../../assets/bookStudent/' + product.image)}
+                                                alt={product.name}/></Link>
+                                        </div>
                             )
                         }
 
                     </div>
-
-
 
 
                 </div>
@@ -96,7 +92,9 @@ class SaleBooks extends React.Component {
                         {
                             [...Array(this.state.count)].map(
                                 (item, i) => {
-                                    return <button className={`${this.state.page === (i + 1) ? "shopee-button-solid shopee-button-solid--primary" : "shopee-button-no-outline"}`} onClick={() => this.changePage(i + 1)}>{i + 1}</button>
+                                    return <button
+                                        className={`${this.state.page === (i + 1) ? "shopee-button-solid shopee-button-solid--primary" : "shopee-button-no-outline"}`}
+                                        onClick={() => this.changePage(i + 1)}>{i + 1}</button>
                                 }
                             )
                         }
@@ -113,18 +111,21 @@ class SaleBooks extends React.Component {
 export default SaleBooks;
 
 const Div = styled.div`
-background-color: #2C2828;
-    .col-sm-10{
-        width: 110% !important;
-        margin-right: -10px;
+  background-color: #2C2828;
+
+  .col-sm-10 {
+    width: 110% !important;
+    margin-right: -10px;
+  }
+
+  .col-sm-2 {
+    margin-right: 20px;
+    margin-top: 30px;
+
+    img {
+      width: 160px;
     }
-    .col-sm-2{
-        margin-right: 20px;
-        margin-top: 30px;
-        img{
-            width: 160px;
-        }
-    } 
-   
-    
+  }
+
+
 `;

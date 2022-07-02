@@ -660,7 +660,7 @@ label {
        height: 32px;
 }
 
-.product-view-quantity-box-block a .btn-subtract-qty {
+.product-view-quantity-box-block button .btn-subtract-qty {
        padding-top: 0px;
        padding-right: 8px;
        padding-bottom: 0px;
@@ -668,7 +668,7 @@ label {
 }
 
 
-.product-view-quantity-box-block a {
+.product-view-quantity-box-block button {
        display: flex;
        display: -webkit-box;
        display: -webkit-flex;
@@ -713,7 +713,7 @@ input.input-text {
        padding: 0 16px 0 8px;
 }
 
-.product-view-quantity-box-block a {
+.product-view-quantity-box-block button{
        display: flex;
        display: -webkit-box;
        display: -webkit-flex;

@@ -5,7 +5,7 @@ import com.example.TestLogin.Model.ProductManage.Product;
 import java.util.List;
 
 public interface ICart {
-    public void add(Long productId, Product product);
+    public void add(Long productId, Product product , int soluong);
 
     public void remove(Long productId);
 

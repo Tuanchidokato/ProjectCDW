@@ -34,10 +34,10 @@ div {
        border-radius: 3px;
        height: 55px;
        font-size: 14px;
-       background: #fff;
+       background: rgba(69, 69, 69, 0.594);
        text-transform: capitalize;
        margin-bottom: 12px;
-       color: #888;
+       color: white;
        padding: 0 20px;
 }
 
@@ -134,13 +134,14 @@ input {
 }
 
 ._2cHnzN {
-       color: rgba(0, 0, 0, .8);
+       color: white;
        width: 46.27949%;
 }
 
 ._2UJcxH {
        width: 15.88022%;
        text-align: center;
+
 }
 
 ._1SKeIp {
@@ -171,7 +172,7 @@ input {
        box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
        border-radius: 0.125rem;
        overflow: hidden;
-       background: #fff;
+       background: rgba(69, 69, 69, 0.594);
        overflow: visible;
 }
 
@@ -292,6 +293,7 @@ input {
 
 ._1E5-FE {
        margin-right: 10px;
+       color: white;
 }
 
 ._2vZsK0 {
@@ -310,6 +312,7 @@ input {
 ._3Ell0h:first-child {
        border-top-right-radius: 0;
        border-bottom-right-radius: 0;
+       color: white;
 }
 
 ._3Ell0h {
@@ -327,7 +330,7 @@ input {
        border: 1px solid rgba(0, 0, 0, .09);
        border-radius: 2px;
        background: transparent;
-       color: rgba(0, 0, 0, .8);
+       color: white;
        width: 32px;
        height: 32px;
 }
@@ -380,7 +383,7 @@ svg:not(:root) {
        border: 1px solid rgba(0, 0, 0, .09);
        border-radius: 2px;
        background: transparent;
-       color: rgba(0, 0, 0, .8);
+       color: white;
        width: 32px;
        height: 32px;
 }
@@ -417,6 +420,7 @@ svg:not(:root) {
        cursor: pointer;
        background: none;
        border: 0;
+       color: white;
 }
 
 @supports ((position:-webkit-sticky) or (position:sticky)) {
@@ -434,7 +438,7 @@ svg:not(:root) {
        grid-template-columns: 1fr 20.3125rem 11.875rem;
        align-items: center;
        box-sizing: border-box;
-       background: #fff;
+       background: rgba(69, 69, 69, 0.594);;
        width: 100%;
        flex: 1;
        font-size: 1rem;
@@ -481,7 +485,7 @@ svg:not(:root) {
 
 ._333O5j {
        font-size: 16px;
-       color: #222;
+       color: white;
        line-height: 19px;
 }
 
@@ -502,6 +506,7 @@ svg:not(:root) {
        font-size: .875rem;
        border-radius: 2px;
        width: 13.125rem;
+       background-color: red;
 }
 
 .shopee-button-solid--primary {
@@ -537,6 +542,7 @@ svg:not(:root) {
 
 ._3zK-FN {
        width: 100%;
+       font-weight: bold;
 }
 
 svg:not(:root) {
@@ -596,6 +602,16 @@ button {
 }
 
 
+.j9RJQY {
+       margin: 0 8px;
+       color: white;
+}
+.clear-btn-style {
+       background: 0;
+       border: 0;
+}
+
+
 a {
        text-decoration: none;
 }
@@ -605,7 +621,7 @@ a {
 }
 
 a:-webkit-any-link {
-       color: -webkit-link;
+       color: #b6effb;
        cursor: pointer;
        text-decoration: underline;
 }

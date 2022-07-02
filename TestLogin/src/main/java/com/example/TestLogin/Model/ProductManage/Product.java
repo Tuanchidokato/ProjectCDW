@@ -8,6 +8,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Set;
 
 @Data
 @Entity
@@ -44,9 +45,6 @@ public class Product implements Serializable {
     @JoinColumn(name = "categories_id")
     private Categories categories;
 
-
-    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY)
-    private Items items;
 
     public Product() {
     }
