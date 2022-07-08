@@ -12,6 +12,10 @@ class ProductService {
               return axios.get(API_URL + "/productDetail" + "/" + id);
        }
 
+       getPopularProducts() {
+              return axios.get(API_URL + "/popularProducts");
+       }
+
        
 }
 
