@@ -1,6 +1,8 @@
 import React from "react";
 import Navbar from "../../components/OneForAll/Navbar"
+import NumberFormat from 'react-number-format';
 import {withRouter} from "react-router-dom";
+import {withTranslation} from "react-i18next";
 import './css/detail.css';
 import ProductService from "../../services/ProductService";
 import CartService from "../../services/CartService";
@@ -53,8 +55,6 @@ class ProductDetail extends React.Component {
     addToCart() {
         let {id} = this.props.match.params;
         CartService.addItem(id, this.state.quantity);
-        window.location.reload();
-
     }
 
     //Đi thằng vào giỏ
@@ -80,6 +80,7 @@ class ProductDetail extends React.Component {
     }
 
     render() {
+        const {t, i18n} = this.props;
         return (
             <body>
             <Navbar/>
@@ -106,11 +107,12 @@ class ProductDetail extends React.Component {
                                                                     className="btn-cart-to-cart"
                                                                     onClick={this.addToCart}
                                                                     disabled={this.state.product.quantity === 0}><span
-                                                                className="fhs_icon_cart"></span><span>Add to Cart</span>
+                                                                className="fhs_icon_cart"></span><span>{t('product_detail.product_addCart')}</span>
                                                             </button>
                                                             <button type="button" title="Mua ngay" is_buynow="true"
                                                                     className="btn-buy-now" onClick={this.buyNow}
-                                                                    disabled={this.state.product.quantity === 0}><span>Buy Now</span>
+                                                                    disabled={this.state.product.quantity === 0}>
+                                                                <span>{t('product_detail.product_buyNow')}</span>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -120,20 +122,21 @@ class ProductDetail extends React.Component {
                                                         <div className="product-view-sa">
                                                             <div className="product-view-sa_one">
                                                                 <div className="product-view-sa-supplier">
-                                                                    <span>Supplier:</span> <span>1980 Books</span>
+                                                                    <span>{t('product_detail.product_supplier')}:</span>
+                                                                    <span>1980 Books</span>
                                                                 </div>
                                                                 <div className="product-view-sa-author">
-                                                                    <span>Author:</span><span>{this.state.product.author}</span>
+                                                                    <span>{t('product_detail.product_author')}:</span><span>{this.state.product.author}</span>
 
                                                                 </div>
                                                             </div>
 
                                                             <div className="product-view-sa_two">
                                                                 <div className="product-view-sa-supplier">
-                                                                    <span>Publisher:</span><span>{this.state.product.nxb}</span>
+                                                                    <span>{t('product_detail.product_publisher')}:</span><span>{this.state.product.nxb}</span>
                                                                 </div>
                                                                 <div className="product-view-sa-author">
-                                                                    <span>Book layout:</span><span>Paperback</span>
+                                                                    <span>{t('product_detail.product_layout')}:</span><span>{t('product_detail.product_typelayout')}</span>
                                                                 </div>
                                                             </div>
 
@@ -149,19 +152,29 @@ class ProductDetail extends React.Component {
                                                                             <p className="special-price">
                                                                                 <span className="price-label">Special Price</span>
                                                                                 <span className="price"
-                                                                                      id="product-price-395589">{this.state.product.price} đ</span>
+                                                                                      id="product-price-395589"><NumberFormat
+                                                                                    value={this.state.product.price}
+                                                                                    displayType={'text'}
+                                                                                    thousandSeparator={true}/> đ</span>
                                                                             </p>
                                                                             :
                                                                             <div className="price-box">
                                                                                 <p className="special-price">
                                                                                     <span className="price-label">Special Price</span>
                                                                                     <span className="price"
-                                                                                          id="product-price-395589">{this.getDiscountPrice(this.state.product.price, this.state.product.discount)} đ</span>
+                                                                                          id="product-price-395589"> <NumberFormat
+                                                                                        value={this.getDiscountPrice(this.state.product.price, this.state.product.discount)}
+                                                                                        displayType={'text'}
+                                                                                        thousandSeparator={true}/>  đ</span>
                                                                                 </p>
                                                                                 <p className="old-price">
-                                                                                    <span style={{color: "white"}}
-                                                                                          className="price"
-                                                                                          id="old-price-395589">{this.state.product.price}đ</span>
+
+                                                                                    <NumberFormat
+                                                                                        style={{color: "white"}}
+                                                                                        className="price"
+                                                                                        value={this.state.product.price}
+                                                                                        displayType={'text'}
+                                                                                        thousandSeparator={true}/> đ
                                                                                     <span
                                                                                         className="discount-percent">{this.state.product.discount}%</span>
                                                                                 </p>
@@ -179,11 +192,11 @@ class ProductDetail extends React.Component {
                                                         <div id="expected_delivery">
                                                             <div id="expected_return_product_policy">
                                                                 <div>
-                                                                    Return-exchange policy
+                                                                    {t('product_detail.product_return')}
                                                                 </div>
                                                                 <div>
                                                                     <div>
-                                                                        Return and exchange product in 30 day
+                                                                        {t('product_detail.product_30day')}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -191,7 +204,8 @@ class ProductDetail extends React.Component {
                                                         <div className="clear"></div>
                                                         <div id="catalog-product-details-discount">
                                                             <div class="product-view-quantity-box">
-                                                                <label style={{color: "white"}} for="qty">Quantity:
+                                                                <label style={{color: "white"}}
+                                                                       for="qty">{t('product_detail.product_quantity')}:
                                                                 </label>
 
                                                                 {
@@ -217,8 +231,8 @@ class ProductDetail extends React.Component {
 
                                                                         </div>
                                                                         :
-                                                                        <label style={{color: "red"}} htmlFor="qty">Out
-                                                                            of Stock</label>
+                                                                        <label style={{color: "red"}}
+                                                                               htmlFor="qty">{t('product_detail.product_stock')}</label>
 
                                                                 }
 
@@ -238,7 +252,8 @@ class ProductDetail extends React.Component {
 
                                         <div className="product-collateral">
                                             <div className="content product_view_content">
-                                                <div className="product_view_content-title">Product Information</div>
+                                                <div
+                                                    className="product_view_content-title">{t('product_detail.product_information')}</div>
                                                 <div className="product_view_tab_content_ad">
                                                     <div className="product_view_tab_content_additional">
                                                         <table className="data-table table-additional">
@@ -247,47 +262,50 @@ class ProductDetail extends React.Component {
                                                             </colgroup>
                                                             <tbody>
                                                             <tr>
-                                                                <th className="tabel-label">Product code</th>
+                                                                <th className="tabel-label">{t('product_detail.prodcut_code')}</th>
                                                                 <td className="data_saku">{this.state.product.id}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th className="tabel-label">Supplier</th>
+                                                                <th className="tabel-label">{t('product_detail.product_supplier')}</th>
                                                                 <td className="data_saku">1980 Books</td>
                                                             </tr>
                                                             <tr>
-                                                                <th className="tabel-label">Author</th>
+                                                                <th className="tabel-label">{t('product_detail.product_author')}</th>
                                                                 <td className="data_saku">{this.state.product.author}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th className="tabel-label">Publisher</th>
+                                                                <th className="tabel-label">{t('product_detail.product_publisher')}</th>
                                                                 <td className="data_saku">{this.state.product.nxb}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th className="tabel-label">Date</th>
+                                                                <th className="tabel-label">{t('product_detail.product_date')}</th>
                                                                 <td className="data_saku">{this.state.product.date}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th className="tabel-label">Category</th>
+                                                                <th className="tabel-label">{t('product_detail.product_cate')}</th>
                                                                 <td className="data_saku">{this.state.category.name}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th className="tabel-label">Language</th>
-                                                                <td className="data_saku">English</td>
+                                                                <th className="tabel-label">{t('product_detail.product_language')}</th>
+                                                                <td className="data_saku">{t('product_detail.prodcut_vnEN')}</td>
                                                             </tr>
                                                             <tr>
-                                                                <th className="tabel-label">Availible</th>
+                                                                <th className="tabel-label">{t('product_detail.product_availible')}</th>
                                                                 {
                                                                     this.state.product.available == 1 ?
-                                                                        < td className="data_saku">Availible</td>
+                                                                        < td
+                                                                            className="data_saku">{t('product_detail.product_availible')}</td>
                                                                         :
-                                                                        < td className="data_saku">Out of stock</td>
+                                                                        < td
+                                                                            className="data_saku">{t('product_detail.product_stock')}</td>
                                                                 }
                                                             </tr>
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                     <div className="clear"></div>
-                                                    <div className="product_view_content-title">Product Description</div>
+                                                    <div
+                                                        className="product_view_content-title">{t('product_detail.product_description')}</div>
                                                     <div id="product_tabs_description_contents">
                                                         <div id="desc_content" className="std">
                                                             <p style={{textAlign: "justify", color: "white"}}>
@@ -296,7 +314,6 @@ class ProductDetail extends React.Component {
                                                             <p style={{textAlign: "justify", color: "white"}}>
                                                                 {this.state.product.description}
                                                             </p>
-
 
                                                         </div>
                                                     </div>
@@ -322,4 +339,4 @@ class ProductDetail extends React.Component {
     }
 }
 
-export default withRouter(ProductDetail);
+export default withTranslation()(withRouter(ProductDetail));

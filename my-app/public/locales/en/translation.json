@@ -1,10 +1,70 @@
 {
-    "menu_selection":{
-        "profile":"Manage Profile",
-        "system_management":"Manage System ",
-        "account":"Manage Account",
-        "signOut":"Log Out",
-        "my_wallet":"My Wallet"
+    "menu_selection": {
+        "profile": "Manage Profile",
+        "system_management": "Manage System ",
+        "account": "Manage Account",
+        "signOut": "Log Out",
+        "my_wallet": "My Wallet"
+    },
+    "product_detail": {
+        "product_author": "Author",
+        "product_publisher": "Publisher",
+        "product_supplier": "Supplier",
+        "product_layout": "Book layout",
+        "product_typelayout": "paperback",
+        "product_return": "Return-exchange policy",
+        "product_30day": "Return and exchange product in 30 day",
+        "product_date": "Date",
+        "product_quantity": "Quantity",
+        "product_stock": "Out of Stock",
+        "product_addCart": "Add to cart",
+        "product_buyNow": "Buy now",
+        "product_cate": "category",
+        "product_language": "Language",
+        "product_availible": "Availible",
+        "product_description": "Product Description",
+        "product_information": "Product Information",
+        "prodcut_code" :"Product code",
+        "prodcut_vnEN" : "English"
+    },
+    "Cart": {
+        "cart_product": "Product",
+        "cart_unit": "Unit Price",
+        "cart_quantity": "Quantity",
+        "cart_totalPrice": "Total Price",
+        "cart_action": "Actions",
+        "cart_delete": "Delete",
+        "cart_clear": "Clear",
+        "cart_total": "Total",
+        "cart_item": "items",
+        "cart_check": "Check out"
+    },
 
+    "Check_out" : {
+        "check_shippingAddress" : "SHIPPING ADDRESS",
+        "check_recipient" : "Full name of recipient",
+        "check_recipient_placeholder": "Press full name of recipient",
+        "check_email" : "Email",
+        "check_email_placeholder": "Press email",
+        "check_phoneNumber" : "Phone number",
+        "check_phoneNumber_placeholder": "Ex: 0979123xxx (10 digit)",
+        "check_address" : "Shipping address",
+        "check_address_placeholder" : "Press shipping address",
+        "check_shipMethod" : "SHIPPING METHOD",
+        "check_sorry" : "Sorry, no quotes are available for this order at this time.",
+        "check_payment": "PAYMENT METHOD",
+        "check_cash": "Cash on Delivery",
+        "check_cartAgain": "CHECK ORDER AGAIN",
+        "check_back" : "Back to Cart",
+        "check_total" : "Total",
+        "check_include" : "including",
+        "check_order" : "Order Confirmation",
+        "check_empty_alert": "Press full name of recipient"
+    },
+
+    "popular" : {
+        "popular_now_read" : "Now Read"
     }
+
+
 }

@@ -6,5 +6,62 @@
         "signOut":"Đăng xuất",
         "my_wallet":"Ví của tôi"
 
+    },
+    "product_detail": {
+        "product_author": "Tác giả",
+        "product_publisher": "Nhà xuất bản",
+        "product_supplier": "Nhà cung cấp",
+        "product_layout": "Hình thức bìa",
+        "product_typelayout": "Bìa Mềm",
+        "product_return": "Chính sách đổi trả ",
+        "product_30day": "Đổi trả sản phẩm trong 30 ngày",
+        "product_quantity": "Số lượng",
+        "product_stock": "Hết hàng",
+        "product_addCart": "Thêm vào giỏ hàng",
+        "product_buyNow": "Mua ngay",
+        "product_date": "Ngày thêm",
+        "product_cate": "Thể loại",
+        "product_language": "Ngôn ngữ",
+        "product_availible": "Tình trạng",
+        "product_description": "Mô tả sản phẩm",
+        "product_information": "Thông tin sản phẩm",
+        "prodcut_code" :"Mã hàng",
+        "prodcut_vnEN" : "Tiếng Anh"
+    },
+    "Cart": {
+        "cart_product": "Sản Phẩm",
+        "cart_unit": "Đơn Giá",
+        "cart_quantity": "Số Lượng",
+        "cart_totalPrice": "Số Tiền",
+        "cart_action": "Thao Tác",
+        "cart_delete": "Xóa",
+        "cart_clear": "Xóa tất cả",
+        "cart_total": "Tổng thanh toán",
+        "cart_check": "Mua hàng"
+    },
+    "Check_out" : {
+        "check_shippingAddress" : "ĐỊA CHỈ GIAO HÀNG",
+        "check_recipient" : "Họ và tên người nhận",
+        "check_recipient_placeholder": "Nhập họ và tên người nhận",
+        "check_email" : "Email",
+        "check_email_placeholder": "Nhập email",
+        "check_phoneNumber" : "Số điện thoại",
+        "check_phoneNumber_placeholder": "Ví dụ: 0979123xxx (10 ký tự số)",
+        "check_address" : "Địa chỉ nhận hàng",
+        "check_address_placeholder" : "Nhập địa chỉ nhận hàng",
+        "check_shipMethod" : "PHƯƠNG THỨC VẬN CHUYỂN",
+        "check_sorry" : "Quý khách vui lòng điền tên và địa chỉ giao nhận trước.",
+        "check_payment": "PHƯƠNG THỨC THANH TOÁN",
+        "check_cash": "Thanh toán bằng tiền mặt khi nhận hàng",
+        "check_cartAgain": "KIỂM TRA ĐƠN HÀNG",
+        "check_back" : "Quay về giỏ hàng",
+        "check_total" : "Tổng tiền",
+        "check_include" : "bao gồm",
+        "check_order" : "Xác nhận thanh toán",
+        "check_empty_alert": "Thông tin này không thể để trống"
+    },
+
+    "popular" : {
+        "popular_now_read" : "Xem Ngay"
     }
 }
