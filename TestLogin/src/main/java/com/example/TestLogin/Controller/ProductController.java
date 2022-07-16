@@ -3,7 +3,9 @@ package com.example.TestLogin.Controller;
 import com.example.TestLogin.Model.ProductManage.Categories;
 import com.example.TestLogin.Model.ProductManage.Product;
 import com.example.TestLogin.Model.ResponseObject.ResponseObject;
+import com.example.TestLogin.Model.ShoppingCart.Items;
 import com.example.TestLogin.Repository.CategoriesRepository;
+import com.example.TestLogin.Repository.ItemsRepository;
 import com.example.TestLogin.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -24,6 +28,7 @@ public class ProductController {
 
     @Autowired
     CategoriesRepository categoriesRepository;
+
 
     @PostMapping("/insert")
     boolean insertProduct() {
@@ -61,6 +66,12 @@ public class ProductController {
     ResponseEntity<?> getProductDetail(@PathVariable Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
         return ResponseEntity.ok(product);
+    }
+
+    //Lấy 4 sản phẩm bán chạy nhất
+    @GetMapping("/popularProducts")
+    ResponseEntity<?> getPopularProducts() {
+        return ResponseEntity.ok(productRepository.getItemsPopular()) ;
     }
 
 

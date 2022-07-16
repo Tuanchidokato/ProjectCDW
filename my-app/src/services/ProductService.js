@@ -16,6 +16,10 @@ class ProductService {
               return axios.get(API_URL + "/findAllCate");
        }
 
+       getPopularProducts() {
+              return axios.get(API_URL + "/popularProducts");
+       }
+
        
 }
 

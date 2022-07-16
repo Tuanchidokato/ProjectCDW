@@ -1,10 +1,13 @@
-import React  from "react";
+import React from "react";
+import NumberFormat from 'react-number-format';
 import {withRouter} from "react-router-dom";
 import CartInfoValidator from "../../services/CartInfo-Validator";
+import {withTranslation} from "react-i18next";
 import './css/cartinfo.css';
 import CartService from "../../services/CartService";
 import authService from "../../services/auth.service";
 import informationUserService from "../../services/InformationUser.service";
+import {toast} from "react-toastify";
 
 
 class CartInfo extends React.Component {
@@ -16,10 +19,12 @@ class CartInfo extends React.Component {
             total: 0,
             name: "",
             email: "",
-            phoneNumber: 0,
+            address: "",
+            phoneNumber: "",
             paymentType: "cash on delivery",
             errors: {}
         };
+
 
         const rules = [
             {
@@ -71,9 +76,16 @@ class CartInfo extends React.Component {
             {
                 field: 'phoneNumber',
                 method: 'isLength',
-                args: [{max: 10 , min: 10}],
+                args: [{min: 10, max: 10}],
                 validWhen: true,
                 message: 'Số điện thoại phải 10 chữ số',
+            },
+
+            {
+                field: 'phoneNumber',
+                method: 'isNumeric',
+                validWhen: true,
+                message: 'Số điện thoại chỉ gồm số',
             },
 
             {
@@ -86,21 +98,24 @@ class CartInfo extends React.Component {
         ];
 
         this.validator = new CartInfoValidator(rules);
-        this.setPaymentType= this.setPaymentType.bind(this);
+        this.setPaymentType = this.setPaymentType.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInput = this.handleInput.bind(this);
     }
 
+
     componentDidMount() {
         //Get user info
         const user = authService.getCurrentUser();
-        console.log("user: " + user.id)
         informationUserService.getInformationUser(user.id).then((response) => {
             this.setState({
                 name: response.data.data.lastName + response.data.data.firstName,
                 email: response.data.data.user.email,
-                phoneNumber: response.data.data.phoneNumber
-            })
+                phoneNumber: "" + response.data.data.phoneNumber
+            });
+            console.log(JSON.stringify(response.data.data));
+        }, error => {
+            toast.error("something went wrong");
         });
 
         CartService.getItemListCart().then((response) => {
@@ -112,9 +127,9 @@ class CartInfo extends React.Component {
         });
     }
 
-    setPaymentType = (e) =>{
+    setPaymentType = (e) => {
         this.setState({
-           paymentType:  e.target.value
+            paymentType: e.target.value
         });
     }
 
@@ -128,10 +143,10 @@ class CartInfo extends React.Component {
         e.preventDefault();
         this.validator.validate(this.state);
 
-        if (this.validator.isValid == true)  {
+        if (this.validator.isValid === true) {
             const address = this.inputNode.value;
             const payment = this.state.paymentType;
-            CartService.handlingCart(address , payment);
+            CartService.handlingCart(address, payment);
             this.props.history.push("/");
             window.location.reload();
 
@@ -149,6 +164,7 @@ class CartInfo extends React.Component {
     }
 
     render() {
+        const {t, i18n} = this.props;
         return (<body>
         <div className="page">
             <div className="main-container col1-layout no-margin-top">
@@ -162,20 +178,22 @@ class CartInfo extends React.Component {
                                 <div className="fhs-co-banner"></div>
 
                                 <div id="fhs_checkout_block_address" className="fhs_checkout_block">
-                                    <div className="fhs_checkout_block_title">SHIPPING ADDRESS</div>
+                                    <div
+                                        className="fhs_checkout_block_title">{t('Check_out.check_shippingAddress')}</div>
                                     <div className="fhs_checkout_block_content">
                                         <div className="fhs_checkout_block_address_block">
                                             <div className="fhs-input-box fhs-input-group-horizontal-shippingaddress">
-                                                <label>Full name of recipient</label>
+                                                <label>{t('Check_out.check_recipient')}</label>
                                                 <div className="fhs-input-item">
                                                     <div className="fhs-input-group">
 
                                                         <input required
-                                                            className="fhs-textbox require_check check_shipping_address"
-                                                            type="text"
-                                                            placeholder="Nhập họ và tên người nhận"
-                                                            id="fhs_shipping_fullname" name="name"
-                                                            defaultValue={this.state.name} onChange={this.handleInput}
+                                                               className="fhs-textbox require_check check_shipping_address"
+                                                               type="text"
+                                                               placeholder={t('Check_out.check_recipient_placeholder')}
+                                                               id="fhs_shipping_fullname" name="name"
+                                                               defaultValue={this.state.name}
+                                                               onChange={this.handleInput}
 
                                                         />
 
@@ -189,13 +207,13 @@ class CartInfo extends React.Component {
                                             </div>
 
                                             <div className="fhs-input-box fhs-input-group-horizontal-shippingaddress">
-                                                <label>Email</label>
+                                                <label>{t('Check_out.check_email')}</label>
                                                 <div className="fhs-input-item">
                                                     <div className="fhs-input-group">
                                                         <input
                                                             className="fhs-textbox require_check check_shipping_address"
-                                                            type="email" validate_type="email"
-                                                            placeholder="Nhập email"
+                                                            type="email"
+                                                            placeholder={t('Check_out.check_email_placeholder')}
                                                             id="fhs_shipping_email" name="email"
                                                             defaultValue={this.state.email} onChange={this.handleInput}
                                                         />
@@ -209,15 +227,16 @@ class CartInfo extends React.Component {
                                             </div>
 
                                             <div className="fhs-input-box fhs-input-group-horizontal-shippingaddress">
-                                                <label>Phone number</label>
+                                                <label>{t('Check_out.check_phoneNumber')}</label>
                                                 <div className="fhs-input-item">
                                                     <div className="fhs-input-group">
                                                         <input
                                                             className="fhs-textbox require_check check_shipping_address"
-                                                            type={"number"}
-                                                            placeholder="Ví dụ: 0979123xxx (10 ký tự số)"
+                                                            type="text"
+                                                            placeholder={t('Check_out.check_phoneNumber_placeholder')}
                                                             id="fhs_shipping_telephone" name="phoneNumber"
-                                                            defaultValue={this.state.phoneNumber} onChange={this.handleInput}
+                                                            defaultValue={this.state.phoneNumber}
+                                                            onChange={this.handleInput}
                                                         />
                                                         {this.state.errors.phoneNumber && <span
                                                             className={"fhs-input-icon fhs-textbox-alert"}></span>}
@@ -229,15 +248,16 @@ class CartInfo extends React.Component {
                                             </div>
 
                                             <div className="fhs-input-box fhs-input-group-horizontal-shippingaddress">
-                                                <label>Shipping address</label>
+                                                <label>{t('Check_out.check_address')}</label>
                                                 <div className="fhs-input-item">
                                                     <div className="fhs-input-group">
                                                         <input
                                                             className="fhs-textbox require_check check_shipping_address"
-                                                            type={"text"} validate_type="text"
-                                                            placeholder="Nhập địa chỉ nhận hàng"
+                                                            type={"text"}
+                                                            placeholder={t('Check_out.check_address_placeholder')}
                                                             id="fhs_shipping_street" name="address"
-                                                            onChange={this.handleInput} ref={node => (this.inputNode = node)}
+                                                            onChange={this.handleInput}
+                                                            ref={node => (this.inputNode = node)}
                                                         />
                                                         {this.state.errors.address && <span
                                                             className={"fhs-input-icon fhs-textbox-alert"}></span>}
@@ -253,20 +273,20 @@ class CartInfo extends React.Component {
                                 </div>
 
                                 <div id="fh_checkout_block_shippingmethod" className="fhs_checkout_block">
-                                    <div className="fhs_checkout_block_title">SHIPPING METHOD
+                                    <div className="fhs_checkout_block_title">{t('Check_out.check_shipMethod')}
                                     </div>
                                     <div className="fhs_checkout_block_content">
                                         <div className="fhs_checkout_block_radio_list">
                                             <div className="fhs_checkout_block_radio_list_title"></div>
                                             <div id="fhs_checkout_shippingmethod_msg"
-                                                 className="fhs_checkout_block_radio_list_msg">Sorry, no quotes are available for this order at this time.
+                                                 className="fhs_checkout_block_radio_list_msg">{t('Check_out.check_sorry')}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className={"fhs_checkout_block"}>
-                                    <div className="fhs_checkout_block_title">PAYMENT METHOD</div>
+                                    <div className="fhs_checkout_block_title">{t('Check_out.check_payment')}</div>
                                     <div className="fhs_checkout_block_content">
                                         <div className="fhs_checkout_block_radio_list">
                                             <div>
@@ -284,7 +304,8 @@ class CartInfo extends React.Component {
                                                                                id="fhs_checkout_paymentmethod_vnpay"
                                                                                name="fhs_checkout_paymentmethod_option"
                                                                                className="fhs_checkout_paymentmethod_option"
-                                                                               value="paypal" onChange={event => this.setPaymentType(event)} />
+                                                                               value="paypal"
+                                                                               onChange={event => this.setPaymentType(event)}/>
                                                                         <span className="radiomark-big"></span>
                                                                     </div>
 
@@ -301,13 +322,15 @@ class CartInfo extends React.Component {
                                                                     <div
                                                                         className={"fhs-payment-name-with-icon-container"}>
                                                                         <div className={"cashdelivery-icon"}></div>
-                                                                        <div className={"fhs-payment-name"}>Cash on Delivery</div>
+                                                                        <div
+                                                                            className={"fhs-payment-name"}>{t('Check_out.check_cash')}</div>
                                                                         <input type={"radio"}
                                                                                id="fhs_checkout_paymentmethod_vnpay"
                                                                                name="fhs_checkout_paymentmethod_option"
                                                                                className="fhs_checkout_paymentmethod_option"
-                                                                               checked={true    }
-                                                                               value="cash on delivery" onChange={event => this.setPaymentType(event)} />
+                                                                               checked={true}
+                                                                               value="cash on delivery"
+                                                                               onChange={event => this.setPaymentType(event)}/>
                                                                         <span className="radiomark-big"></span>
                                                                     </div>
 
@@ -322,7 +345,7 @@ class CartInfo extends React.Component {
                                 </div>
 
                                 <div className={"fhs_checkout_block"}>
-                                    <div className="fhs_checkout_block_title">CHECK ORDER AGAIN</div>
+                                    <div className="fhs_checkout_block_title">{t('Check_out.check_cartAgain')}</div>
                                     <div className="fhs_checkout_block_content">
                                         <div id={"fhs_checkout_products"} className={"fhs_checkout_products"}>
                                             {this.state.items.map(item => <div className={"fhs_checkout_products_item"}>
@@ -334,7 +357,7 @@ class CartInfo extends React.Component {
 
                                                 <div className={"fhs_checkout_products_item_detail"}>
                                                     <div className={"fhs_checkout_products_item_name"}>
-                                                        <div style={{color: "white"}} >{item.product.name}</div>
+                                                        <div style={{color: "white"}}>{item.product.name}</div>
                                                     </div>
 
                                                     {
@@ -345,10 +368,20 @@ class CartInfo extends React.Component {
                                                             </div>
                                                             :
                                                             <div className={"fhs_checkout_products_item_price"}>
-                                                                <div style={{color: "white"}}>{this.getDiscountPrice(item.product.price, item.product.discount)} đ</div>
+                                                                <div
+                                                                    style={{color: "white"}}><NumberFormat
+                                                                    value={this.getDiscountPrice(item.product.price, item.product.discount)}
+                                                                    displayType={'text'}
+                                                                    thousandSeparator={true}/>
+                                                                    đ
+                                                                </div>
                                                                 <div
                                                                     className={"fhs_checkout_products_item_original_price"}>
-                                                                    {item.product.price} đ
+                                                                    <NumberFormat
+                                                                        value={item.product.price}
+                                                                        displayType={'text'}
+                                                                        thousandSeparator={true}/>
+                                                                    đ
                                                                 </div>
                                                             </div>
                                                     }
@@ -359,10 +392,17 @@ class CartInfo extends React.Component {
                                                     {
                                                         item.product.discount === 0 ?
                                                             <div
-                                                                className={"fhs_checkout_products_item_total"}>{item.product.price * item.soLuong} đ</div>
+                                                                className={"fhs_checkout_products_item_total"}>
+                                                                <NumberFormat
+                                                                    value={item.product.price * item.soLuong}
+                                                                    displayType={'text'}
+                                                                    thousandSeparator={true}/> đ</div>
                                                             :
                                                             <div
-                                                                className={"fhs_checkout_products_item_total"}>{this.getDiscountPrice(item.product.price, item.product.discount) * item.soLuong} đ</div>
+                                                                className={"fhs_checkout_products_item_total"}> <NumberFormat
+                                                                value= {this.getDiscountPrice(item.product.price, item.product.discount) * item.soLuong}
+                                                                displayType={'text'}
+                                                                thousandSeparator={true}/> đ</div>
                                                     }
 
                                                 </div>
@@ -378,24 +418,39 @@ class CartInfo extends React.Component {
 
                                     <div className="fhs_checkout_total fhs_checkout_total_desktop">
                                         <div className="fhs_checkout_total_subtotal">
-                                            <div style={{color: "white"}}>Total</div>
-                                            <div style={{color: "white"}}>{this.state.total} đ</div>
+                                            <div style={{color: "white"}}>{t('Check_out.check_total')}</div>
+                                            <div style={{color: "white"}}><NumberFormat
+                                                value={this.state.total}
+                                                displayType={'text'}
+                                                thousandSeparator={true}/> đ
+                                            </div>
                                         </div>
                                         <div className="fhs_checkout_total_grand_total">
-                                            <div style={{color: "white"}}>Total (including VAT)</div>
-                                            <div>{this.state.total} đ</div>
+                                            <div
+                                                style={{color: "white"}}>{t('Check_out.check_total')} ({t('Check_out.check_include')} VAT)
+                                            </div>
+                                            <div><NumberFormat
+                                                value={this.state.total}
+                                                displayType={'text'}
+                                                thousandSeparator={true}/> đ
+                                            </div>
                                         </div>
                                     </div>
                                     <div className="fhs_checkout_block_content">
                                         <div className="fhs_checkout_bottom">
                                             <div>
                                                 <div className="fhs_checkout_total_grand_total">
-                                                    <div>Total (including VAT)</div>
-                                                    <div>{this.state.total} đ</div>
+                                                    <div>{t('Check_out.check_total')} ({t('Check_out.check_include')} VAT)</div>
+                                                    <div><NumberFormat
+                                                        value={this.state.total}
+                                                        displayType={'text'}
+                                                        thousandSeparator={true}/> đ
+                                                    </div>
                                                 </div>
                                                 <div><a href="/Cart"><span
-                                                    style={{paddingRight: "8px" , color: "white"}}><img
-                                                     src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/btn_back.svg?q=101075"/></span><span style={{color: "white"}} >Back to Cart</span></a>
+                                                    style={{paddingRight: "8px", color: "white"}}><img
+                                                    src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/btn_back.svg?q=101075"/></span><span
+                                                    style={{color: "white"}}>{t('Check_out.check_back')}</span></a>
                                                 </div>
                                             </div>
                                             <div>
@@ -403,7 +458,7 @@ class CartInfo extends React.Component {
                                                     <button type={"button"} title="Xác nhận thanh toán"
                                                             onClick={this.handleSubmit}
                                                             className="fhs-btn-confirm fhs-btn-orderconfirm">
-                                                        <span>Order Confirmation</span></button>
+                                                        <span>{t('Check_out.check_order')}</span></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -421,4 +476,4 @@ class CartInfo extends React.Component {
     }
 }
 
-export default withRouter(CartInfo);
+export default withTranslation()(withRouter(CartInfo));
