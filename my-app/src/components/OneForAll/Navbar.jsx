@@ -30,31 +30,31 @@ class Navbar extends Component{
 
     componentDidMount(e){
         const currentUser = authService.getCurrentUser();
-        
-        const checkRole = this.checkRoles()
-        this.setState({checkRoles:checkRole})
-        
-        // lấy thông tin địa chỉ hình ảnh
-        InformationUser.getInformationUser(currentUser.id).then(
-            res=>{
-                this.setState({
-                    imageUrl:res.data.data.user.imageUrl
-                })
-            },
-            err=>{
-                console.log(err)
-            }
-         )
         if(currentUser ==null){
             this.setState({
                 currentUser:false
             })
         }else{
+            const checkRole = this.checkRoles()
+            this.setState({checkRoles:checkRole})
+            
+            // lấy thông tin địa chỉ hình ảnh
+            InformationUser.getInformationUser(currentUser.id).then(
+                res=>{
+                    this.setState({
+                        imageUrl:res.data.data.user.imageUrl
+                    })
+                },
+                err=>{
+                    console.log(err)
+                }
+            )
+       
             this.setState({
                 currentUser:true
             })
         }
-        console.log(currentUser);
+        //console.log(currentUser);
         //console.log(this.state.currentUser)
     }
 

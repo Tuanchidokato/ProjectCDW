@@ -8,10 +8,12 @@ class ContentHome extends Component{
         return(
 
             <Div>
-                <div>
+                <div className="container-fluid">
                     <div className="sale_book row ">
                         <div className="col-sm-2">
-                            <Category />
+                            <div className="category">
+                                <Category />
+                            </div>
                         </div>
                         <div className="col-sm-10">
                             <SaleBooks />
@@ -24,5 +26,8 @@ class ContentHome extends Component{
 }
 export default ContentHome;
 const Div = styled.div`
-    
+    background-color: #2C2828;
+    .category{
+        border-right: 0.01rem solid #FFFF;
+    }
 `;

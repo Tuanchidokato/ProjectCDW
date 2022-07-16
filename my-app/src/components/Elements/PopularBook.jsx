@@ -7,8 +7,8 @@ import book3 from "../../assets/Book-popular/book3.svg"
 function PopularBook() {
     return(
         <Div>
-            <div className="book_popular col-sm-12 row ">
-                <div className="col-sm-4 book_items book_item1">
+            <div className="book_popular  ">
+                <div className="book_items book_item1">
                     <img src={book1} alt="" />
                     <div className="book-content">
                         <h1 className="title">Book head</h1>
@@ -21,7 +21,7 @@ function PopularBook() {
                     </div>
                 </div>
 
-                <div className="col-sm-4 book_items book_item2">
+                <div className="book_items book_item2">
                     <img src={book2} alt="" />
                     <div className="book-content">
                         <h1 className="title">Book head</h1>
@@ -34,7 +34,7 @@ function PopularBook() {
                 </div>
 
 
-                <div className="col-sm-4 book_items book_item3">
+                <div className="book_items book_item3">
                     <img src={book3} alt="" />
                     <div className="book-content">
                         <h1 className="title">Book head</h1>
@@ -55,8 +55,9 @@ const Div = styled.div`
     height: 300px;
     .book_popular{
 
-
         background-color: #2C2828;
+        display: flex;
+        justify-content: space-around;
         .book_items{
             width: 370px;
             height: 210px;

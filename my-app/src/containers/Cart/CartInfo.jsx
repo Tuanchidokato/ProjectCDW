@@ -123,7 +123,7 @@ class CartInfo extends React.Component {
             [e.target.name]: e.target.value,
         });
     };
-
+    // phương thức xử lý thanh toán
     handleSubmit = (e) => {
         e.preventDefault();
         this.validator.validate(this.state);

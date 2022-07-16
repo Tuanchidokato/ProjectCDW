@@ -11,6 +11,10 @@ class ProductService {
        getProductDetail(id) {
               return axios.get(API_URL + "/productDetail" + "/" + id);
        }
+       // get all the book category
+       getCategory() {
+              return axios.get(API_URL + "/findAllCate");
+       }
 
        
 }
