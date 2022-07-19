@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 import InformationUser from "../../services/InformationUser.service"
 import { withTranslation } from "react-i18next";
 import { Dropdown } from "react-bootstrap";
+import PopularBook from "../Elements/PopularBook";
 
 const lngs = {
     en: { nativeName: 'English' },
@@ -22,7 +23,8 @@ class Navbar extends Component{
         this.state ={
             currentUser:true,
             imageUrl:"",
-            checkRoles:true
+            checkRoles:true,
+            searchResult:""
         }
 
     }
@@ -54,10 +56,10 @@ class Navbar extends Component{
                 currentUser:true
             })
         }
-        //console.log(currentUser);
-        //console.log(this.state.currentUser)
+         
     }
-
+   
+     
     Logout(){
        authService.logout();
     }
@@ -79,8 +81,13 @@ class Navbar extends Component{
                         </a>
 
                         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 search_section">
-                        <i className="fa fa-search"></i>
-                            <input type="text" placeholder="Search for the book you want and read it now... Sherlock Holmes..."/>
+                            <i 
+                                className ="fa fa-search"
+                            ></i>
+                            <input 
+                                type="text" 
+                                placeholder="Search for the book you want and read it now... Sherlock Holmes..."
+                            />
                         </ul>
 
                         <div class="col-md-3 text-end login_section">
@@ -212,6 +219,7 @@ const Nav= styled.nav`
             position: absolute;
             margin-right: 450px;
             color: #808080;
+            cursor: pointer;
 
         }
         input{
@@ -220,9 +228,10 @@ const Nav= styled.nav`
             border: none;
             border-radius: 5px;
             //opacity: 30%;
+            outline: none;
             background-color: #3d3c3c;
             padding-left: 50px;
-            color: #000000;
+            color: #d4d4d4;
             ::placeholder{
                 color: #D2D2D2;
                  

@@ -21,7 +21,7 @@ class Category extends React.Component{
         if(searchItem.target.value !== ""){
             const newCategoryList = this.state.categories.filter((category)=>{
                  return  Object.values(category)
-                 .join(" ").toString()
+                 .join(" ")
                  .toLowerCase()
                  .includes(this.state.searchItem.toLowerCase());
                  
@@ -94,6 +94,7 @@ const Div = styled.div`
          
     }
     .category{
+        margin-top: 30px;
         .search{
             i{
                 position: absolute;
@@ -118,6 +119,7 @@ const Div = styled.div`
                 display: flex;
                 flex-direction: column;
               .category_item{
+                    display: flex;
                     padding-left: 20px;
                     margin-right: 10px;
                     border-bottom: 1px solid #ffffff;

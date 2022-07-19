@@ -75,4 +75,9 @@ public class ProductController {
     }
 
 
+    //get all product
+    @GetMapping("/getAll")
+    List<?> getAllProduct(){
+        return productRepository.findAll();
+    }
 }

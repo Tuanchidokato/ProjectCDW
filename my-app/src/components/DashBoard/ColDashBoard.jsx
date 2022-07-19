@@ -1,8 +1,20 @@
-import { Component } from "react";
+import { Component  } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
- 
-function ColDashBoard(){
-   
+import ProductService from "../../services/ProductService"
+class ColDashBoard extends Component{
+    constructor(props){
+        super(props)
+        this.handlerProductDetail=this.handlerProductDetail.bind(this)
+        this.state={
+            products:this.props.listProduct
+        }
+    }
+     
+     handlerProductDetail(){
+       console.log(this.props.listProduct) 
+    }
+    render(){
         return(
             <Div>
                    <div className="dash-content">
@@ -25,7 +37,9 @@ function ColDashBoard(){
                                     <span className="number">50,120</span>
                                 </div>
                                 
-                                <div className="box box3">
+                                <div
+                                    onClick={this.handlerProductDetail}
+                                    className="box box3">
                                     <i className="fa-solid fa-comment"></i>
                                     <span className="text">Comment</span>
                                     <span className="number">50,120</span>
@@ -33,36 +47,44 @@ function ColDashBoard(){
                             </div>
                         </div>
 
-                        <div className="activity">
-                            <div className="title">
-                                <i class="fa-solid fa-clock"></i>
-                                <span className="text">Recent Activity</span>
-                            </div>
+                        <div class="table">
+    
+                        <ul class="responsive-table">
+                                <li class="table-header">
+                                    <div class="col col-1">Id</div>
+                                    <div class="col col-2"> Tên sách</div>
+                                    <div class="col col-3">Thể loại</div>
+                                    <div class="col col-4">Tác giả</div>
+                                    <div class="col col-5">Giá</div>
+                                    <div class="col col-6">Số lượng</div>
 
-                            <div className="activity-data">
-                                <div className="data names">
-                                    <span className="data-title">Name</span>
-                                    <span className="data-list">Prem Sahi</span>
-                                </div>
-
-                                <div className="data email">
-                                    <span className="data-title">Email</span>
-                                    <span className="data-list">premshahi@gmail.com</span>
-                                </div>
-
-                                <div className="data joined">
-                                    <span className="data-title">Joined</span>
-                                    <span className="data-list">2022-02-12</span>
-                                </div>
-                            </div>
+                                </li>
+                               
+                                {
+                                    this.props.listProduct.map((product)=>
+                                    <Link
+                                        to={"/adminDashBoard/informationProduct/"+product.id }
+                                        class="table-row">
+                                        <div class="col col-1" data-label=" Id">{product.id}</div>
+                                        <div class="col col-2" data-label="Customer Name">{product.name}</div>
+                                        <div class="col col-3" data-label="Amount">{product.categories.name}</div>
+                                        <div class="col col-4" data-label="Payment Status">{product.author}</div>
+                                        <div class="col col-5" data-label="Amount">{product.price}</div>
+                                        <div class="col col-6" data-label="Payment Status">{product.quantity}</div>
+                                    </Link>
+                                    )
+                                }
+                            </ul>
+                            
                         </div>
                     </div>
             </Div>
         )
+    }
 }
 export default ColDashBoard;
 const Div = styled.div`
-   .dash-content{
+        .dash-content{
             padding-top: 60px;
             font-size: 20px;
             margin-left: 250px;
@@ -127,22 +149,91 @@ const Div = styled.div`
                 }
             }
 
-            .activity {
-                .activity-data{
-                    display: flex;
-                    justify-content: space-between;
-                    width: 100%;
-                    //width: calc(100% / 5 - 15px);
-                    .data{
+            .table{                  
+               margin-top: 20px;
+                    .responsive-table {
+                    li {
+                        border-radius: 3px;
+                        padding: 25px 30px;
                         display: flex;
-                        flex-direction: column;
-                        margin: 0 15px;
+                        justify-content: space-between;
+                        margin-bottom: 25px;
                     }
-                    .data-title{
-                        font-size: 20px;
-                        font-weight: 500;
+                    a {
+                        border-radius: 3px;
+                        padding: 25px 30px;
+                        display: flex;
+                        justify-content: space-between;
+                        margin-bottom: 25px;
+                        text-decoration: none;
+                        color: #000;
                     }
-                }
+                    .table-header {
+                        background-color: #95A5A6;
+                        font-size: 14px;
+                        text-transform: uppercase;
+                        letter-spacing: 0.03em;
+                    }
+                    .table-row {
+                        background-color: #ffffff;
+                        box-shadow: 0px 0px 9px 0px #0c050519;
+                        cursor: pointer;
+                    }
+                    .col-1 {
+                        flex-basis: 10%;
+                        border-right: 1px solid #6C7A89;
+                    }
+                    .col-2 {
+                        flex-basis: 25%;
+                        border-right: 1px solid #6C7A89;
+
+                    }
+                    .col-3 {
+                        flex-basis: 15%;
+                        border-right: 1px solid #6C7A89;
+
+                    }
+                    .col-4 {
+                        flex-basis: 15%;
+                        border-right: 1px solid #6C7A89;
+
+                    }
+                    .col-5 {
+                        flex-basis: 20%;
+                        border-right: 1px solid #6C7A89;
+
+                    }
+                    .col-6 {
+                        flex-basis: 15%;
+                    }
+                    /* @media all and (max-width: 767px) {
+                        .table-header {
+                        display: none;
+                        }
+                        .table-row{
+                        
+                        }
+                        li {
+                        display: block;
+                        }
+                        .col {
+                        
+                        flex-basis: 100%;
+                        
+                        }
+                        .col {
+                        display: flex;
+                        padding: 10px 0;
+                        &:before {
+                            color: #6C7A89;
+                            padding-right: 10px;
+                            content: attr(data-label);
+                            flex-basis: 50%;
+                            text-align: right;
+                        }
+                        }
+                    } */
+                    }
             }
         }
 `;

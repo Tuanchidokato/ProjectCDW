@@ -1,14 +1,20 @@
 import User from "../../assets/bookStudent/image 2.png"
 import Logo from "../../assets/Logo.svg"
 import styled from "styled-components"
-import {Link} from "react-router-dom"
+import {Link, Route, useHistory} from "react-router-dom"
 import { useEffect, useState } from "react"
 import InformationUserService from "../../services/InformationUser.service"
 import authService from "../../services/auth.service"
 import ColDashBoard from "./ColDashBoard"
-function Navbar(){
+import InfoPro from "./InforPro"
+import ProductService from "../../services/ProductService"
+function Navbar(props){
 
     const[imageUrl, setImageUrl]= useState("") 
+    const[products, setProducts]=useState([])
+    const[infoSearch, setInfoSearch]=useState("")
+    const[searchResult, setSearchResult]=useState([])
+    const history = useHistory();
 
     const toggleHandlerChange = ()=>{
         const nav= document.getElementById('dark')
@@ -20,15 +26,46 @@ function Navbar(){
         nav.classList.toggle('close')
 
     }
+    // // get information search
+    // const onChangeSearch=(e)=>{
+    //     setInfoSearch(e.target.value)
+    // }
+    // function search product
+    const searchHandler =()=>{
+        //const onChangeSearch= 
+        history.push("/adminDashBoard")
+        const onChangeSearch=document.getElementById("infoSearch").value;
+        
+        if(onChangeSearch !== ""){
+            const newListProduct= products.filter(product=>{
+                return Object.values(product)
+                .join(" ")
+                .toLowerCase()
+                .includes(onChangeSearch.toLowerCase()
+                )
+            })
+            setInfoSearch(onChangeSearch)
+            setSearchResult(newListProduct)
+        } 
+        
+    }
+
+    const handleKeypress=(e)=>{
+        if(e.keyCode === 13){
+            searchHandler()
+        }
+    }
     useEffect(()=>{
         const currentUser = authService.getCurrentUser();
         InformationUserService.getInformationUser(currentUser.id).then(
             res=>{
-             //   console.log(res.data.data.user.imageUrl)
                 setImageUrl(res.data.data.user.imageUrl)
-                console.log(imageUrl)
             }
         )
+        ProductService.getAllProduct().then(res=>{
+            setProducts([...res.data])
+        })
+        setInfoSearch("")
     },[])
     return(
         <Div>
@@ -44,17 +81,17 @@ function Navbar(){
                         <div className="menu-items">
                             <ul className="nav-links">
                                 <li>
-                                    <a href="#">
+                                    <Link to="/adminDashBoard">
                                         <i className="fa fa-home"></i>
                                         <span className="link-name">Dashboard</span>
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a href="#">
+                                    <Link to="/adminDashBoard/informationProduct">
                                         <i className="fa fa-c"></i>
                                         <span className="link-name">Content</span>
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
@@ -112,11 +149,18 @@ function Navbar(){
                     <div className="top">
                         <i
                             onClick={sidebarHandler}
+                            onKeyPress={handleKeypress}
                             className="fa fa-bars sidebar-toggle"
                         ></i>
                         <div className="search-box">
-                            <i className="fa fa-search"></i>
-                            <input type="text" placeholder="Search here..." />
+                            <i 
+                                onClick={searchHandler}
+                                className="fa fa-search"></i>
+                            <input 
+                                type="text"
+                                id="infoSearch"
+                                placeholder="Search here..." 
+                            />
                         </div>
 
                         <div className="user-img">
@@ -124,59 +168,15 @@ function Navbar(){
                         </div>
                     </div>
 
-                    {/* <div className="dash-content">
-                        <div className="overview">
-                            <div className="title">
-                                <i class="fa-solid fa-gauge"></i>
-                                <span className="text">DashBoard</span>
-                            </div>
-
-                            <div className="boxes">
-                                <div className="box box1">
-                                    <i className="fa-solid fa-thumbs-up"></i>
-                                    <span className="text">Total text</span>
-                                    <span className="number">50,120</span>
-                                </div>
-
-                                <div className="box box2">
-                                    <i className="fa-solid fa-share"></i>
-                                    <span className="text">Share</span>
-                                    <span className="number">50,120</span>
-                                </div>
-                                
-                                <div className="box box3">
-                                    <i className="fa-solid fa-comment"></i>
-                                    <span className="text">Comment</span>
-                                    <span className="number">50,120</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="activity">
-                            <div className="title">
-                                <i class="fa-solid fa-clock"></i>
-                                <span className="text">Recent Activity</span>
-                            </div>
-
-                            <div className="activity-data">
-                                <div className="data names">
-                                    <span className="data-title">Name</span>
-                                    <span className="data-list">Prem Sahi</span>
-                                </div>
-
-                                <div className="data email">
-                                    <span className="data-title">Email</span>
-                                    <span className="data-list">premshahi@gmail.com</span>
-                                </div>
-
-                                <div className="data joined">
-                                    <span className="data-title">Joined</span>
-                                    <span className="data-list">2022-02-12</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-                    <ColDashBoard ></ColDashBoard>
+                    
+                   <Route exact path="/adminDashBoard/informationProduct/:id">
+                        <InfoPro />
+                   </Route>
+                   <Route exact path="/adminDashBoard">
+                        <ColDashBoard
+                            listProduct={infoSearch.length<1?products:searchResult}
+                        />
+                    </Route>
                 </section>
            </div>
             </Div>
@@ -339,6 +339,9 @@ const Div = styled.div`
         }
         .dash-content{
             margin-left: 180px;
+        }
+        .Information_Detail{
+            margin-left: 170px;
         }
    }
    .dark{
