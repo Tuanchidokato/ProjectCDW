@@ -8,6 +8,7 @@ import authService from "../../services/auth.service"
 import ColDashBoard from "./ColDashBoard"
 import InfoPro from "./InforPro"
 import ProductService from "../../services/ProductService"
+import UserManagement from "./UserManagement"
 function Navbar(props){
 
     const[imageUrl, setImageUrl]= useState("") 
@@ -88,14 +89,14 @@ function Navbar(props){
                                 </li>
 
                                 <li>
-                                    <Link to="/adminDashBoard/informationProduct">
-                                        <i className="fa fa-c"></i>
-                                        <span className="link-name">Content</span>
+                                    <Link to="/adminDashBoard/UserManagement">
+                                        <i className="fa fa-user"></i>
+                                        <span className="link-name">Nguời dùng</span>
                                     </Link>
                                 </li>
 
                                 <li>
-                                    <a href="#">
+                                    <a>
                                         <i className="fa fa-transgender-alt"></i>
                                         <span className="link-name">Analytics</span>
                                     </a>
@@ -176,6 +177,9 @@ function Navbar(props){
                         <ColDashBoard
                             listProduct={infoSearch.length<1?products:searchResult}
                         />
+                    </Route>
+                    <Route exact path="/adminDashBoard/UserManagement">
+                        <UserManagement/>
                     </Route>
                 </section>
            </div>
@@ -382,6 +386,7 @@ const Div = styled.div`
             background-color: var(--panel-color );
             transition: var(--tran-05);
             align-items: center;
+            z-index: 999;
             .sidebar-toggle{
                 font-size: 26px;
                 color: var(--text-color);
