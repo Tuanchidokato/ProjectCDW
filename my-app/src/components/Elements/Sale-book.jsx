@@ -68,11 +68,15 @@ class SaleBooks extends React.Component {
                             this.state.products.map(
                                 product =>
 
-                                    <div className="col-sm-2">
-                                        <Link to={"/ProductDetail/" + product.id}><img
-                                            src={require('../../assets/bookStudent/' + product.image)}
-                                            alt={product.name}/></Link>
-                                    </div>
+
+                                        <div className="col-sm-2">
+                                            <Link to={"/ProductDetail/" + product.id}>
+                                                <img
+                                                    src={require('../../assets/bookStudent/' + product.image)}
+                                                    alt={product.name}/>
+                                            </Link>
+                                        </div>
+
                             )
                         }
 

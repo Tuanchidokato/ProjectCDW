@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 300)
@@ -63,5 +64,9 @@ public class InformationUserController {
                     new ResponseObject("error", "Not Update", "")
             );
         }
+    }
+    @GetMapping("/getAllUser")
+    public List<?> getAllUser(){
+        return userRepository.findAll();
     }
 }

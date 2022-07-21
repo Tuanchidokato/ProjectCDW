@@ -256,7 +256,9 @@ const Div = styled.div`
                 text-align: center;
                 margin-top: 30px;
                 .btn_login{
+                    text-decoration: none;
                     width: 150px;
+                    padding-top: 5px;
                     height: 40px;
                     background: rgba(32, 49, 109, 0.38);
                     border-radius: 5px;

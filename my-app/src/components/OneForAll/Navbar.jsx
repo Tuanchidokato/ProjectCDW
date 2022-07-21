@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import Logo from "../../assets/Logo.svg"
 import Bell from "../../assets/fluent_premium-person-20-regular.svg"
-import React, {Component} from "react";
+import {Component} from "react";
 import authService from "../../services/auth.service";
 import {Link, withRouter} from "react-router-dom";
 import InformationUser from "../../services/InformationUser.service"
-import {withTranslation} from "react-i18next";
-import {Dropdown} from "react-bootstrap";
+import { withTranslation } from "react-i18next";
+import { Dropdown } from "react-bootstrap";
+import PopularBook from "../Elements/PopularBook";
 import CartService from "../../services/CartService";
 import CartPreview from "./CartPreview";
 
@@ -23,7 +24,6 @@ class Navbar extends Component {
         super(props)
         this.Logout = this.Logout.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this)
-
         this.state = {
             currentUser: true,
             imageUrl: "",
@@ -31,40 +31,40 @@ class Navbar extends Component {
             search: "",
             numberOfItems: 0,
             visible: false,
-        }
 
+        }
 
     }
 
 
     componentDidMount(e) {
         const currentUser = authService.getCurrentUser();
-
-        const checkRole = this.checkRoles()
-        this.setState({checkRoles: checkRole})
-
-        // lấy thông tin địa chỉ hình ảnh
-        InformationUser.getInformationUser(currentUser.id).then(
-            res => {
-                this.setState({
-                    imageUrl: res.data.data.user.imageUrl
-                })
-            },
-            err => {
-                console.log(err)
-            }
-        )
-        if (currentUser == null) {
+        if(currentUser ==null){
             this.setState({
                 currentUser: false
             })
-        } else {
+
+        }else{
+            const checkRole = this.checkRoles()
+            this.setState({checkRoles:checkRole})
+            
+            // lấy thông tin địa chỉ hình ảnh
+            InformationUser.getInformationUser(currentUser.id).then(
+                res=>{
+                    this.setState({
+                        imageUrl:res.data.data.user.imageUrl
+                    })
+                },
+                err=>{
+                    console.log(err)
+                }
+            )
+       
             this.setState({
                 currentUser: true
             })
         }
-        console.log(currentUser);
-        //console.log(this.state.currentUser)
+
 
         CartService.getItemListCart().then((response) => {
             this.setState({
@@ -73,10 +73,11 @@ class Navbar extends Component {
         });
 
     }
+  
+     
+    Logout(){
+       authService.logout();
 
-
-    Logout() {
-        authService.logout();
     }
 
     // Checl role
@@ -117,6 +118,7 @@ class Navbar extends Component {
                         </a>
 
                         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0 search_section">
+
                             <i className="fa fa-search"></i>
 
                             <input type="text" name={"search"} onChange={event => {
@@ -126,6 +128,7 @@ class Navbar extends Component {
                             <button type={"button"}  className={"fhs_btn_default active button-search"} title="Search" onClick={() => this.search(this.state.search)}>
                                 <span className={"ico_search_white"}></span>
                             </button>
+
 
                         </ul>
 
@@ -376,6 +379,7 @@ const Nav = styled.nav`
       }
     }
 
+
     .dropbtn {
       :hover {
         .dropdown-content {
@@ -383,7 +387,7 @@ const Nav = styled.nav`
 
         }
       }
-    }
+
 
     .dropdown-content {
       display: none;

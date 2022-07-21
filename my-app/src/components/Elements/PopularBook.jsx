@@ -4,30 +4,33 @@ import ProductService from "../../services/ProductService";
 import {withRouter} from "react-router-dom";
 import {withTranslation} from "react-i18next";
 
+import book1 from "../../assets/Book-popular/book1.svg"
+import book2 from "../../assets/Book-popular/book2.svg"
+import book3 from "../../assets/Book-popular/book3.svg"
 class PopularBook extends React.Component {
-
     constructor(props) {
         super(props);
+      //  this.getAllProduct= this.getAllProduct.bind(this)
         this.state = {
             products: []
         }
     }
-
+    // getAllProduct(){
+    //   return "AAA"
+    // }
     componentDidMount() {
         ProductService.getPopularProducts().then((response) => {
             this.setState({
                 products: response.data
             })
-            console.log(response.data)
+        //    console.log(response.data)
         });
     }
-
     render() {
         const {t, i18n} = this.props;
         return (
             <Div>
                     <div className="book_popular col-sm-13 row ">
-
                         {
                             this.state.products.map(
                                 (product, i) =>
@@ -41,7 +44,6 @@ class PopularBook extends React.Component {
                                                     :
                                                     <h1 className="title">{product.name.substring(0, 15)}</h1>
                                             }
-
                                             <p className="content-book">{product.description.substring(0, 150)}...
                                             </p>
                                             <p className="note_book">{product.categories.name}</p>
@@ -50,24 +52,19 @@ class PopularBook extends React.Component {
                                     </div>
                             )
                         }
-
                     </div>
-
             </Div>
         )
     }
-
-
 }
-
 export default withTranslation()(withRouter(PopularBook));
-
 const Div = styled.div`
   background-color: #2C2828;
   height: 300px;
 
   .book_popular {
-
+    display: flex;
+    flex-wrap: nowrap;
 
     background-color: #2C2828;
 
@@ -84,7 +81,6 @@ const Div = styled.div`
         width: 166px;
         margin-left: -34px;
         position: absolute;
-        margin-top: -14px;
       }
 
       .book-content {

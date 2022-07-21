@@ -209,7 +209,7 @@ class SignUp extends Component{
                        </form>
                    </div>
                   <div className="logo_login">
-                     <a href="/">
+                     <a href="/home">
                         <img src={logo} alt="" />
                      </a>
                   </div>
@@ -323,10 +323,11 @@ const Div = styled.div`
                 text-align: center;
                 margin-top: 30px;
                 .btn_login{
-                    width: 150px;
-                    height: 40px;
+                    padding: 12px 20px 12px 20px;
+                    text-decoration: none;
                     background: rgba(32, 49, 109, 0.38);
                     border-radius: 5px;
+                    font-size: 18px;
                     border: 2px solid #FFFF;
                     color: #FFFFFF;
                 }

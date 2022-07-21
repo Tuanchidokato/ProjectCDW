@@ -11,9 +11,16 @@ class ProductService {
        getProductDetail(id) {
               return axios.get(API_URL + "/productDetail" + "/" + id);
        }
+       // get all the book category
+       getCategory() {
+              return axios.get(API_URL + "/findAllCate");
+       }
 
        getPopularProducts() {
               return axios.get(API_URL + "/popularProducts");
+       }
+       getAllProduct() {
+              return axios.get(API_URL + "/getAll");
        }
 
        searchProducts(params , searchText) {

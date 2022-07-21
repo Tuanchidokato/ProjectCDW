@@ -40,5 +40,8 @@ class InformationUser{
          getImage(imageUrl){
             return axios.get(API_URL+"FileUpLoad/file/"+ imageUrl)
          }
+         getAllUser(){
+            return axios.get(API_URL+"getAllUser")
+         }
 }
 export default new InformationUser;

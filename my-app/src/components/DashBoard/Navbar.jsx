@@ -1,9 +1,22 @@
 import User from "../../assets/bookStudent/image 2.png"
 import Logo from "../../assets/Logo.svg"
 import styled from "styled-components"
+import {Link, Route, useHistory} from "react-router-dom"
+import { useEffect, useState } from "react"
+import InformationUserService from "../../services/InformationUser.service"
+import authService from "../../services/auth.service"
 import ColDashBoard from "./ColDashBoard"
-function Navbar(){
+import InfoPro from "./InforPro"
+import ProductService from "../../services/ProductService"
+import UserManagement from "./UserManagement"
+import InfoUser from "./InfoUser"
+function Navbar(props){
 
+    const[imageUrl, setImageUrl]= useState("") 
+    const[products, setProducts]=useState([])
+    const[infoSearch, setInfoSearch]=useState("")
+    const[searchResult, setSearchResult]=useState([])
+    const history = useHistory();
 
     const toggleHandlerChange = ()=>{
         const nav= document.getElementById('dark')
@@ -15,35 +28,73 @@ function Navbar(){
         nav.classList.toggle('close')
 
     }
+   
+    // function search product
+    const searchHandler =()=>{
+        //const onChangeSearch= 
+        history.push("/adminDashBoard")
+        const onChangeSearch=document.getElementById("infoSearch").value;
+        
+        if(onChangeSearch !== ""){
+            const newListProduct= products.filter(product=>{
+                return Object.values(product)
+                .join(" ")
+                .toLowerCase()
+                .includes(onChangeSearch.toLowerCase()
+                )
+            })
+            setInfoSearch(onChangeSearch)
+            setSearchResult(newListProduct)
+        } 
+        
+    }
+
+    const handleKeypress=(e)=>{
+        if(e.keyCode === 13){
+            searchHandler()
+        }
+    }
+    useEffect(()=>{
+        const currentUser = authService.getCurrentUser();
+        InformationUserService.getInformationUser(currentUser.id).then(
+            res=>{
+                setImageUrl(res.data.data.user.imageUrl)
+            }
+        )
+        ProductService.getAllProduct().then(res=>{
+            setProducts([...res.data])
+        })
+        setInfoSearch("")
+    },[])
     return(
         <Div>
            <div id="dark">
                 <nav>
-                        <div className="logo-name">
+                        <Link to="/" className="logo-name">
                             <div className="logo-image">
                                 <img src={Logo} alt="" />
                             </div>
                             <span className="logo_name">KeanZon</span>
-                        </div>
+                        </Link>
 
                         <div className="menu-items">
                             <ul className="nav-links">
                                 <li>
-                                    <a href="#">
+                                    <Link to="/adminDashBoard">
                                         <i className="fa fa-home"></i>
                                         <span className="link-name">Dashboard</span>
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a href="#">
-                                        <i className="fa fa-c"></i>
-                                        <span className="link-name">Content</span>
-                                    </a>
+                                    <Link to="/adminDashBoard/UserManagement">
+                                        <i className="fa fa-user"></i>
+                                        <span className="link-name">Nguời dùng</span>
+                                    </Link>
                                 </li>
 
                                 <li>
-                                    <a href="#">
+                                    <a>
                                         <i className="fa fa-transgender-alt"></i>
                                         <span className="link-name">Analytics</span>
                                     </a>
@@ -97,17 +148,40 @@ function Navbar(){
                     <div className="top">
                         <i
                             onClick={sidebarHandler}
+                            onKeyPress={handleKeypress}
                             className="fa fa-bars sidebar-toggle"
                         ></i>
                         <div className="search-box">
-                            <i className="fa fa-search"></i>
-                            <input type="text" placeholder="Search here..." />
+                            <i 
+                                onClick={searchHandler}
+                                className="fa fa-search"></i>
+                            <input 
+                                type="text"
+                                id="infoSearch"
+                                placeholder="Search here..." 
+                            />
                         </div>
 
                         <div className="user-img">
-                            <img src={User} alt="" />
+                            <img src={imageUrl} alt="" />
                         </div>
                     </div>
+
+                    
+                   <Route exact path="/adminDashBoard/informationProduct/:id">
+                        <InfoPro />
+                   </Route>
+                   <Route exact path="/adminDashBoard">
+                        <ColDashBoard
+                            listProduct={infoSearch.length<1?products:searchResult}
+                        />
+                    </Route>
+                    <Route exact path="/adminDashBoard/UserManagement">
+                        <UserManagement/>
+                    </Route>
+                    <Route exact path="/adminDashBoard/UserManagement/infoUser/:id">
+                        <InfoUser></InfoUser>
+                    </Route>
                 </section>
            </div>
             </Div>
@@ -150,6 +224,7 @@ const Div = styled.div`
         .logo-name{
             display: flex;
             position: fixed;
+            text-decoration: none;
             .logo-image{
                 min-width: 45px;
                 display: flex;
@@ -262,9 +337,16 @@ const Div = styled.div`
    .close ~ .dashboard{
         left: 73px;
         width: calc(100% - 73px);
+         
         .top{
             left: 73px;
             width: calc(100% - 73px);
+        }
+        .dash-content{
+            margin-left: 180px;
+        }
+        .Information_Detail{
+            margin-left: 170px;
         }
    }
    .dark{
@@ -286,13 +368,14 @@ const Div = styled.div`
     }
 
     .dashboard{
-        position: relative;
+       // position: relative;
         background-color: var(--panel-color);
         min-height: 100vh;
-        width: calc(100% - 250px);
+        width: calc(100%);
         left: 250px !important;
         transition: var(--tran-05);
         padding: 10px 14px;
+        
         .top{
             position: fixed;
             top: 0;
@@ -304,6 +387,7 @@ const Div = styled.div`
             background-color: var(--panel-color );
             transition: var(--tran-05);
             align-items: center;
+            z-index: 999;
             .sidebar-toggle{
                 font-size: 26px;
                 color: var(--text-color);
@@ -355,6 +439,89 @@ const Div = styled.div`
                     height: 40px;
                     height: 100%;
                     min-width: 40px;
+                }
+            }
+        }
+        .dash-content{
+            padding-top: 60px;
+            font-size: 20px;
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            transition: var(--tran-05);
+            .title{
+                display: flex;
+                align-items: center;
+                margin: 70px 0 30px 0;
+                i{
+                    position: relative;
+                    height: 35px;
+                    width: 35px;
+                    background-color: var(--primary-color);
+                    border-radius: 6px;
+                    color: var(--title-icon-color);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 24px;
+                }
+                .text{
+                    font-size: 20px;
+                    font-weight: 500;
+                    color: var(--text-color);
+                    margin-left: 10px;
+                }
+            }
+            .boxes{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                .box{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    border-radius: 12px;
+                    width: calc(100% / 3 - 15px);
+                    padding: 15px 20px;
+                    background-color: var(--box1-color);
+                    .text{
+                        white-space: nowrap;
+                        font-size: 18px;
+                        font-weight: 500;
+                        color: var(--text-color);
+                    }
+                    .number{
+                        font-size: 40px;
+                        font-weight: 500;
+                        color: var(--text-color);
+                    }
+                    i{
+                        font-size: 35px;
+                        color: var(--text-color);
+                    }
+                }
+                .box2{
+                    background-color: var(--box2-color);
+                }
+                .box3{
+                    background-color: var(--box3-color);
+                }
+            }
+
+            .activity {
+                .activity-data{
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    //width: calc(100% / 5 - 15px);
+                    .data{
+                        display: flex;
+                        flex-direction: column;
+                        margin: 0 15px;
+                    }
+                    .data-title{
+                        font-size: 20px;
+                        font-weight: 500;
+                    }
                 }
             }
         }
