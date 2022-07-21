@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import InformationUserService from "../../services/InformationUser.service";
 
@@ -119,7 +120,8 @@ function UserManagement(){
                     
                             {
                                 users.map(user=>
-                                    <a
+                                    <Link
+                                        to={"/adminDashBoard/UserManagement/infoUser/"+user.id}
                                         class="table-row">
                                         <div class="col col-1" data-label="id">{user.id}</div>
                                         <div class="col col-2" data-label="userName">{user.username}</div>
@@ -139,7 +141,7 @@ function UserManagement(){
                                                 <img src={user.imageUrl} alt="" />
                                             </div>
                                         </div>
-                                    </a>
+                                    </Link>
                                 )
                             }
                     </ul>

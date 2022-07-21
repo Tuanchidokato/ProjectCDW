@@ -7,8 +7,6 @@ import './css/SaleBook.css'
 
 
 class SaleBooks extends React.Component {
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -74,9 +72,11 @@ class SaleBooks extends React.Component {
                                 product =>
 
                                         <div className="col-sm-2">
-                                            <Link to={"/ProductDetail/" + product.id}><img
-                                                src={require('../../assets/bookStudent/' + product.image)}
-                                                alt={product.name}/></Link>
+                                            <Link to={"/ProductDetail/" + product.id}>
+                                                <img
+                                                    src={require('../../assets/bookStudent/' + product.image)}
+                                                    alt={product.name}/>
+                                            </Link>
                                         </div>
                             )
                         }

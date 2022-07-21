@@ -1,149 +1,192 @@
+import { Component } from "react";
+import { withRouter } from "react-router";
 import styled from "styled-components";
+import image from "../../assets/bookStudent/image 3.png"
+import InformationUserService from "../../services/InformationUser.service";
+class InfoUser extends Component{
 
-function InfoUser(){
+   constructor(props){
+    super(props)
+    this.componentDidMount = this.componentDidMount.bind(this)
+    this.state={
+        user:"",
+        imageUrl:"",
+        account:""
+    }
+   }
+    componentDidMount(){
+        let {id} = this.props.match.params;
+        InformationUserService.getInformationUser(id).then(
+            res=>{
+                 this.setState({
+                    user:res.data.data,
+                    imageUrl:res.data.data.user.imageUrl,
+                    account:res.data.data.user
 
-    return(
-        <Div>
-               <div className="Information_Detail">
-                    <h1>Chỉnh sửa sản phẩm</h1>
-                    <div className="infor1">
-                        <div className="inforData">
-                            <div className="name_book">
-                                <p>Tên sách</p>
-                                <input 
-                                    value={this.state.nameB}
-                                    type="text" name="" id="" />
+                })
+                console.log(this.state.user)
+
+                // setImageUrl(user.user)
+                // console.log(imageUrl)
+            },
+            err=>{
+                console.log(err)
+            }
+        )
+    }
+    render(){
+        return(
+            <Div>
+                <div className="InfoUser">
+                    <div className="managementUser">
+                        <div className="infoUser1 image">
+                            <div className="imageUser">
+                                <img src={this.state.imageUrl} alt="" />
                             </div>
-                            <div className="author_nxb">
-                                <div className="author">
-                                    <p>Tác giả</p>
-                                    <input 
-                                        value={this.state.author}
-                                        type="text" name="" id="" />
-                                </div>
-                                <div className="nxb">
-                                    <p>Nhà xuất bản</p>
-                                    <input 
-                                        value={this.state.nxb}
-                                        type="text" name="" id="" />
-                                </div>
-                            </div>
-                            <div className="price_quantity">
-                                <div className="price">
-                                    <p>Giá</p>
-                                    <input 
-                                        value={this.state.price}
-                                        type="text" name="" id="" />
-                                </div>
-                                <div className="quantity">
-                                    <p>Số lượng còn lại</p>
-                                    <input 
-                                        value={this.state.quantity}
-                                        type="text" name="" id="" />
-                                </div>
-                            </div>
-                            <div className="description">
-                                <p>Mô tả sách</p>
-                                <textarea 
-                                    value={this.state.description} 
-                                    rows="9" cols="70" name="comment" form="usrform" > 
-                                </textarea>
+                            <div className="name">
+                                <p>Cao</p>
+                                <p>  </p>
+                                <p>Tuan</p>
                             </div>
                         </div>
-                        <div className="inforImage">
-                            <div className="dateCreate">
-                                <p>Ngày đăng</p>
-                                <p>13/8/2022</p>
-                            </div>
-                            <div className="status">
-                                <p>Trạng thái</p>
-                                <p>{this.state.available?"Còn hàng":"Hết hàng"} </p>
-                            </div>
-                            <hr />
-                            <div className="category">
-                                <p>Phân loại sách</p>
-                                <select value={this.state.category} name="" id="">
-                                  {/* {
-                                    this.state.categories.map(category=>
-                                        <option value={category.name}>{category.name}</option>    
-                                    )
-                                  } */}
-
-                                </select>
-                            </div>
-                            <div className="imageProduct">
-                                <p>Ảnh sản phẩm</p>
-                                <div className="image">
-                                    <img src={book} alt="" />
+                        <div className="infoUser1">
+                            <div className="detailInfo">
+                                <div className="title">
+                                    <p>Thông tin cá nhân</p>
+                                </div>
+                                <div className="infoContent">
+                                    <div className="content_1">
+                                        <div className=" content_item id">
+                                            <p>id</p>
+                                            <input 
+                                                value={this.state.user.id}
+                                                type="text" name="" id="" />
+                                        </div>
+                                        <div className="content_item username">
+                                            <p>Username</p>
+                                            <input 
+                                                defaultValue={this.state.account.username}
+                                                type="text" name="" id="" />
+                                        </div>
+                                        <div className="content_item email">
+                                            <p>email</p>
+                                            <input 
+                                                defaultValue={this.state.account.email}
+                                                type="text" name="" id="" />
+                                        </div>
+                                        <div className="content_item phoneNumber">
+                                            <p>Phone number</p>
+                                            <input 
+                                                defaultValue={this.state.user.phoneNumber}
+                                            type="text" name="" id="" />
+                                        </div>
+                                    </div>
+    
+                                    <div className="content_1">
+                                        <div className="content_item firstName">
+                                            <p>First name</p>
+                                            <input 
+                                                defaultValue={this.state.user.firstName}
+                                            type="text" name="" id="" />
+                                        </div>
+                                        <div className="content_item lastName">
+                                            <p>Last name</p>
+                                            <input 
+                                                defaultValue={this.state.user.lastName}
+                                                type="text" name="" id="" />
+                                        </div>
+                                        <div className="content_item address">
+                                            <p>Address</p>
+                                            <input 
+                                                defaultValue={this.state.user.address}
+                                                type="text" name="" id="" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-        </Div>
-    )
-}
-export default InfoUser;
+            </Div>
+        )
+    }
+    }
+  
+export default withRouter(InfoUser);
 const Div= styled.div`
-      .Information_Detail{
-        padding-top: 60px;
+    .InfoUser{
+
+        padding-top: 90px;
         font-size: 20px;
         margin-left: 250px;
         width: calc(100% - 250px);
         transition: var(--tran-05);
         color: var(--text-color);
-        .infor1{
+        .managementUser{
             display: flex;
             justify-content: space-around;
-            .inforData{
+            .infoUser1{
+                //background-color: beige;
                 border: 1px solid var(--border-color);
-                padding: 20px 20px 20px 20px;
-                box-shadow: 0px 0px 9px 5px #0c050519;
-                border-radius: 5px ;
-                input{
-                    border: 2px solid var(--border-color);
-                    color: #000;
-                }
-                textarea{
-                    color: #000;
-                }
-                .author_nxb{
+                padding: 20px 20px;
+                border-radius: 5px;
+                .imageUser{
+                    background-color: #adadad;
                     display: flex;
-                    justify-content: space-between;
+                    justify-content: center;
+                    z-index: 0;
+                    border-image: none;
+                    border-style: solid;
+                    border-width: 1px;
+                    border: none;
+                    height: 200px;
+                    width: 200px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    margin: auto;
+                    border:  1px solid var(--border-color);
+                    img{
+                        margin-top: 4px;
+                        height: 100%;
+                        width: 100%;
+                        display: block;
+                    }
                 }
-                .price_quantity{
+                .name{
                     display: flex;
-                    justify-content: space-between;
+                    justify-content: center;
                 }
-            }
-            .inforImage{
-                border: 1px solid var(--border-color);
-                padding: 20px 20px 20px 20px;
-                box-shadow: 0px 0px 9px 5px #0c050519;
-                border-radius: 5px ;
-                .dateCreate{
-                    display: flex;
-                    justify-content: space-between;
-                    font-size: 15px;
-                }
-                .status{
-                    display: flex;
-                    justify-content: space-between;
-                    font-size: 15px;
-
-                }
-                select{
-                    color:#000 ;
-                }
-                .imageProduct{
-                    margin-top: 20px;
-                    .image{
+                .detailInfo{
+                    .infoContent{
                         display: flex;
-                        justify-content: center;
-                        margin-top: 20px;
+                        justify-content: space-evenly;
+                        .content_1{
+                            display: flex;
+                            flex-direction: column;
+                            .content_item{
+                                display: flex;
+                                align-items: center;
+                                margin-top: 20px;
+                                margin-left: 10px;
+                                p{
+                                    display: flex;
+                                    align-items: center;
+                                    width: 120px;
+                                    font-size: 15px;
+                                }
+                                input{
+                                    height: 35px;
+                                    width: 230px;
+                                    outline: none;
+                                    color: #000;
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-   }
+    }
+       
+        
 `

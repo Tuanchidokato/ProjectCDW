@@ -9,6 +9,7 @@ import ColDashBoard from "./ColDashBoard"
 import InfoPro from "./InforPro"
 import ProductService from "../../services/ProductService"
 import UserManagement from "./UserManagement"
+import InfoUser from "./InfoUser"
 function Navbar(props){
 
     const[imageUrl, setImageUrl]= useState("") 
@@ -27,10 +28,7 @@ function Navbar(props){
         nav.classList.toggle('close')
 
     }
-    // // get information search
-    // const onChangeSearch=(e)=>{
-    //     setInfoSearch(e.target.value)
-    // }
+   
     // function search product
     const searchHandler =()=>{
         //const onChangeSearch= 
@@ -180,6 +178,9 @@ function Navbar(props){
                     </Route>
                     <Route exact path="/adminDashBoard/UserManagement">
                         <UserManagement/>
+                    </Route>
+                    <Route exact path="/adminDashBoard/UserManagement/infoUser/:id">
+                        <InfoUser></InfoUser>
                     </Route>
                 </section>
            </div>
