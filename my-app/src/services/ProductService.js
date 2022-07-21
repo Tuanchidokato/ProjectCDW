@@ -16,6 +16,10 @@ class ProductService {
               return axios.get(API_URL + "/popularProducts");
        }
 
+       searchProducts(params , searchText) {
+              return axios.get(API_URL + "/searchProduct" + "/" + searchText , {params})
+       }
+
        
 }
 

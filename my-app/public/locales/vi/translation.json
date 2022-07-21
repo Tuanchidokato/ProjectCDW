@@ -4,7 +4,14 @@
         "system_management":"Quản lý hệ thống",
         "account":"Quản lý tài khoản",
         "signOut":"Đăng xuất",
-        "my_wallet":"Ví của tôi"
+        "my_wallet":"Ví của tôi",
+        "detective":"Trinh thám",
+        "love":"Lãng mạn",
+        "novel":"Tiểu thuyết",
+        "history":"Lịch sử",
+        "science":"Khoa học ",
+        "fantastic":"Giả tưởng",
+        "more":"Thêm"
 
     },
     "product_detail": {
@@ -29,6 +36,8 @@
         "prodcut_vnEN" : "Tiếng Anh"
     },
     "Cart": {
+        "cart": "Giỏ hàng",
+        "cart_view": "Xem Giỏ hàng",
         "cart_product": "Sản Phẩm",
         "cart_unit": "Đơn Giá",
         "cart_quantity": "Số Lượng",
@@ -37,7 +46,9 @@
         "cart_delete": "Xóa",
         "cart_clear": "Xóa tất cả",
         "cart_total": "Tổng thanh toán",
-        "cart_check": "Mua hàng"
+        "cart_check": "Mua hàng",
+        "buy_now": "MUA NGAY",
+        "empty_cart": "Giỏ hàng của bạn còn trống"
     },
     "Check_out" : {
         "check_shippingAddress" : "ĐỊA CHỈ GIAO HÀNG",
@@ -63,5 +74,11 @@
 
     "popular" : {
         "popular_now_read" : "Xem Ngay"
+    },
+
+    "search" : {
+        "search_with": "KẾT QUẢ TÌM KIẾM ",
+        "search_empty" : "Không có sản phẩm phù hợp với từ khóa tìm kiếm của bạn."
     }
+
 }

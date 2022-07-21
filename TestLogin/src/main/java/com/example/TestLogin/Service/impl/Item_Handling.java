@@ -1,17 +1,19 @@
-package com.example.TestLogin.Service;
+package com.example.TestLogin.Service.impl;
 
 import com.example.TestLogin.Model.ProductManage.Product;
+import com.example.TestLogin.Service.IItem;
 
-
-public class Item implements IItem{
+public class Item_Handling implements IItem {
 
     private Product product;
     private int soLuong;
 
-    public Item(Product product) {
+    public Item_Handling(Product product) {
         this.product = product;
         this.soLuong = 1;
     }
+
+    public Item_Handling() {}
 
     @Override
     public String toString() {

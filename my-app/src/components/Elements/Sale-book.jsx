@@ -2,12 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import ProductService from "../../services/ProductService";
 import {Link} from "react-router-dom";
-
 import './css/SaleBook.css'
 
-
 class SaleBooks extends React.Component {
-
 
     constructor(props) {
         super(props);
@@ -15,10 +12,11 @@ class SaleBooks extends React.Component {
             page: 1, //Trang hien tai
             count: 0, // Tong so trang
             size: 10, // Tong so san pham tren 1 trang
-            products: []
+            products: [],
         }
 
-        this.changePage = this.changePage.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+
     }
 
     getRequestParams(page, size) {
@@ -41,16 +39,14 @@ class SaleBooks extends React.Component {
                 products: productList,
                 count: totalPages,
             })
-            console.log("Lift of Books:" + JSON.stringify(this.state.products));
-            console.log("Product size: " + this.state.count)
         });
     }
+
 
     changePage = params => {
         this.setState(
             {
                 page: params,
-
             },
 
             () => {
@@ -58,32 +54,29 @@ class SaleBooks extends React.Component {
             }
         );
 
-        console.log("page:" + this.state.page);
-    }
 
+    }
 
     render() {
 
         return (
             <Div>
-                <div className="col-12  ">
-                    <div className="row ml-auto col-sm-10 ">
 
+                <div className="col-12 ">
+                    <div className="row ml-auto col-sm-10 ">
                         {
                             this.state.products.map(
                                 product =>
 
-                                        <div className="col-sm-2">
-                                            <Link to={"/ProductDetail/" + product.id}><img
-                                                src={require('../../assets/bookStudent/' + product.image)}
-                                                alt={product.name}/></Link>
-                                        </div>
+                                    <div className="col-sm-2">
+                                        <Link to={"/ProductDetail/" + product.id}><img
+                                            src={require('../../assets/bookStudent/' + product.image)}
+                                            alt={product.name}/></Link>
+                                    </div>
                             )
                         }
 
                     </div>
-
-
                 </div>
 
                 <div className="GYk2AG">
@@ -109,7 +102,6 @@ class SaleBooks extends React.Component {
 }
 
 export default SaleBooks;
-
 const Div = styled.div`
   background-color: #2C2828;
 

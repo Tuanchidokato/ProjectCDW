@@ -55,6 +55,7 @@ class ProductDetail extends React.Component {
     addToCart() {
         let {id} = this.props.match.params;
         CartService.addItem(id, this.state.quantity);
+        window.location.reload();
     }
 
     //Đi thằng vào giỏ

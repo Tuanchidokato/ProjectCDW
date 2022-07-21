@@ -6,6 +6,7 @@ import Login from './containers/Login/Login';
 import ProductDetail from './containers/productdetail/ProductDetail';
 import Cart from './containers/Cart/Cart';
 import CartInfo from './containers/Cart/CartInfo';
+import SearchBook from "./components/Elements/SearchBook";
 
 import {
   BrowserRouter as Router,
@@ -35,6 +36,7 @@ function App() {
           <Route path='/AdminDashBoard' render={()=>(checkRoles()? (<AdminDashBoard />) : (<Home/>))}  />
           <Route path='/SignUp' component={SignUp} />
           <Route path='/ProductDetail/:id' component={ProductDetail} />
+          <Route path='/Search/:search' component={SearchBook} />
 
           <Route path={["/home", "/"]} >
             <Home />

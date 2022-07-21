@@ -10,8 +10,7 @@ import com.example.TestLogin.Repository.ProductRepository;
 import com.example.TestLogin.Repository.ShoppingCartRepository;
 import com.example.TestLogin.Repository.UserRepository;
 import com.example.TestLogin.Security.Service.UserDetailsImpl;
-import com.example.TestLogin.Service.Cart;
-import com.example.TestLogin.Service.Item;
+import com.example.TestLogin.Service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,16 +25,16 @@ import java.util.*;
 public class CartController {
 
     @Autowired
-    private Cart cart;
+    private Cart_Handling cartHandling;
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
+    private CartService cartService;
 
     @Autowired
-    private ItemsRepository itemsRepository;
+    private ItemsService itemsService;
 
     @Autowired
     private UserRepository userRepository;
@@ -46,25 +45,25 @@ public class CartController {
     @GetMapping("/addProduct/{id}")
     ResponseEntity<?> addProdcut(@PathVariable Long id , @RequestParam int quantity)  {
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
-        cart = (Cart) session.getAttribute("giohang");
-        if (cart == null) {
-            cart = new Cart();
+        cartHandling = (Cart_Handling) session.getAttribute("giohang");
+        if (cartHandling == null) {
+            cartHandling = new Cart_Handling();
         }
-        cart.add(id , product , quantity);
-        session.setAttribute("giohang" , cart);
-        return new ResponseEntity<>(cart, HttpStatus.OK);
+        cartHandling.add(id , product , quantity);
+        session.setAttribute("giohang" , cartHandling);
+        return new ResponseEntity<>(cartHandling, HttpStatus.OK);
     }
 
     @GetMapping("/itemList")
     ResponseEntity<?> getAllItem() {
-        Cart c = (Cart) session.getAttribute("giohang");
+        Cart_Handling c = (Cart_Handling) session.getAttribute("giohang");
         return new ResponseEntity<>(c, HttpStatus.OK);
     }
 
     @PostMapping("/handleCart")
     void handlingCart(@RequestBody UserDetailsImpl userDetail , @RequestParam String address , @RequestParam String typePayment) {
         System.out.println(userDetail.getId());
-        Cart c = (Cart) session.getAttribute("giohang");
+        Cart_Handling c = (Cart_Handling) session.getAttribute("giohang");
         User user = userRepository.findById(userDetail.getId()).orElseThrow(() -> new RuntimeException("not found"));
 
         //Set Date cho giỏ hàng
@@ -79,20 +78,20 @@ public class CartController {
         } else {
             shoppingCart = new ShoppingCart(user , cal ,address , true , typePayment);
         }
-        shoppingCartRepository.save(shoppingCart);
+        cartService.saveCart(shoppingCart);
 
-        for (Item item: c.getItems()) {
-            ItemsID itemsID = new ItemsID(shoppingCart ,item.getProduct());
-            Items items = new Items(itemsID ,item.getSoLuong());
-            Product product = item.getProduct();
-            int check_Quantiy = product.getQuantity() - item.getSoLuong();
+        for (Item_Handling itemHandling : c.getItems()) {
+            ItemsID itemsID = new ItemsID(shoppingCart , itemHandling.getProduct());
+            Items items = new Items(itemsID , itemHandling.getSoLuong());
+            Product product = itemHandling.getProduct();
+            int check_Quantiy = product.getQuantity() - itemHandling.getSoLuong();
             if (check_Quantiy > 0) {
                 product.setQuantity(check_Quantiy);
             } else {
-                product.setQuantity(check_Quantiy);
+                product.setQuantity(0);
                 product.setAvailable(false);
             }
-            itemsRepository.save(items);
+            itemsService.saveItems(items);
             productRepository.save(product);
         }
 
@@ -104,34 +103,34 @@ public class CartController {
     @GetMapping("/decrease")
     void decreaseQuantity(@RequestParam(name = "id") Long pro_id) {
         Long id = Long.valueOf(pro_id);
-        cart = (Cart) session.getAttribute("giohang");
-        cart.decreament(id);
+        cartHandling = (Cart_Handling) session.getAttribute("giohang");
+        cartHandling.decreament(id);
     }
 
     @GetMapping("/increase")
     void increaseQuantity(@RequestParam(name = "id") Long pro_id) {
         Long id = Long.valueOf(pro_id);
-        cart = (Cart) session.getAttribute("giohang");
+        cartHandling = (Cart_Handling) session.getAttribute("giohang");
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
-        cart.add(id  , product , 1);
+        cartHandling.add(id  , product , 1);
     }
 
     @DeleteMapping("/remove")
     void removeItem(@RequestParam(name = "id") Long pro_id) {
         Long id = Long.valueOf(pro_id);
-        cart = (Cart) session.getAttribute("giohang");
-        cart.remove(id);
+        cartHandling = (Cart_Handling) session.getAttribute("giohang");
+        cartHandling.remove(id);
     }
 
     @DeleteMapping("/clear")
     void clearCart() {
-        cart = (Cart) session.getAttribute("giohang");
-        cart.clear();
+        cartHandling = (Cart_Handling) session.getAttribute("giohang");
+        cartHandling.clear();
     }
 
     @GetMapping("/CartContents/{id}")
     ResponseEntity<?> getCartContents(@PathVariable Long id) {
-        List<Items> itemsList = itemsRepository.findAll();
+        List<Items> itemsList = itemsService.findAll();
         List<Items> result = new ArrayList<>();
         for (Items item: itemsList) {
             if (item.getId().getCart().getId() == id) {

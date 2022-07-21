@@ -4,7 +4,14 @@
         "system_management": "Manage System ",
         "account": "Manage Account",
         "signOut": "Log Out",
-        "my_wallet": "My Wallet"
+        "my_wallet": "My Wallet",
+        "detective":"Detective",
+        "love":"Love",
+        "novel":"Novel",
+        "history":"History",
+        "science":"Science Fiction",
+        "fantastic":"Fantastic",
+        "more":"More"
     },
     "product_detail": {
         "product_author": "Author",
@@ -27,7 +34,10 @@
         "prodcut_code" :"Product code",
         "prodcut_vnEN" : "English"
     },
+
     "Cart": {
+        "cart": "Cart",
+        "cart_view": "View My Shopping Cart ",
         "cart_product": "Product",
         "cart_unit": "Unit Price",
         "cart_quantity": "Quantity",
@@ -37,7 +47,9 @@
         "cart_clear": "Clear",
         "cart_total": "Total",
         "cart_item": "items",
-        "cart_check": "Check out"
+        "cart_check": "Check out",
+        "buy_now": "GO SHOPPING NOW",
+        "empty_cart": "Your shopping cart is empty"
     },
 
     "Check_out" : {
@@ -64,6 +76,11 @@
 
     "popular" : {
         "popular_now_read" : "Now Read"
+    },
+
+    "search" : {
+        "search_with": "SEARCH RESULTS",
+        "search_empty" : "There are no products matching the selection."
     }
 
 
