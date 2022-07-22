@@ -1,51 +1,53 @@
-package com.example.TestLogin.Service;
+package com.example.TestLogin.Service.impl;
 
 import com.example.TestLogin.Model.ProductManage.Product;
+import com.example.TestLogin.Service.ICart;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class Cart implements ICart {
-    private Map<Long , Item> items = null;
+public class Cart_Handling implements ICart {
+
+    private Map<Long, Item_Handling> items = null;
     int soluongSanPham = 0;
 
-    public Cart() {
+    public Cart_Handling() {
         items = new HashMap<>();
     }
 
 
     @Override
-    public void add(Long productId, Product product , int soluong) {
-        if (items.containsKey(productId)){
+    public void add(Long productId, Product product, int soluong) {
+        if (items.containsKey(productId)) {
             if (soluong == items.get(productId).getSoLuong()) {
-                Item scitem = items.get(productId);
+                Item_Handling scitem = items.get(productId);
                 scitem.tangSoLuong();
             } else {
-                Item scitem = items.get(productId);
+                Item_Handling scitem = items.get(productId);
                 scitem.setSoLuong(soluong + scitem.getSoLuong());
             }
         } else {
-            Item newProduct =  new Item(product);
+            Item_Handling newProduct = new Item_Handling(product);
             newProduct.setSoLuong(soluong);
-            items.put(productId,newProduct);
+            items.put(productId, newProduct);
         }
     }
 
     @Override
     public void remove(Long productId) {
-        if (items.containsKey(productId)){
-            Item scitem = items.get(productId);
+        if (items.containsKey(productId)) {
+            Item_Handling scitem = items.get(productId);
             items.remove(productId);
             soluongSanPham = soluongSanPham - scitem.getSoLuong();
-            System.out.println("Đã xóa "+ scitem.getProduct().getName());
+            System.out.println("Đã xóa " + scitem.getProduct().getName());
         }
     }
 
     @Override
-    public  void decreament(Long productId) {
+    public void decreament(Long productId) {
         if (items.containsKey(productId)) {
-            Item scitem =  items.get(productId);
+            Item_Handling scitem = items.get(productId);
             scitem.giamSoLuong();
 
             if (scitem.getSoLuong() <= 0) {
@@ -56,8 +58,8 @@ public class Cart implements ICart {
     }
 
     @Override
-    public List<Item> getItems() {
-        List<Item> results = new ArrayList<Item>();
+    public List<Item_Handling> getItems() {
+        List<Item_Handling> results = new ArrayList<Item_Handling>();
         results.addAll(this.items.values());
         return results;
     }
@@ -65,26 +67,26 @@ public class Cart implements ICart {
     @Override
     public int getNumberOfItems() {
         soluongSanPham = 0;
-        Iterator<Item> i = getItems().iterator();
+        Iterator<Item_Handling> i = getItems().iterator();
         while (i.hasNext()) {
-            Item item = i.next();
-            soluongSanPham += item.getSoLuong();
+            i.next();
+            soluongSanPham += 1;
         }
 
         return soluongSanPham;
     }
 
     @Override
-    public  float getTotal() {
+    public float getTotal() {
         float amount = 0;
 
-        Iterator<Item> iter = getItems().iterator();
+        Iterator<Item_Handling> iter = getItems().iterator();
         while (iter.hasNext()) {
-            Item scit = iter.next();
+            Item_Handling scit = iter.next();
             Product b = scit.getProduct();
 
             if (b.getDiscount() > 0) {
-                amount += (b.getPrice() * ((100 - b.getDiscount())/100) * scit.getSoLuong());
+                amount += (b.getPrice() * ((100 - b.getDiscount()) / 100) * scit.getSoLuong());
             } else {
                 amount += (b.getPrice() * scit.getSoLuong());
             }
@@ -100,9 +102,6 @@ public class Cart implements ICart {
         items.clear();
         soluongSanPham = 0;
     }
-
-
-
 
 
 }

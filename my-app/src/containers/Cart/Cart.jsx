@@ -24,7 +24,6 @@ class Cart extends React.Component {
 
     checkOut() {
         this.props.history.push("/CartInfo");
-        window.location.reload();
     }
 
     //Xóa sản phẩm khỏi giỏ hàng
@@ -55,6 +54,7 @@ class Cart extends React.Component {
                 numberOfItems: response.data.numberOfItems,
                 total: response.data.total
             });
+            console.log(JSON.stringify(response.data));
         });
     }
 
@@ -258,7 +258,19 @@ class Cart extends React.Component {
                         </div>
                     </div>
                     :
-                    <div></div>
+                    <div style={{display: "block"}}>
+                        <div className={"container"}>
+                            <div className={"_1fP0AH _2tKeYb"}>
+                                <div className={"_1g-4gk"}></div>
+                                <div className="h9wsC4">{t('Cart.empty_cart')}</div>
+                                <a className="_35zxc9" href="/">
+                                    <button className="shopee-button-solid shopee-button-solid--primary" style={{background: "#ee4d2d"}}><span
+                                        className="_3SCpTT">{t('Cart.buy_now')}</span></button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
             }
             </body>
         )

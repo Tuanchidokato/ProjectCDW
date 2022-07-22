@@ -1,5 +1,6 @@
-package com.example.TestLogin.Service;
+package com.example.TestLogin.Service.impl;
 
+import com.example.TestLogin.Service.IStorageService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -20,7 +21,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
-public class ImageStorageService implements IStorageService{
+public class ImageStorageService implements IStorageService {
 
     private final Path storageFolder = Paths.get("uploads");
 
