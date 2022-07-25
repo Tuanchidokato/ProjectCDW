@@ -11,7 +11,7 @@ class SaleBooks extends React.Component {
         this.state = {
             page: 1, //Trang hien tai
             count: 0, // Tong so trang
-            size: 10, // Tong so san pham tren 1 trang
+            size: 1, // Tong so san pham tren 1 trang
             products: [],
         }
 
@@ -72,7 +72,7 @@ class SaleBooks extends React.Component {
                                         <div className="col-sm-2">
                                             <Link to={"/ProductDetail/" + product.id}>
                                                 <img
-                                                    src={require('../../assets/bookStudent/' + product.image)}
+                                                    src= {product.image}
                                                     alt={product.name}/>
                                             </Link>
                                         </div>
@@ -90,7 +90,7 @@ class SaleBooks extends React.Component {
                             [...Array(this.state.count)].map(
                                 (item, i) => {
                                     return <button
-                                        className={`${this.state.page === (i + 1) ? "shopee-button-solid shopee-button-solid--primary" : "shopee-button-no-outline"}`}
+                                        className={`${this.state.page === (i + 1) ? "shopee-button-solid " : "shopee-button-no-outline"}`}
                                         onClick={() => this.changePage(i + 1)}>{i + 1}</button>
                                 }
                             )

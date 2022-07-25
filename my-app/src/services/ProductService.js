@@ -27,6 +27,10 @@ class ProductService {
               return axios.get(API_URL + "/searchProduct" + "/" + searchText , {params})
        }
 
+       addProduct(product) {
+              return axios.post(API_URL + "/insert" , product)
+       }
+
        
 }
 

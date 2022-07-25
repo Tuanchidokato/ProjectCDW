@@ -68,7 +68,7 @@ class CartPreview extends React.Component {
                                                    title={item.product.name}
                                                    className="product-image">
                                                     <img
-                                                        src={require('../../assets/bookStudent/' + item.product.image)}
+                                                        src={item.product.image}
                                                         width="68" height="68"
                                                         alt={item.product.name}/>
                                                 </a>

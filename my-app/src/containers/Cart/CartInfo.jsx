@@ -75,17 +75,17 @@ class CartInfo extends React.Component {
 
             {
                 field: 'phoneNumber',
-                method: 'isLength',
-                args: [{min: 10, max: 10}],
+                method: 'isNumeric',
                 validWhen: true,
-                message: 'Số điện thoại phải 10 chữ số',
+                message: 'Số điện thoại chỉ gồm số',
             },
 
             {
                 field: 'phoneNumber',
-                method: 'isNumeric',
+                method: 'isLength',
+                args: [{min: 10, max: 10}],
                 validWhen: true,
-                message: 'Số điện thoại chỉ gồm số',
+                message: 'Số điện thoại phải 10 chữ số',
             },
 
             {
@@ -352,7 +352,7 @@ class CartInfo extends React.Component {
 
                                                 <div className={"fhs_checkout_products_item_img"}>
                                                     <img
-                                                        src={require('../../assets/bookStudent/' + item.product.image)}/>
+                                                        src={item.product.image}/>
                                                 </div>
 
                                                 <div className={"fhs_checkout_products_item_detail"}>

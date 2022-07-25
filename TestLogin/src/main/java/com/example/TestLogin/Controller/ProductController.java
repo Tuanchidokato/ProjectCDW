@@ -2,6 +2,7 @@ package com.example.TestLogin.Controller;
 
 import com.example.TestLogin.Model.ProductManage.Categories;
 import com.example.TestLogin.Model.ProductManage.Product;
+import com.example.TestLogin.ModelDTO.ProductMange.ProductDTO;
 import com.example.TestLogin.Repository.CategoriesRepository;
 import com.example.TestLogin.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -26,10 +28,25 @@ public class ProductController {
 
 
     @PostMapping("/insert")
-    boolean insertProduct() {
-        Categories categories = new Categories("Detective");
-//        Product product = new Product("True Detective", "hai", 20000, "", new Date(2022, 04, 02), 5, true, categories);
-//        productRepository.save(product);
+    boolean insertProduct(@RequestBody ProductDTO productDTO) throws ParseException {
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setImage(productDTO.getImage());
+        product.setAuthor(productDTO.getAuthor());
+        product.setNxb(productDTO.getNxb());
+        product.setPrice(productDTO.getPrice());
+        product.setDiscount(productDTO.getDiscount());
+        product.setDescription(productDTO.getDescription());
+        product.setDate(productDTO.getDate());
+        product.setQuantity(productDTO.getQuantity());
+        product.setAvailable(productDTO.isAvailable());
+        Long cate_id = (long) productDTO.getCategory();
+
+        System.out.println(cate_id);
+        Categories categories = categoriesRepository.findById(cate_id).get();
+        product.setCategories(categories);
+
+        productRepository.save(product);
         return true;
     }
 
