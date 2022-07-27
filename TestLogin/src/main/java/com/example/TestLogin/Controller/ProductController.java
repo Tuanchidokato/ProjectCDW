@@ -50,6 +50,30 @@ public class ProductController {
         return true;
     }
 
+    @PutMapping("/edit/{id}")
+    boolean editProduct (@PathVariable Long id , @RequestBody ProductDTO productDTO) throws ParseException {
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("not found"));
+        product.setName(productDTO.getName());
+        product.setImage(productDTO.getImage());
+        product.setAuthor(productDTO.getAuthor());
+        product.setNxb(productDTO.getNxb());
+        product.setPrice(productDTO.getPrice());
+        product.setDiscount(productDTO.getDiscount());
+        product.setDescription(productDTO.getDescription());
+        product.setDate(productDTO.getDate());
+        product.setQuantity(productDTO.getQuantity());
+        product.setAvailable(productDTO.isAvailable());
+        Long cate_id = (long) productDTO.getCategory();
+
+        System.out.println(cate_id);
+        Categories categories = categoriesRepository.findById(cate_id).get();
+        product.setCategories(categories);
+        
+        productRepository.save(product);
+        return true;
+    }
+
+
     @GetMapping("/findAllCate")
     List<Categories> getCategories() {
         return categoriesRepository.findAll();

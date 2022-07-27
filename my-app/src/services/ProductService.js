@@ -11,6 +11,7 @@ class ProductService {
        getProductDetail(id) {
               return axios.get(API_URL + "/productDetail" + "/" + id);
        }
+
        // get all the book category
        getCategory() {
               return axios.get(API_URL + "/findAllCate");
@@ -19,6 +20,7 @@ class ProductService {
        getPopularProducts() {
               return axios.get(API_URL + "/popularProducts");
        }
+
        getAllProduct() {
               return axios.get(API_URL + "/getAll");
        }
@@ -31,7 +33,10 @@ class ProductService {
               return axios.post(API_URL + "/insert" , product)
        }
 
-       
+       editProduct(id , product) {
+              return axios.put(API_URL  + "/edit/" + id , product);
+       }
+
 }
 
 export default new ProductService();

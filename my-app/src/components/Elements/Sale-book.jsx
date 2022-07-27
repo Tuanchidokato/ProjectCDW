@@ -11,7 +11,7 @@ class SaleBooks extends React.Component {
         this.state = {
             page: 1, //Trang hien tai
             count: 0, // Tong so trang
-            size: 1, // Tong so san pham tren 1 trang
+            size: 10, // Tong so san pham tren 1 trang
             products: [],
         }
 

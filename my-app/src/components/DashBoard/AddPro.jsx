@@ -116,7 +116,6 @@ class AddPro extends Component {
         this.setState({
             category: id,
         })
-
     }
 
     fileSelectedHandler = async (e) => {
@@ -221,7 +220,7 @@ class AddPro extends Component {
                                 <div className="price_quantity">
                                     <div className="price">
                                         <p style={{fontSize: "20px"}}>Giá</p>
-                                        <input
+                                        <input style={{fontSize: "20px"}}
                                             type="text" name="price" id="" onChange={this.handleInput}/>
                                         {this.state.errors.price &&
                                             <span className={"fhs-textbox-alert"}
@@ -233,7 +232,7 @@ class AddPro extends Component {
 
                                     <div className="price">
                                         <p style={{fontSize: "20px"}}>Giảm Giá</p>
-                                        <input
+                                        <input style={{fontSize: "20px"}}
                                             type="text" name="discount" id="" onChange={this.handleInput}/>
                                     </div>
 

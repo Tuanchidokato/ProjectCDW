@@ -18,7 +18,7 @@ function Navbar(props) {
     const [infoSearch, setInfoSearch] = useState("")
     const [searchResult, setSearchResult] = useState([])
     const [totalPages, setTotalPages] = useState(0)
-    const [size, setSize] = useState(1)
+    const [size, setSize] = useState(10)
     const [page, setPage] = useState(1)
     const history = useHistory();
 
