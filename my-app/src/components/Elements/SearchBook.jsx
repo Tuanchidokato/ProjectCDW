@@ -111,7 +111,7 @@ class SearchBook extends React.Component {
                                                                                             style={{display: "flex"}}>
                                                                                                 <span
                                                                                                     className={"p-sale-label"}>
-                                                                                                      15%
+                                                                                                        {product.discount}%
                                                                                               </span>
                                                                                         </div>
                                                                                         :
@@ -129,7 +129,7 @@ class SearchBook extends React.Component {
                                                                                                 <span
                                                                                                     className="product-image">
                                                                                                     <img
-                                                                                                        src={require('../../assets/bookStudent/' + product.image)}
+                                                                                                        src={product.image}
                                                                                                         alt={product.name}/>
                                                                                                  </span>
                                                                                             </a>

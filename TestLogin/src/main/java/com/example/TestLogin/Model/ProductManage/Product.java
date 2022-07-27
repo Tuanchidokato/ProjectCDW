@@ -7,7 +7,10 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -149,8 +152,11 @@ public class Product implements Serializable {
         return date;
     }
 
-    public void setDate(Calendar date) {
-        this.date = date;
+    public void setDate(String currentDate) throws ParseException {
+        Date getDate = new SimpleDateFormat("dd/MM/yyyy").parse(currentDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(getDate);
+        this.date = calendar;
     }
 
     public int getQuantity() {

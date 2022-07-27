@@ -125,7 +125,7 @@ class Navbar extends Component {
                                 this.searchChange(event)
                             }} name={"search"} ref={node => (this.inputNode = node)}
                                    placeholder="Search for the book you want and read it now... Sherlock Holmes..."/>
-                            <button type={"button"}  className={"fhs_btn_default active button-search"} title="Search" onClick={() => this.search(this.state.search)}>
+                            <button type={"button"}  className={"fhs_btn_default active button-search"} title="Search" disabled={this.state.search === ""} onClick={() => this.search(this.state.search)}>
                                 <span className={"ico_search_white"}></span>
                             </button>
 

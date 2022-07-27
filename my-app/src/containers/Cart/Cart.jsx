@@ -118,7 +118,7 @@ class Cart extends React.Component {
                                                                     <div className="_3mceb9">
                                                                         <a title={item.product.name} href="/">
                                                                             <img className="_25vezo"
-                                                                                 src={require('../../assets/bookStudent/' + item.product.image)}
+                                                                                 src={item.product.image}
                                                                                  alt=""/>
                                                                         </a>
                                                                         <div className="_1WfuBi">
