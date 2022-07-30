@@ -143,7 +143,6 @@ class InfoPro extends Component {
 
 
 
-
                                 <div className="author_nxb">
                                     <div className="author">
                                         <p>Tác giả</p>

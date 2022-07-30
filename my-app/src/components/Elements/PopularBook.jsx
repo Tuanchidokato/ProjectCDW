@@ -35,7 +35,7 @@ class PopularBook extends React.Component {
                             this.state.products.map(
                                 (product, i) =>
                                     <div className={"col-sm-4 book_items" + " book_item" + (i + 1)}>
-                                        <img src={require('../../assets/bookStudent/' + product.image)}
+                                        <img src={product.image}
                                              alt={product.name}/>
                                         <div className="book-content">
                                             {

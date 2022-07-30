@@ -10,6 +10,8 @@ import ProductService from "../../services/ProductService"
 import UserManagement from "./UserManagement"
 import InfoUser from "./InfoUser"
 import AddPro from "./AddPro";
+import CartManagement from "./CartManagement";
+import InfoCart from "./InfoCart";
 
 function Navbar(props) {
 
@@ -18,7 +20,7 @@ function Navbar(props) {
     const [infoSearch, setInfoSearch] = useState("")
     const [searchResult, setSearchResult] = useState([])
     const [totalPages, setTotalPages] = useState(0)
-    const [size, setSize] = useState(10)
+    const [size, setSize] = useState(5)
     const [page, setPage] = useState(1)
     const history = useHistory();
 
@@ -82,7 +84,7 @@ function Navbar(props) {
             }
         )
 
-        let params = getRequestParams(page , size);
+        let params = getRequestParams(page, size);
         ProductService.getProductList(params).then(res => {
             setProducts([...res.data.productList]);
             setTotalPages(res.data.totalPages);
@@ -120,10 +122,10 @@ function Navbar(props) {
                             </li>
 
                             <li>
-                                <a>
-                                    <i className="fa fa-transgender-alt"></i>
-                                    <span className="link-name">Analytics</span>
-                                </a>
+                                <Link to={"/adminDashBoard/CartManagement"}>
+                                    <i className="fa fa-cart-shopping"></i>
+                                    <span className="link-name">Đơn hàng</span>
+                                </Link>
                             </li>
 
                             <li>
@@ -201,6 +203,12 @@ function Navbar(props) {
                         <ColDashBoard totalPage={totalPages} onPageChange={(event) => changePage(event)}
                                       pages={page} listProduct={infoSearch.length < 1 ? products : searchResult}
                         />
+                    </Route>
+                    <Route exact path="/adminDashBoard/CartManagement">
+                        <CartManagement/>
+                    </Route>
+                    <Route exact path="/adminDashBoard/CartManagement/CartContents/:id">
+                        <InfoCart/>
                     </Route>
                     <Route exact path="/adminDashBoard/UserManagement">
                         <UserManagement/>

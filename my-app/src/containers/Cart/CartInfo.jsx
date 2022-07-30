@@ -147,15 +147,13 @@ class CartInfo extends React.Component {
             const address = this.inputNode.value;
             const payment = this.state.paymentType;
             CartService.handlingCart(address, payment);
-            this.props.history.push("/");
+            this.props.history.push("/home");
             window.location.reload();
-
         } else {
             this.setState({
                 errors: this.validator.validate(this.state),
             });
         }
-
     };
 
     getDiscountPrice(oldPrice, discount) {

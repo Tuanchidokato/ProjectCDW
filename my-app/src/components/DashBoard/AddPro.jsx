@@ -166,6 +166,7 @@ class AddPro extends Component {
             console.log(JSON.stringify(product));
             ProductService.addProduct(product);
             this.props.history.push("/adminDashBoard");
+            window.location.reload();
         } else {
             this.setState({
                 errors: this.validator.validate(this.state),
