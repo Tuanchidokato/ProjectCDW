@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Link, Route} from "react-router-dom";
 import styled from "styled-components";
+import ProductService from "../../services/ProductService";
 
 
 class ColDashBoard extends Component {
@@ -25,7 +26,12 @@ class ColDashBoard extends Component {
                 currentPage: i
             })
         })
+    }
 
+    handleRemove = (e, id) => {
+        e.preventDefault();
+        ProductService.removeProduct(id);
+        window.location.reload();
     }
 
     render() {
@@ -76,12 +82,12 @@ class ColDashBoard extends Component {
                         <ul className="responsive-table">
                             <li className="table-header">
                                 <div className="col col-1">Id</div>
-                                <div className="col col-2"> Tên sách</div>
-                                <div className="col col-3">Thể loại</div>
-                                <div className="col col-4">Tác giả</div>
-                                <div className="col col-5">Giá</div>
-                                <div className="col col-6">Số lượng</div>
-
+                                <div className="col col-2">Tên sách</div>
+                                <div className="col col-1">Thể loại</div>
+                                <div className="col col-3">Tác giả</div>
+                                <div className="col col-4">Giá</div>
+                                <div className="col col-5">Số lượng</div>
+                                <div className="col col-1">Thao tác</div>
                             </li>
 
                             {
@@ -91,10 +97,15 @@ class ColDashBoard extends Component {
                                         class="table-row">
                                         <div className="col col-1" data-label=" Id">{product.id}</div>
                                         <div className="col col-2" data-label="Customer Name">{product.name}</div>
-                                        <div className="col col-3" data-label="Amount">{product.categories.name}</div>
-                                        <div className="col col-4" data-label="Payment Status">{product.author}</div>
-                                        <div className="col col-5" data-label="Amount">{product.price}</div>
-                                        <div className="col col-6" data-label="Payment Status">{product.quantity}</div>
+                                        <div className="col col-1" data-label="Amount">{product.categories.name}</div>
+                                        <div className="col col-3" data-label="Payment Status">{product.author}</div>
+                                        <div className="col col-4" data-label="Amount">{product.price}</div>
+                                        <div className="col col-5" data-label="Payment Status">{product.quantity}</div>
+                                        <div className="col col-1" data-label="Payment Status">
+                                            <button className={"btn-page-selectd"}
+                                                    onClick={event => this.handleRemove(event, product.id)}>Xoá
+                                            </button>
+                                        </div>
                                     </Link>
                                 )
                             }
