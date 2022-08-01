@@ -6,49 +6,97 @@ import {storage} from "../../config/firebase/firebase";
 import {Link} from "react-router-dom";
 import CartInfoValidator from "../../services/CartInfo-Validator";
 
-class InfoPro extends Component {
+class AddPro extends Component {
 
     constructor(props) {
-        super(props)
-        this.componentDidMount = this.componentDidMount.bind(this)
+        super(props);
+
         this.state = {
             categories: [],
             nameB: "",
             author: "",
             nxb: "",
-            price: "",
+            price: 0,
             discount: 0,
-            quantity: "",
+            quantity: 0,
             description: "",
-            category: "",
+            category: 1,
             imageURL: "",
-            date: "",
-            category_id: 0,
+            errors: {}
         }
+
+        const rules = [
+            {
+                field: 'nameB',
+                method: 'isEmpty',
+                validWhen: false,
+                message: 'Thông tin này không thể để trống',
+            },
+
+            {
+                field: 'author',
+                method: 'isEmpty',
+                validWhen: false,
+                message: 'Thông tin này không thể để trống',
+            },
+
+            {
+                field: 'price',
+                method: 'isEmpty',
+                validWhen: false,
+                message: 'Thông tin này không thể để trống',
+            },
+
+            {
+                field: 'price',
+                method: 'isNumeric',
+                validWhen: true,
+                message: 'Chỉ được nhập số',
+            },
+
+
+            {
+                field: 'quantity',
+                method: 'isEmpty',
+                validWhen: false,
+                message: 'Thông tin này không thể để trống',
+            },
+
+            {
+                field: 'quantity',
+                method: 'isNumeric',
+                validWhen: true,
+                message: 'Chỉ được nhập số',
+            },
+
+
+            {
+                field: 'description',
+                method: 'isEmpty',
+                validWhen: false,
+                message: 'Thông tin này không thể để trống',
+            },
+
+
+            {
+                field: 'nxb',
+                method: 'isEmpty',
+                validWhen: false,
+                message: 'Thông tin này không thể để trống',
+            },
+
+
+        ];
+
+        this.validator = new CartInfoValidator(rules);
+        this.insertProduct = this.insertProduct.bind(this);
+        this.handleInput = this.handleInput.bind(this)
+        this.fileSelectedHandler = this.fileSelectedHandler.bind(this);
+        this.handleInputCategory = this.handleInputCategory.bind(this);
 
     }
 
     componentDidMount() {
-        let {id} = this.props.match.params;
-        ProductService.getProductDetail(id).then(
-            res => {
-                this.setState({
-                    nameB: res.data.name,
-                    author: res.data.author,
-                    nxb: res.data.nxb,
-                    price: res.data.price,
-                    discount: res.data.discount,
-                    quantity: res.data.quantity,
-                    description: res.data.description,
-                    imageURL: res.data.image,
-                    category: res.data.categories.name,
-                    available: res.data.available,
-                    date: res.data.date,
-                    category_id: res.data.categories.category_id
-                })
-            }
-        )
-        //get all product
         ProductService.getCategory().then(
             res => {
                 this.setState({categories: res.data})
@@ -66,7 +114,7 @@ class InfoPro extends Component {
         e.preventDefault(e);
         const id = this.refName.value;
         this.setState({
-            category_id: id,
+            category: id,
         })
     }
 
@@ -77,16 +125,17 @@ class InfoPro extends Component {
         const fileRef = storageRef.child(file.name + ":" + today.getMilliseconds() + ":" + today.getMinutes())
         await fileRef.put(file)
         const fileUrl = await fileRef.getDownloadURL()
-        this.setState({}, () => {
-            this.setState({
-                imageURL: fileUrl
-            })
+        console.log(fileUrl)
+        this.setState({
+            imageURL: fileUrl
+        }, () => {
+            this.componentDidMount();
         });
     }
 
-    editProduct = (e) => {
+    insertProduct = (e) => {
         e.preventDefault();
-        let {id} = this.props.match.params;
+
         const current = new Date();
         const currentDate = `${current.getDate()}/${current.getMonth() + 1}/${current.getFullYear()}`;
 
@@ -95,13 +144,6 @@ class InfoPro extends Component {
             dis = 0;
         } else {
             dis = this.state.discount
-        }
-
-        let avai;
-        if (this.state.quantity > 0) {
-            avai = true;
-        } else {
-            avai = false;
         }
 
         let product = {
@@ -114,111 +156,115 @@ class InfoPro extends Component {
             description: this.state.description,
             date: currentDate,
             quantity: Number(this.state.quantity),
-            available: avai,
-            category: Number(this.state.category_id),
+            available: true,
+            category: Number(this.state.category),
         }
 
-        console.log(JSON.stringify(product));
-        ProductService.editProduct(id, product);
-        this.props.history.push("/adminDashBoard");
-        window.location.reload();
+        this.validator.validate(this.state);
+
+        if (this.validator.isValid === true) {
+            console.log(JSON.stringify(product));
+            ProductService.addProduct(product);
+            this.props.history.push("/adminDashBoard");
+            window.location.reload();
+        } else {
+            this.setState({
+                errors: this.validator.validate(this.state),
+            });
+        }
 
     }
 
-
     render() {
         return (
+
             <Div>
                 <div className="Information_Detail">
-                    <h1>Chỉnh sửa sản phẩm</h1>
+                    <h1>Thêm sản phẩm</h1>
                     <form>
                         <div className="infor1">
                             <div className="inforData">
                                 <div className="name_book">
                                     <p>Tên sách</p>
                                     <input
-                                        value={this.state.nameB}
                                         type="text" name="nameB" id="" onChange={this.handleInput}/>
+
                                 </div>
 
+                                <div className="name_book">
+                                    {this.state.errors.nameB &&
+                                        <span className={"fhs-textbox-alert"}
+                                              style={{color: "red"}}>{this.state.errors.nameB}</span>}
+                                </div>
 
 
                                 <div className="author_nxb">
                                     <div className="author">
                                         <p>Tác giả</p>
                                         <input
-                                            value={this.state.author}
-                                            type="text" name="author" onChange={this.handleInput} id=""/>
+                                            type="text" name="author" id="" onChange={this.handleInput}/>
 
-
+                                        {this.state.errors.author &&
+                                            <span className={"fhs-textbox-alert"}
+                                                  style={{color: "red"}}>{this.state.errors.author}</span>}
                                     </div>
+
                                     <div className="nxb">
                                         <p>Nhà xuất bản</p>
                                         <input
-                                            value={this.state.nxb}
-                                            type="text" name="nxb" onChange={this.handleInput} id=""/>
-
-
-
-
+                                            type="text" name="nxb" id="" onChange={this.handleInput}/>
+                                        {this.state.errors.nxb &&
+                                            <span className={"fhs-textbox-alert"}
+                                                  style={{color: "red"}}>{this.state.errors.nxb}</span>}
                                     </div>
                                 </div>
                                 <div className="price_quantity">
                                     <div className="price">
                                         <p style={{fontSize: "20px"}}>Giá</p>
                                         <input style={{fontSize: "20px"}}
-                                               value={this.state.price}
-                                               type="text" name="price" id="" onChange={this.handleInput}/>
-
+                                            type="text" name="price" id="" onChange={this.handleInput}/>
+                                        {this.state.errors.price &&
+                                            <span className={"fhs-textbox-alert"}
+                                                  style={{
+                                                      color: "red",
+                                                      fontSize: "20px"
+                                                  }}>{this.state.errors.price}</span>}
                                     </div>
 
                                     <div className="price">
                                         <p style={{fontSize: "20px"}}>Giảm Giá</p>
-                                        <input
-                                            type="text" style={{fontSize: "20px"}} value={this.state.discount}
-                                            name="discount" id="" onChange={this.handleInput}/>
+                                        <input style={{fontSize: "20px"}}
+                                            type="text" name="discount" id="" onChange={this.handleInput}/>
                                     </div>
 
-
                                     <div className="quantity">
-                                        <p>Số lượng còn lại</p>
+                                        <p>Số lượng</p>
                                         <input
-                                            value={this.state.quantity}
                                             type="text" name="quantity" id="" onChange={this.handleInput}/>
-
-
+                                        {this.state.errors.quantity &&
+                                            <span className={"fhs-textbox-alert"}
+                                                  style={{color: "red"}}>{this.state.errors.quantity}</span>}
                                     </div>
                                 </div>
                                 <div className="description">
                                     <p>Mô tả sách</p>
-                                    <textarea style={{textAlign: "justify"}}
-                                              value={this.state.description}
-                                              rows="9" cols="70" name="description" form="usrform"
-                                              onChange={this.handleInput}>
-                                    </textarea>
-                                   
+                                    <textarea onChange={this.handleInput} style={{textAlign:"justify"}}
+                                              rows="9" cols="70" name="description" form="usrform">
+                                     </textarea>
+                                    {this.state.errors.description &&
+                                        <span className={"fhs-textbox-alert"}
+                                              style={{color: "red"}}>{this.state.errors.description}</span>}
                                 </div>
                             </div>
                             <div className="inforImage">
-                                <div className="dateCreate">
-                                    <p>Ngày đăng </p>
-                                    <p>{this.state.date}</p>
-                                </div>
-                                <div className="status">
-                                    <p>Trạng thái</p>
-                                    <p>{this.state.available ? "Còn hàng" : "Hết hàng"} </p>
-                                </div>
-                                <hr/>
                                 <div className="category">
                                     <p>Phân loại sách</p>
-                                    <select value={this.state.category_id} name="category_id" id=""
-                                            onChange={this.handleInputCategory} ref={value => this.refName = value}>
+                                    <select name="category" id="" onChange={this.handleInputCategory} ref={value => this.refName = value}>
                                         {
                                             this.state.categories.map(category =>
                                                 <option value={category.category_id}>{category.name}</option>
                                             )
                                         }
-
                                     </select>
                                 </div>
                                 <div className="imageProduct">
@@ -233,33 +279,36 @@ class InfoPro extends Component {
                                             />
                                         </label>
                                     </p>
+
+
                                     <div className="image">
                                         <img src={this.state.imageURL} alt=""/>
                                     </div>
-                                </div>
 
+
+                                </div>
 
                                 <div className="imageProduct">
                                     <button className={"w3-btn-insert"} type={"button"}
-                                            onClick={this.editProduct}>Lưu
+                                            onClick={this.insertProduct}>Thêm
                                     </button>
                                     <Link to={"/adminDashBoard"}>
                                         <button className={"w3-btn-cancel"}>Hủy</button>
                                     </Link>
 
                                 </div>
-
-
                             </div>
                         </div>
                     </form>
                 </div>
             </Div>
+
         )
     }
+
 }
 
-export default withRouter(InfoPro);
+export default withRouter(AddPro)
 const Div = styled.div`
   /* ================ Colors ============= */
   /* --primary-color:#3a3b3c;
@@ -351,37 +400,39 @@ const Div = styled.div`
         }
       }
     }
+
+    .w3-btn-insert {
+      background-color: #4CAF50;
+    !important;
+      border-radius: 5px;
+      font-size: 17px;
+      font-family: 'Source Sans Pro', sans-serif;
+      padding: 6px 10px;
+      color: #FFFFFF;
+    }
+
+    .w3-btn-cancel {
+      background-color: #bb2d3b;
+    !important;
+      border-radius: 5px;
+      font-size: 17px;
+      font-family: 'Source Sans Pro', sans-serif;
+      padding: 6px 15px;
+      color: #FFFFFF;
+      margin-left: 16px !important;
+    }
+
+
+    .fhs_checkout_block .fhs-input-box.checked-error .fhs-input-group .fhs-textbox-alert {
+      height: 18px;
+      width: 18px;
+      display: block;
+      margin-top: 8px;
+      color: #dc3545;
+      margin-left: 154px;
+
+    }
+
+
   }
-
-  .w3-btn-insert {
-    background-color: #4CAF50;
-  !important;
-    border-radius: 5px;
-    font-size: 17px;
-    font-family: 'Source Sans Pro', sans-serif;
-    padding: 6px 10px;
-    color: #FFFFFF;
-  }
-
-  .w3-btn-cancel {
-    background-color: #bb2d3b;
-  !important;
-    border-radius: 5px;
-    font-size: 17px;
-    font-family: 'Source Sans Pro', sans-serif;
-    padding: 6px 15px;
-    color: #FFFFFF;
-    margin-left: 16px !important;
-  }
-
-  .fhs_checkout_block .fhs-input-box.checked-error .fhs-input-group .fhs-textbox-alert {
-    height: 18px;
-    width: 18px;
-    display: block;
-    margin-top: 8px;
-    color: #dc3545;
-    margin-left: 154px;
-
-  }
-
 `;

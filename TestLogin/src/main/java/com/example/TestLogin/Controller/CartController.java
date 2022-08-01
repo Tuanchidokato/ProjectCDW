@@ -5,9 +5,7 @@ import com.example.TestLogin.Model.ShoppingCart.Items;
 import com.example.TestLogin.Model.ShoppingCart.ItemsID;
 import com.example.TestLogin.Model.ShoppingCart.ShoppingCart;
 import com.example.TestLogin.Model.UserModel.User;
-import com.example.TestLogin.Repository.ItemsRepository;
 import com.example.TestLogin.Repository.ProductRepository;
-import com.example.TestLogin.Repository.ShoppingCartRepository;
 import com.example.TestLogin.Repository.UserRepository;
 import com.example.TestLogin.Security.Service.UserDetailsImpl;
 import com.example.TestLogin.Service.impl.*;
@@ -130,14 +128,20 @@ public class CartController {
 
     @GetMapping("/CartContents/{id}")
     ResponseEntity<?> getCartContents(@PathVariable Long id) {
-        List<Items> itemsList = itemsService.findAll();
-        List<Items> result = new ArrayList<>();
-        for (Items item: itemsList) {
-            if (item.getId().getCart().getId() == id) {
-                result.add(item);
-            }
-        }
-        return new ResponseEntity<>(result , HttpStatus.OK);
+        return new ResponseEntity<>(itemsService.getCartContents(id) , HttpStatus.OK);
     }
+
+    @GetMapping("/ListCarts")
+    ResponseEntity<?> getAllCart() {
+        List<ShoppingCart> result = cartService.getAllCart();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PutMapping("/editCart/{id}")
+    Boolean editCart(@PathVariable Long id , @RequestParam Boolean check){
+        return cartService.editCart(id , check);
+    }
+
+
 
 }

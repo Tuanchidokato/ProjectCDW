@@ -88,6 +88,18 @@ class CartService {
         window.location.reload();
     }
 
+    getAllCarts() {
+        return axios.get(API_URL + "/ListCarts");
+    }
+
+    getCartContens(id) {
+        return axios.get(API_URL + "/CartContents" + "/" + id);
+    }
+
+    editCart(id , check) {
+        return axios.put(API_URL + "/editCart/" + id + "/?check=" + check );
+    }
+
 }
 
 export default new CartService();
