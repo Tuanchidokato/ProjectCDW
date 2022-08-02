@@ -72,12 +72,6 @@ class ProductDetail extends React.Component {
         return result;
     }
 
-    //Lấy file ảnh của product và đưa vào đường dẫn đến file
-    getImage() {
-        return {
-            img: this.state.product.image && require(`../../assets/bookStudent/${this.state.product.image}`)
-        }
-    }
 
     render() {
         const {t, i18n} = this.props;
@@ -97,7 +91,7 @@ class ProductDetail extends React.Component {
                                                     <div className="product-essential-media">
                                                         <div className="product-view-image">
                                                             <div className="product-view-image-product">
-                                                                <img src={this.getImage().img} className="fhs-p-img"
+                                                                <img src={this.state.product.image} className="fhs-p-img"
                                                                      alt=""/>
                                                             </div>
                                                         </div>

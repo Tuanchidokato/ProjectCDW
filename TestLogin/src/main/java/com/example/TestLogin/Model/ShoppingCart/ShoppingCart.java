@@ -20,7 +20,7 @@ public class ShoppingCart implements Serializable {
     private long id;
 
     @ManyToOne()
-    @JoinColumn(name = "user_id" )
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Temporal(TemporalType.DATE)
@@ -34,7 +34,7 @@ public class ShoppingCart implements Serializable {
     //Phương thức thanh toán
     private String typePayment;
 
-    public ShoppingCart(User user, Calendar date, String address, Boolean payStatus , String typePayment) {
+    public ShoppingCart(User user, Calendar date, String address, Boolean payStatus, String typePayment) {
         this.user = user;
         this.date = date;
         this.address = address;
@@ -79,7 +79,13 @@ public class ShoppingCart implements Serializable {
         this.payStatus = payStatus;
     }
 
+    public String getTypePayment() {
+        return typePayment;
+    }
 
+    public void setTypePayment(String typePayment) {
+        this.typePayment = typePayment;
+    }
 
     public long getId() {
         return id;
