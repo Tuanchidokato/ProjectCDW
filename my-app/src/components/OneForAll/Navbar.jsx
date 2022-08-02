@@ -502,6 +502,5 @@ const Nav = styled.nav`
   }
 
 
-
-
+  }
 `;

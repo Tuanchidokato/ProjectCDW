@@ -15,13 +15,12 @@ class InformationUser{
         )
     }
 
-    editInformation(
+    editInformation(id,
             firstName,
             lastName,
             address,
             phoneNumber
         ){
-            const id= authService.getCurrentUser().id;
             return axios.post(
                 API_URL+"edit/"+id,
                 {
@@ -32,9 +31,9 @@ class InformationUser{
                 }
             )
         }
-        insertImage(imageUrl){
+        insertImage(id,imageUrl){
             
-            return axios.post(API_URL+"FileUpLoad/"+authService.getCurrentUser().id,{imageUrl})
+            return axios.post(API_URL+"FileUpLoad/"+id,{imageUrl})
         }
 
          getImage(imageUrl){

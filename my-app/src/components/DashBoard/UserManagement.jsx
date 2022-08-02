@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import InformationUserService from "../../services/InformationUser.service";
-
+import { useTranslation } from "react-i18next";
 
 function UserManagement(){
 
@@ -11,8 +11,7 @@ function UserManagement(){
     const [username,setUsername] =useState("")
     const [email,setEmail] =useState("")
     const [role,setRole] =useState("")
-
-    
+    const { t, i18n } = useTranslation();
 
     useEffect(()=>{
         InformationUserService.getAllUser().then(
@@ -73,7 +72,7 @@ function UserManagement(){
                     <div className="boxes">
                        <div className="filterInfo">
                             <div className="user">
-                                <p>Username</p>
+                                <p>{t('userManagement.username')} </p>
                                 <input
                                     onChange={onchangeUsername}
                                     type="text"
@@ -88,7 +87,7 @@ function UserManagement(){
                        </div>
                        <div className="filterInfo">
                             <div className="Roles">
-                                <p>Roles</p>
+                                <p>{t('userManagement.role')}</p>
                                 <select 
                                     onChange={onChangeRole}
                                     name="" id="">
@@ -101,7 +100,7 @@ function UserManagement(){
                             <div 
                                 onClick={handlerFilter}
                                 className="button_search">
-                                <a href="">Tìm kiếm</a>
+                                <a href="">{t('userManagement.search')}</a>
                             </div>
                        </div>
                     </div>
@@ -111,10 +110,10 @@ function UserManagement(){
                     <ul class="responsive-table">
                         <li class="table-header">
                             <div class="col col-1">id</div>
-                            <div class="col col-2">Tên</div>
+                            <div class="col col-2">{t('userManagement.name')}</div>
                             <div class="col col-3"> Email</div>
-                            <div class="col col-4">Quyền</div>
-                            <div class="col col-5">Ảnh đại diện</div>
+                            <div class="col col-4">{t('userManagement.role')}</div>
+                            <div class="col col-5">{t('userManagement.image')}</div>
 
                         </li>
                     

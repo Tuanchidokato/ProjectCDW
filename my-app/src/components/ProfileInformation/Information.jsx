@@ -5,7 +5,7 @@ import authService from "../../services/auth.service";
 
 import {ToastContainer,toast} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
-
+import { withTranslation } from "react-i18next";
 class Information extends Component{
     
     constructor(props){
@@ -39,7 +39,9 @@ class Information extends Component{
         const newLastName = string.replace(newFirstName,"")
         
         console.log(this.state.newFirstName)
-        InformationUser.editInformation(
+        const id= authService.getCurrentUser().id;
+
+        InformationUser.editInformation(id,
             newFirstName,
             newLastName,
             this.state.address,
@@ -112,13 +114,14 @@ class Information extends Component{
         )
     }
     render(){
+        const {t, i18n} = this.props;
         return(
             <Div>
                 <div className="form_Information">
                     <form onSubmit={this.handleSave}>
-                        <h1>Xem trang cá nhân</h1>
+                        <h1>{t('detailUser.viewProfile')}</h1>
                         <div className="name_ info ">
-                            <p>Họ tên</p>
+                            <p>{t('detailUser.Name')}</p>
                             <input
                                 required
                                 type="text"
@@ -128,7 +131,7 @@ class Information extends Component{
                         </div>
 
                         <div className="address_ info">
-                            <p>Địa chỉ</p>
+                            <p>{t('detailUser.address')}</p>
                             <input 
                                 required
                                 type="text"
@@ -138,7 +141,7 @@ class Information extends Component{
                         </div>
 
                         <div className="email_ info">
-                            <p>Email</p>
+                            <p>{t('detailUser.email')}</p>
                             <input 
                                 required
                                 type="email"
@@ -149,7 +152,7 @@ class Information extends Component{
                         </div>
 
                         <div className="PhoneNumber_ info">
-                            <p>Số điện thoại</p>
+                            <p>{t('detailUser.phoneNumber')}</p>
                             <input 
                                 required    
                                 type="text"
@@ -158,9 +161,8 @@ class Information extends Component{
                                 onChange={this.onChangePhoneNumber}
                             />
                         </div>
-                        <button>Lưu</button>
+                        <button>{t('detailUser.saveButton')}</button>
                         <ToastContainer
-                            
                             />
                     </form>
                 </div>
@@ -168,7 +170,7 @@ class Information extends Component{
         )
     }
 }
-export default Information;
+export default withTranslation()(Information);
 const Div = styled.div`
     .form_Information{
         

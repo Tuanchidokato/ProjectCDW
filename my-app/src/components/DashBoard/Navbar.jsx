@@ -10,6 +10,7 @@ import InfoPro from "./InforPro"
 import ProductService from "../../services/ProductService"
 import UserManagement from "./UserManagement"
 import InfoUser from "./InfoUser"
+import { useTranslation } from "react-i18next"
 function Navbar(props){
 
     const[imageUrl, setImageUrl]= useState("") 
@@ -17,7 +18,7 @@ function Navbar(props){
     const[infoSearch, setInfoSearch]=useState("")
     const[searchResult, setSearchResult]=useState([])
     const history = useHistory();
-
+    const {t, i18n}=useTranslation()
     const toggleHandlerChange = ()=>{
         const nav= document.getElementById('dark')
         nav.classList.toggle('dark')
@@ -89,7 +90,7 @@ function Navbar(props){
                                 <li>
                                     <Link to="/adminDashBoard/UserManagement">
                                         <i className="fa fa-user"></i>
-                                        <span className="link-name">Nguời dùng</span>
+                                        <span className="link-name">{t('DashBoard.user')} </span>
                                     </Link>
                                 </li>
 
@@ -126,13 +127,13 @@ function Navbar(props){
                                 <li>
                                     <a href="#">
                                         <i className="fa fa-sign-out"></i>
-                                        <span className="link-name">Logout</span>
+                                        <span className="link-name">{t('DashBoard.logOut')} </span>
                                     </a>
                                 </li>
                                 <li className="mode">
                                     <a href="#">
                                         <i class="fa-solid fa-moon"></i>
-                                        <span className="link-name">Dark mod</span>
+                                        <span className="link-name">{t('DashBoard.mod')} </span>
                                     </a>
                                     <div
                                     onClick={toggleHandlerChange}
@@ -158,7 +159,7 @@ function Navbar(props){
                             <input 
                                 type="text"
                                 id="infoSearch"
-                                placeholder="Search here..." 
+                                placeholder={t('DashBoard.searchHere')}  
                             />
                         </div>
 

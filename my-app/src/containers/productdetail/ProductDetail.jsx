@@ -6,8 +6,7 @@ import {withTranslation} from "react-i18next";
 import './css/detail.css';
 import ProductService from "../../services/ProductService";
 import CartService from "../../services/CartService";
-
-
+import { WithTranslation } from "react-i18next";
 class ProductDetail extends React.Component {
 
     constructor(props) {

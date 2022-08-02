@@ -1,6 +1,5 @@
 import { Component } from "react";
 import styled from "styled-components";
-import book1 from "../../assets/bookStudent/image 2.png"
 import {Link} from "react-router-dom"
 import Information from "../../components/ProfileInformation/Information";
 import informationUser from "../../services/InformationUser.service"
@@ -9,6 +8,9 @@ import ChangePass from "../../components/ProfileInformation/ChangePass";
 import { storage } from "../../config/firebase/firebase";
 import { Route } from "react-router-dom";
 import InformationUserService from "../../services/InformationUser.service";
+import {withTranslation} from "react-i18next";
+import userService  from "../../services/auth.service"
+
 class Profile extends Component{
 
     constructor(props){
@@ -36,7 +38,8 @@ class Profile extends Component{
         await fileRef.put(file)
         const fileUrl =await fileRef.getDownloadURL()
         console.log(fileUrl)
-        InformationUserService.insertImage(fileUrl).then(
+        const id= authService.getCurrentUser().id
+        InformationUserService.insertImage(id,fileUrl).then(
             response=>{
                 console.log(response)
                 window.location.reload();
@@ -64,6 +67,7 @@ componentDidMount(){
 }
 
     render(){
+        const {t, i18n} = this.props;
         return(
             <Div>
                 <div className="section_information">
@@ -90,8 +94,8 @@ componentDidMount(){
                             </div>
 
                             <div className="control">
-                                <Link to="/home/profile">Xem trang cá nhân</Link>
-                                <Link to="/home/profile/changePass">Đổi mật khẩu</Link>
+                                <Link to="/home/profile">{t('detailUser.viewProfile')}</Link>
+                                <Link to="/home/profile/changePass">{t('detailUser.changePass')}</Link>
                             </div>
                           </div>
                        </div>
@@ -111,7 +115,7 @@ componentDidMount(){
         )
     }
 }
-export default Profile;
+export default withTranslation()(Profile)
 const Div=styled.div`
     background-color: #423a3a;
     .control_option{

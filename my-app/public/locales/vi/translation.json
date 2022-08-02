@@ -79,6 +79,39 @@
     "search" : {
         "search_with": "KẾT QUẢ TÌM KIẾM ",
         "search_empty" : "Không có sản phẩm phù hợp với từ khóa tìm kiếm của bạn."
+    },
+    "detailUser":{
+        "viewProfile":"Xem trang cá nhân",
+        "changePass":"Thay đổi mật khẩu",
+        "Name":"Họ và Tên",
+        "address":"Địa chỉ",
+        "email":"Email",
+        "phoneNumber":"Số điện thoại",
+        "saveButton":"Lưu"
+
+    },
+    "userManagement":{
+        "name":"Tên",
+        "role":"Quyền",
+        "image":"Ảnh đại diện",
+        "username":"Tên đăng nhập",
+        "search":"Tìm kiếm",
+        "searchHere":"Tìm kiểm ở đây..."
+    },
+    "DashBoard":{
+        "user":"Người dùng",
+        "mod":"Chế độ tối",
+        "logOut":"Đăng xuất",
+        "searchHere":"Tìm kiểm ở đây..."
+    },
+    "infoUser":{
+        "info":"Thông tin cá nhân",
+        "username":"Tên đăng nhập",
+        "phoneNumber":"Số điện thoại",
+        "firstName":"Tên",
+        "lastName":"Họ",
+        "address":"Địa chỉ"
     }
+
 
 }

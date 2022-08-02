@@ -11,7 +11,8 @@ import { Route,Link } from "react-router-dom";
 import ProductService from "../../services/ProductService";
 import SaleBooks from "../../components/Elements/Sale-book";
 import Category from "../../components/Elements/Category";
-
+import Advertisement from "../../components/OneForAll/Advertisement";
+import Recommend from "../../components/OneForAll/Recommend";
 class Home extends Component{
     constructor(props){
       super(props)
@@ -50,9 +51,11 @@ class Home extends Component{
                               </div>
                           </div>
                       </div>
+                       <Advertisement />
+                       <Recommend />
                       </Route>
                      <Route  path="/home/profile"> <Profile /> </Route>
-                    
+                   
                 </Section>
             )
         

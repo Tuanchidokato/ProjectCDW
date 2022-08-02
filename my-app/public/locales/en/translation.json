@@ -81,7 +81,38 @@
     "search" : {
         "search_with": "SEARCH RESULTS",
         "search_empty" : "There are no products matching the selection."
+    },
+    "detailUser":{
+        "viewProfile":"View Profile",
+        "changePass":"Change Password",
+        "Name":"Name",
+        "address":"Address",
+        "email":"Email",
+        "phoneNumber":"Phone Number",
+        "saveButton":"Save"
+
+    },
+    "userManagement":{
+        "name":"Name",
+        "role":"Roles",
+        "image":"Image",
+        "username":"Username",
+        "search":"Search"
+    },
+    "DashBoard":{
+        "user":"Users",
+        "mod":"Dark mod",
+        "logOut":"Log out",
+        "searchHere":"Search here..."
+    },
+    "infoUser":{
+        "info":"Personal information",
+        "username":"Username",
+        "phoneNumber":"Phone Number",
+        "firstName":"First Name",
+        "lastName":"Last Name",
+        "address":"Address"
     }
 
-
+    
 }

@@ -13,6 +13,7 @@
     "i18next-http-backend": "^1.4.1",
     "i18next-locize-backend": "^5.1.2",
     "i18next-xhr-backend": "^3.2.2",
+    "jquery": "^3.6.0",
     "react": "^18.0.0",
     "react-bootstrap": "^2.2.3",
     "react-dom": "^18.0.0",
