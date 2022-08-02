@@ -37,6 +37,11 @@ class ProductService {
               return axios.put(API_URL  + "/edit/" + id , product);
        }
 
+       removeProduct(id) {
+              return axios.delete(API_URL + "/delete/" + id);
+       }
+
+
 }
 
 export default new ProductService();
